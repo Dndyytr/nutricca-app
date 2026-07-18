@@ -1,56 +1,29 @@
 import { Router } from 'express';
-import { validate } from '../../../middleware/validate.js';
-import authenticateToken from '../../../middleware/auth.js';
 import {
-  CreateWeeklyRunSchema,
-  UpdateWeeklyRunSchema,
-  CreateWeeklyExerciseSchema,
-  UpdateWeeklyExerciseSchema,
-} from '../validator/schema.js';
-import {
-  getWeeklyRun,
-  postWeeklyRun,
-  putWeeklyRun,
-  getWeeklyExercise,
-  postWeeklyExercise,
-  putWeeklyExercise,
-} from '../controller/weekly_activities-controller.js';
+  getMasterExercisesHandler,
+  getMasterCardiosHandler,
+  postUserWeeklyActivityHandler,
+  getUserWeeklyActivityHandler,
+  putUserWeeklyActivityHandler,
+  getActivityProgressHandler,
+  postActivityProgressHandler,
+  putActivityProgressHandler,
+} from '../controller/index.js';
 
 const router = Router();
 
-// Asumsi router ini di-mount di app.js / server.js dengan prefix:
-// app.use('/api/v1/weekly-activities', weeklyActivitiesRouter);
+// Master Data Routes
+router.get('/master/exercises', getMasterExercisesHandler);
+router.get('/master/cardios', getMasterCardiosHandler);
 
-// --- ROUTES FOR WEEKLY RUN ---
-router.get('/run', authenticateToken, getWeeklyRun);
-router.post(
-  '/run',
-  authenticateToken,
-  validate(CreateWeeklyRunSchema),
-  postWeeklyRun,
-);
-// Menangkap parameter :id sesuai dengan `${weeklyRunId}` di frontend
-router.put(
-  '/run/:id',
-  authenticateToken,
-  validate(UpdateWeeklyRunSchema),
-  putWeeklyRun,
-);
+// User Weekly Activities Routes
+router.post('/', postUserWeeklyActivityHandler);
+router.get('/:id', getUserWeeklyActivityHandler);
+router.put('/:id', putUserWeeklyActivityHandler);
 
-// --- ROUTES FOR WEEKLY EXERCISE ---
-router.get('/exercise', authenticateToken, getWeeklyExercise);
-router.post(
-  '/exercise',
-  authenticateToken,
-  validate(CreateWeeklyExerciseSchema),
-  postWeeklyExercise,
-);
-// Menangkap parameter :id sesuai dengan `${weeklyExerciseId}` di frontend
-router.put(
-  '/exercise/:id',
-  authenticateToken,
-  validate(UpdateWeeklyExerciseSchema),
-  putWeeklyExercise,
-);
+// Activity Progress Routes
+router.get('/:activity_id/progress', getActivityProgressHandler);
+router.post('/:activity_id/progress', postActivityProgressHandler);
+router.put('/progress/:progress_id', putActivityProgressHandler);
 
 export default router;
