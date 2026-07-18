@@ -60,19 +60,44 @@ export const getNutritionLogsByDailyLogId = async (req, res, next) => {
 };
 
 export const getNutritionLogsByUserId = async (req, res, next) => {
-  const userId = req.user.id;
+  const userId = req.user?.id;
 
-  const nutritionLogs =
-    await NutritionLogRepository.getNutritionLogsByUserId(userId);
+  const { page, limit, offset } = req.pagination;
+  const { startDate, endDate, search, sort = 'newest' } = req.query;
 
-  if (!nutritionLogs || nutritionLogs.length === 0) {
-    return next(new NotFoundError('Nutrition logs not found.'));
+  const filters = { startDate, endDate, search };
+
+  try {
+    const result = await NutritionLogRepository.getNutritionLogsByUserId(
+      userId,
+      limit,
+      offset,
+      filters,
+      sort,
+    );
+
+    if (!result.rows || result.rows.length === 0) {
+      return next(new NotFoundError('Nutrition logs not found.'));
+    }
+
+    const totalPages = result.total > 0 ? Math.ceil(result.total / limit) : 0;
+    const showingFrom = result.total === 0 ? 0 : offset + 1;
+    const showingTo = Math.min(offset + limit, result.total);
+
+    return response(res, 200, 'Nutrition logs successfully retrieved', {
+      nutritionLogs: result.rows,
+      meta: {
+        page,
+        limit,
+        totalData: result.total,
+        totalPages,
+        showingText: `Showing ${showingFrom} to ${showingTo} of ${result.total} records`,
+      },
+    });
+  } catch (error) {
+    next(error);
   }
-
-  return response(res, 200, 'Nutrition logs successfully retrieved', {
-    nutritionLogs,
-  });
-}
+};
 
 export const deleteNutritionLogById = async (req, res, next) => {
   const { id } = req.params;
@@ -85,7 +110,9 @@ export const deleteNutritionLogById = async (req, res, next) => {
   }
 
   // Recalc calories setelah delete
-  await NutritionLogRepository.recalcCaloriesIn(deletedNutritionLog.daily_log_id);
+  await NutritionLogRepository.recalcCaloriesIn(
+    deletedNutritionLog.daily_log_id,
+  );
 
   return response(res, 200, 'Nutrition log successfully deleted', {
     id: deletedNutritionLog.id,

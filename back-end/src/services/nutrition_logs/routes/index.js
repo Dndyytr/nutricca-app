@@ -8,6 +8,8 @@ import {
   deleteNutritionLogById,
   getNutritionLogsByUserId,
 } from '../controller/nutrition_log-controller.js';
+import { paginationMiddleware } from '../../../middleware/pagination.js';
+
 const router = Router();
 
 // Base route is /api/v1/nutrition-logs
@@ -22,7 +24,7 @@ router.get(
   authenticateToken,
   getNutritionLogsByDailyLogId,
 );
-router.get('/user/:user_id', authenticateToken, getNutritionLogsByUserId);
+router.get('/user', authenticateToken, paginationMiddleware, getNutritionLogsByUserId);
 router.delete('/:id', authenticateToken, deleteNutritionLogById);
 
 export default router;

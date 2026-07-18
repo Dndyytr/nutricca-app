@@ -58,16 +58,59 @@ class NutritionLogRepository {
     return result.rows;
   }
 
-  async getNutritionLogsByUserId(userId) {
-    const query = {
-      text: 'SELECT * FROM nutrition_logs WHERE user_id = $1 ORDER BY created_at ASC',
-      values: [userId],
+  async getNutritionLogsByUserId(
+    userId,
+    limit,
+    offset,
+    filters = {},
+    sort = 'newest',
+  ) {
+    const values = [userId];
+    let whereClause = 'WHERE user_id = $1';
+    
+    if (filters.startDate) {
+      values.push(filters.startDate);
+      whereClause += ` AND created_at >= $${values.length}`;
+    }
+    if (filters.endDate) {
+      values.push(filters.endDate);
+      whereClause += ` AND created_at <= $${values.length}`;
+    }
+
+    if (filters.search) {
+      values.push(`%${filters.search}%`);
+      whereClause += ` AND EXISTS (
+      SELECT 1 FROM jsonb_array_elements(meals) AS meal
+      WHERE meal->>'food_name' ILIKE $${values.length}
+    )`;
+    }
+
+    const orderClause =
+      sort === 'oldest'
+        ? 'ORDER BY created_at ASC'
+        : 'ORDER BY created_at DESC';
+
+    const dataValues = [...values, limit, offset];
+    const dataQuery = {
+      text: `SELECT * FROM nutrition_logs ${whereClause} ${orderClause} LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}`,
+      values: dataValues,
     };
 
-    const result = await this.pool.query(query);
-    return result.rows;
-  }
+    const countQuery = {
+      text: `SELECT COUNT(*) FROM nutrition_logs ${whereClause}`,
+      values,
+    };
 
+    const [dataResult, countResult] = await Promise.all([
+      this.pool.query(dataQuery),
+      this.pool.query(countQuery),
+    ]);
+
+    return {
+      rows: dataResult.rows,
+      total: parseInt(countResult.rows[0].count, 10),
+    };
+  }
   async deleteNutritionLogById(id) {
     const query = {
       text: 'DELETE FROM nutrition_logs WHERE id = $1 RETURNING id, daily_log_id, total_calories',
