@@ -1,5 +1,6 @@
 import NutritionLogRepository from '../repositories/nutrition_log-repositories.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
+import UserRepository from '../../users/repositories/user-repositories.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 
@@ -14,6 +15,8 @@ export const addNutritionLog = async (req, res, next) => {
     total_fat_g: totalFatG,
   } = req.validated;
 
+  const userId = req.user.id;
+
   const nutritionLog = await NutritionLogRepository.addNutritionLog({
     dailyLogId,
     meals,
@@ -21,6 +24,7 @@ export const addNutritionLog = async (req, res, next) => {
     totalProteinG,
     totalCarbsG,
     totalFatG,
+    userId,
   });
 
   if (!nutritionLog) {
@@ -54,6 +58,21 @@ export const getNutritionLogsByDailyLogId = async (req, res, next) => {
     nutritionLogs,
   });
 };
+
+export const getNutritionLogsByUserId = async (req, res, next) => {
+  const userId = req.user.id;
+
+  const nutritionLogs =
+    await NutritionLogRepository.getNutritionLogsByUserId(userId);
+
+  if (!nutritionLogs || nutritionLogs.length === 0) {
+    return next(new NotFoundError('Nutrition logs not found.'));
+  }
+
+  return response(res, 200, 'Nutrition logs successfully retrieved', {
+    nutritionLogs,
+  });
+}
 
 export const deleteNutritionLogById = async (req, res, next) => {
   const { id } = req.params;

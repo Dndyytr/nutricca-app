@@ -6,6 +6,7 @@ import {
   addNutritionLog,
   getNutritionLogsByDailyLogId,
   deleteNutritionLogById,
+  getNutritionLogsByUserId,
 } from '../controller/nutrition_log-controller.js';
 const router = Router();
 
@@ -21,6 +22,7 @@ router.get(
   authenticateToken,
   getNutritionLogsByDailyLogId,
 );
+router.get('/user/:user_id', authenticateToken, getNutritionLogsByUserId);
 router.delete('/:id', authenticateToken, deleteNutritionLogById);
 
 export default router;

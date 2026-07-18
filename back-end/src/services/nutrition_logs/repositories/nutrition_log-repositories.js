@@ -13,6 +13,7 @@ class NutritionLogRepository {
     totalProteinG = 0,
     totalCarbsG = 0,
     totalFatG = 0,
+    userId,
   }) {
     const id = `nutri-${nanoid(16)}`;
 
@@ -25,9 +26,10 @@ class NutritionLogRepository {
           total_calories,
           total_protein_g,
           total_carbs_g,
-          total_fat_g
+          total_fat_g,
+          user_id
         )
-        VALUES ($1, $2, $3::jsonb, $4, $5, $6, $7)
+        VALUES ($1, $2, $3::jsonb, $4, $5, $6, $7, $8)
         RETURNING id, meals, total_calories, total_protein_g, total_carbs_g, total_fat_g
       `,
       values: [
@@ -38,6 +40,7 @@ class NutritionLogRepository {
         totalProteinG,
         totalCarbsG,
         totalFatG,
+        userId,
       ],
     };
 
@@ -49,6 +52,16 @@ class NutritionLogRepository {
     const query = {
       text: 'SELECT * FROM nutrition_logs WHERE daily_log_id = $1 ORDER BY created_at ASC',
       values: [dailyLogId],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows;
+  }
+
+  async getNutritionLogsByUserId(userId) {
+    const query = {
+      text: 'SELECT * FROM nutrition_logs WHERE user_id = $1 ORDER BY created_at ASC',
+      values: [userId],
     };
 
     const result = await this.pool.query(query);
