@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
-import { Sidebar, BottomNav } from './Sidebar';
-import { TopBar } from './TopBar';
+import { Outlet } from "react-router-dom";
+import { Sidebar, BottomNav } from "./Sidebar";
+import { TopBar } from "./TopBar";
 
 export const Layout = () => (
   <div className="flex min-h-screen bg-slate-50">

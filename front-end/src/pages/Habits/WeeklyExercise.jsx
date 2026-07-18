@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   getWeeklyExercise,
   postWeeklyExercise,
   putWeeklyExercise,
-} from '../../services/api';
-import { DAYS, LEVEL_CONFIG, fmtSets } from './constants';
-import { SaveBar } from './SaveBar';
+} from "../../services/api";
+import { DAYS, LEVEL_CONFIG } from "./constants";
+import { SaveBar } from "./SaveBar";
+import { useLocale } from "../../i18n/locale-context";
 
 export const WeeklyExercise = () => {
-  const [level, setLevel] = useState('beginner');
+  const { t } = useLocale();
+  const [level, setLevel] = useState("beginner");
   const [checks, setChecks] = useState({});
   const [exerciseId, setExerciseId] = useState(null);
-  const [status, setStatus] = useState('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [status, setStatus] = useState("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const cfg = LEVEL_CONFIG[level];
   const allItems = cfg.groups.flatMap((g) => g.items);
@@ -33,7 +35,7 @@ export const WeeklyExercise = () => {
         const data = res?.data?.weekly_exercise?.[0];
         if (data) {
           setExerciseId(data.id);
-          const savedLevel = data.level || 'beginner';
+          const savedLevel = data.level || "beginner";
           setLevel(savedLevel);
 
           const restoredChecks = {};
@@ -52,7 +54,7 @@ export const WeeklyExercise = () => {
           setChecks(restoredChecks);
         }
       } catch (err) {
-        console.error('Failed to load weekly exercise:', err);
+        console.error("Failed to load weekly exercise:", err);
       }
     };
     fetchData();
@@ -61,8 +63,8 @@ export const WeeklyExercise = () => {
   const toggle = (key) => setChecks((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const handleSave = async () => {
-    setStatus('saving');
-    setErrorMsg('');
+    setStatus("saving");
+    setErrorMsg("");
 
     const exercisesData = allItems.map((ex) => ({
       exercise_name: ex.name,
@@ -84,12 +86,12 @@ export const WeeklyExercise = () => {
         const res = await postWeeklyExercise(payload);
         setExerciseId(res?.data?.weekly_exercise?.id);
       }
-      setStatus('success');
-      setTimeout(() => setStatus('idle'), 2000);
+      setStatus("success");
+      setTimeout(() => setStatus("idle"), 2000);
     } catch (err) {
-      setStatus('error');
-      setErrorMsg(err.response?.data?.message || 'Failed to save.');
-      setTimeout(() => setStatus('idle'), 3000);
+      setStatus("error");
+      setErrorMsg(err.response?.data?.message || t("habits.weeklyExercise.saveFailed"));
+      setTimeout(() => setStatus("idle"), 3000);
     }
   };
 
@@ -97,29 +99,31 @@ export const WeeklyExercise = () => {
     <div className="flex flex-col gap-5 font-sans">
       {/* Level selector */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-sm font-medium text-slate-500">Level:</span>
+        <span className="t-size3 font-medium text-slate-500">
+          {t("habits.weeklyExercise.level")}
+        </span>
         <select
           value={level}
           onChange={(e) => {
             setLevel(e.target.value);
             setChecks({});
           }}
-          className="px-3 py-1.5 bg-slate-50 border-2 border-transparent rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer w-auto"
+          className="px-3 py-1.5 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer w-auto font-medium"
         >
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
+          <option value="beginner">{t("habits.weeklyExercise.levels.beginner.name")}</option>
+          <option value="intermediate">{t("habits.weeklyExercise.levels.intermediate.name")}</option>
+          <option value="advanced">{t("habits.weeklyExercise.levels.advanced.name")}</option>
         </select>
         <span
-          className="text-xs font-semibold px-3 py-1 rounded-full"
+          className="t-size2 font-semibold px-3 py-1 rounded-full"
           style={{ background: cfg.pillBg, color: cfg.pillColor }}
         >
-          {cfg.label}
+          {t(`habits.weeklyExercise.levels.${level}.label`)}
         </span>
       </div>
 
-      <div className="text-sm text-amber-800 bg-amber-50 rounded-lg py-2.5 px-3.5 border-l-4 border-green-600">
-        {cfg.desc}
+      <div className="t-size3 text-amber-800 bg-amber-50 rounded-lg py-2.5 px-3.5 border-l-4 border-green-600 font-medium">
+        {t(`habits.weeklyExercise.levels.${level}.description`)}
       </div>
 
       {/* Day header */}
@@ -127,22 +131,22 @@ export const WeeklyExercise = () => {
         {DAYS.map((d) => (
           <span
             key={d}
-            className="text-xs font-semibold text-slate-500 bg-slate-100 rounded-md px-2 py-1"
+            className="t-size2 font-semibold text-slate-500 bg-slate-100 rounded-md px-2 py-1"
           >
-            {d}
+            {t(`habits.weeklyExercise.days.${d}`)}
           </span>
         ))}
       </div>
 
       {/* Exercise list */}
       <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-          💪 Weekly Exercise
+        <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+          {t("habits.weeklyExercise.title")}
         </div>
         {cfg.groups.map((group) => (
           <div key={group.section} className="mb-4">
-            <div className="text-[10px] font-bold tracking-widest text-slate-300 uppercase pb-1.5 border-b border-slate-100 mb-2">
-              {group.section}
+            <div className="t-size1 font-bold tracking-widest text-slate-300 uppercase pb-1.5 border-b border-slate-100 mb-2">
+              {t(`habits.weeklyExercise.sections.${group.section}`)}
             </div>
             {group.items.map((ex) => {
               const doneDays = DAYS.filter(
@@ -160,20 +164,20 @@ export const WeeklyExercise = () => {
                 >
                   <div className="flex items-center gap-2.5 mb-2">
                     <span
-                      className={`flex-1 text-sm font-medium ${isReached ? 'text-slate-400 line-through' : 'text-slate-900'}`}
+                      className={`flex-1 t-size3 font-medium ${isReached ? "text-slate-400 line-through" : "text-slate-900"}`}
                     >
-                      {ex.name}
+                      {t(`habits.weeklyExercise.exercises.${ex.id}`)}
                     </span>
-                    <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap shrink-0">
-                      {fmtSets(ex)}
+                    <span className="t-size2 text-slate-500 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap shrink-0 font-medium">
+                      {t("habits.weeklyExercise.sets", { reps: ex.reps, unit: t(`habits.weeklyExercise.units.${ex.unit || "reps"}`), sets: ex.sets, days: ex.days })}
                     </span>
-                    <span className="text-xs font-bold min-w-[32px] text-right shrink-0 text-green-600">
+                    <span className="t-size2 font-bold min-w-[32px] text-right shrink-0 text-green-600">
                       {doneDays}/{ex.days}
                     </span>
                   </div>
                   <div className="h-1 rounded-full bg-slate-100 overflow-hidden mb-2">
                     <div
-                      className={`h-full rounded-full transition-all duration-300 ${isReached ? 'bg-green-500' : 'bg-green-600'}`}
+                      className={`h-full rounded-full transition-all duration-300 ${isReached ? "bg-green-500" : "bg-green-600"}`}
                       style={{ width: `${exPct}%` }}
                     />
                   </div>
@@ -185,13 +189,13 @@ export const WeeklyExercise = () => {
                         <button
                           key={day}
                           onClick={() => toggle(key)}
-                          title={day}
+                          title={t(`habits.weeklyExercise.days.${day}`)}
                           className={`
-                            w-8 h-7 rounded-md flex items-center justify-center text-xs font-semibold transition-all duration-150 shrink-0 cursor-pointer
+                            w-8 h-7 rounded-md flex items-center justify-center t-size2 font-semibold transition-all duration-150 shrink-0 cursor-pointer
                             ${
                               checked
-                                ? 'bg-green-600 text-white border-0'
-                                : 'bg-slate-50 text-slate-400 border-2 border-slate-200 hover:border-slate-300'
+                                ? "bg-green-600 text-white border-0"
+                                : "bg-slate-50 text-slate-400 border-2 border-slate-200 hover:border-slate-300"
                             }
                           `}
                         >
@@ -211,7 +215,7 @@ export const WeeklyExercise = () => {
                               />
                             </svg>
                           ) : (
-                            day.slice(0, 1)
+                            t(`habits.weeklyExercise.days.${day}`).slice(0, 1)
                           )}
                         </button>
                       );
@@ -228,19 +232,19 @@ export const WeeklyExercise = () => {
           <div className="flex-1">
             <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-500 ${weekPct >= 100 ? 'bg-green-500' : 'bg-green-600'}`}
+                className={`h-full rounded-full transition-all duration-500 ${weekPct >= 100 ? "bg-green-500" : "bg-green-600"}`}
                 style={{ width: `${weekPct}%` }}
               />
             </div>
-            <div className="flex justify-between mt-1.5 text-xs text-slate-400">
-              <span>Weekly Progress</span>
+            <div className="flex justify-between mt-1.5 t-size2 text-slate-400 font-medium">
+              <span>{t("habits.weeklyExercise.weeklyProgress")}</span>
               <span>
-                {totalDone} / {totalTarget} sessions
+                {t("habits.weeklyExercise.sessions", { done: totalDone, total: totalTarget })}
               </span>
             </div>
           </div>
           <div
-            className={`text-2xl font-bold shrink-0 ${weekPct >= 100 ? 'text-green-500' : 'text-green-600'}`}
+            className={`t-size7 font-bold shrink-0 ${weekPct >= 100 ? "text-green-500" : "text-green-600"}`}
           >
             {weekPct}%
           </div>
@@ -251,7 +255,7 @@ export const WeeklyExercise = () => {
         onSave={handleSave}
         status={status}
         errorMsg={errorMsg}
-        label={exerciseId ? 'Update weekly exercise' : 'Save weekly exercise'}
+        label={t(exerciseId ? "habits.weeklyExercise.update" : "habits.weeklyExercise.save")}
       />
     </div>
   );

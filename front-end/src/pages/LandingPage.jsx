@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Menu,
   X,
@@ -11,25 +11,54 @@ import {
   ChevronRight,
   Target,
   PersonStanding,
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { EChartsChart } from "../shared/ui/echarts-chart";
+import { LanguageToggle } from "../components/LanguageToggle";
+import { useLocale } from "../i18n/locale-context";
 
 const sleepData = [
-  { day: 'Mon', hours: 7.2 },
-  { day: 'Tue', hours: 6.8 },
-  { day: 'Wed', hours: 8.1 },
-  { day: 'Thu', hours: 7.5 },
-  { day: 'Fri', hours: 6.4 },
-  { day: 'Sat', hours: 8.6 },
-  { day: 'Sun', hours: 7.9 },
+  { day: "Mon", hours: 7.2 },
+  { day: "Tue", hours: 6.8 },
+  { day: "Wed", hours: 8.1 },
+  { day: "Thu", hours: 7.5 },
+  { day: "Fri", hours: 6.4 },
+  { day: "Sat", hours: 8.6 },
+  { day: "Sun", hours: 7.9 },
 ];
+
+const getSleepChartOption = (t) => ({
+  animationDuration: 650,
+  grid: { top: 4, right: 2, bottom: 0, left: 2 },
+  tooltip: {
+    trigger: "axis",
+    valueFormatter: (value) => t("landing.mockup.hours", { value }),
+    textStyle: { fontSize: 11 },
+  },
+  xAxis: {
+    type: "category",
+    boundaryGap: false,
+    data: sleepData.map(({ day }) => day),
+    show: false,
+  },
+  yAxis: { type: "value", show: false, scale: true },
+  series: [
+    {
+      type: "line",
+      data: sleepData.map(({ hours }) => hours),
+      smooth: true,
+      symbol: "none",
+      lineStyle: { color: "#16A34A", width: 2 },
+      areaStyle: { color: "rgba(22, 163, 74, 0.18)" },
+    },
+  ],
+});
 
 function ProgressRing({
   pct,
   size = 120,
   stroke = 10,
-  color = '#16A34A',
+  color = "#16A34A",
   label,
   sublabel,
 }) {
@@ -57,12 +86,12 @@ function ProgressRing({
           strokeDasharray={circ}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          style={{ transition: 'stroke-dashoffset 1s ease' }}
+          style={{ transition: "stroke-dashoffset 1s ease" }}
         />
       </svg>
       <div className="text-center -mt-1">
-        <p className="text-sm font-semibold text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500">{sublabel}</p>
+        <p className="t-size3 font-semibold text-slate-900">{label}</p>
+        <p className="t-size2 text-slate-500 font-medium">{sublabel}</p>
       </div>
     </div>
   );
@@ -76,12 +105,12 @@ function WaterBar({ filled, total = 8 }) {
           key={i}
           className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
           style={{
-            background: i < filled ? '#DCFCE7' : '#F1F5F9',
+            background: i < filled ? "#DCFCE7" : "#F1F5F9",
           }}
         >
           <Droplets
             size={14}
-            style={{ color: i < filled ? '#16A34A' : '#CBD5E1' }}
+            style={{ color: i < filled ? "#16A34A" : "#CBD5E1" }}
           />
         </div>
       ))}
@@ -91,6 +120,7 @@ function WaterBar({ filled, total = 8 }) {
 
 function DashboardMockup() {
   const [waterFilled, setWaterFilled] = useState(5);
+  const { t } = useLocale();
 
   useEffect(() => {
     const t = setTimeout(() => setWaterFilled(6), 1200);
@@ -99,22 +129,26 @@ function DashboardMockup() {
 
   return (
     <div
-      className="relative bg-white rounded-2xl border border-slate-200/80 shadow-2xl p-5 w-full max-w-[440px] mx-auto"
-      style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
+      className="relative bg-white rounded-2xl border border-slate-200/80 shadow-2xl p-5 w-full max-w-110 mx-auto"
+      style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
     >
       {/* header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">
-            Sunday, 29 Jun
+          <p className="t-size2 text-slate-500 font-medium uppercase tracking-widest">
+            {t("landing.mockup.date")}
           </p>
-          <h3 className="text-base font-semibold text-slate-900 mt-0.5">
-            Good morning, Arya 👋
+          <h3 className="t-size4 font-semibold text-slate-900 mt-0.5">
+            {t("landing.mockup.greeting")}
           </h3>
         </div>
         <div className="w-9 h-9 flex items-center justify-center">
           {/* Changed Icon to public/favicon.svg */}
-          <img src="/favicon.svg" alt="Nutricca Icon" className="w-8 h-8 object-contain" />
+          <img
+            src="/favicon.svg"
+            alt={t("landing.iconAlt")}
+            className="w-8 h-8 object-contain"
+          />
         </div>
       </div>
 
@@ -126,7 +160,7 @@ function DashboardMockup() {
           stroke={8}
           color="#16A34A"
           label="82%"
-          sublabel="Calories"
+          sublabel={t("landing.mockup.calories")}
         />
         <ProgressRing
           pct={67}
@@ -134,7 +168,7 @@ function DashboardMockup() {
           stroke={8}
           color="#22C55E"
           label="67%"
-          sublabel="Protein"
+          sublabel={t("landing.mockup.protein")}
         />
         <ProgressRing
           pct={91}
@@ -142,7 +176,7 @@ function DashboardMockup() {
           stroke={8}
           color="#15803D"
           label="91%"
-          sublabel="Water Intake"
+          sublabel={t("landing.mockup.waterIntake")}
         />
       </div>
 
@@ -151,12 +185,12 @@ function DashboardMockup() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             <Droplets size={14} className="text-green-600" />
-            <span className="text-xs font-semibold text-slate-900">
-              Hydration
+            <span className="t-size2 font-semibold text-slate-900">
+              {t("landing.mockup.hydration")}
             </span>
           </div>
-          <span className="text-xs text-slate-500">
-            {waterFilled}/8 glasses
+          <span className="t-size2 text-slate-500 font-medium">
+            {t("landing.mockup.glasses", { count: waterFilled })}
           </span>
         </div>
         <WaterBar filled={waterFilled} />
@@ -167,60 +201,34 @@ function DashboardMockup() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             <PersonStanding size={14} className="text-green-600" />
-            <span className="text-xs font-semibold text-slate-900">
-              Weight Trend
+            <span className="t-size2 font-semibold text-slate-900">
+              {t("landing.mockup.weightTrend")}
             </span>
           </div>
-          <span className="text-xs font-semibold text-green-600">
-            65 kg avg
+          <span className="t-size2 font-semibold text-green-600">
+            {t("landing.mockup.weightAverage")}
           </span>
         </div>
         <div className="h-20">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={sleepData}
-              margin={{ top: 2, right: 2, bottom: 0, left: 2 }}
-            >
-              <defs>
-                <linearGradient id="sleepGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#16A34A" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#16A34A" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Area
-                type="monotone"
-                dataKey="hours"
-                stroke="#16A34A"
-                strokeWidth={2}
-                fill="url(#sleepGrad)"
-                dot={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  fontSize: 11,
-                  borderRadius: 8,
-                  border: 'none',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-                }}
-                itemStyle={{ color: '#16A34A' }}
-                labelStyle={{ color: '#64748B', fontSize: 10 }}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+          <EChartsChart
+            option={getSleepChartOption(t)}
+            className="h-full w-full"
+            ariaLabel={t("landing.mockup.weeklySleepTrend")}
+          />
         </div>
         <div className="flex justify-between mt-1">
           {sleepData.map((d) => (
-            <span key={d.day} className="text-[10px] text-slate-400">
-              {d.day}
+            <span key={d.day} className="t-size1 text-slate-400 font-medium">
+              {t(`landing.mockup.days.${d.day}`)}
             </span>
           ))}
         </div>
       </div>
 
       {/* floating badge */}
-      <div className="absolute -top-4 -right-4 bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+      <div className="absolute -top-4 -right-4 bg-green-600 text-white t-size2 font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
         <TrendingUp size={12} />
-        +12% this week
+        {t("landing.mockup.thisWeek")}
       </div>
     </div>
   );
@@ -229,129 +237,131 @@ function DashboardMockup() {
 const features = [
   {
     icon: Apple,
-    color: '#16A34A',
-    bg: '#DCFCE7',
-    title: 'Diet & Nutrition',
-    desc: 'Log meals, track macros, and monitor calorie balance with AI-powered daily recommendations tailored to your health profile.',
-    size: 'col-span-2',
-    tag: 'Most used',
+    color: "#16A34A",
+    bg: "#DCFCE7",
+    key: "dietNutrition",
+    size: "col-span-2",
+    tagKey: "mostUsed",
   },
   {
     icon: Moon,
-    color: '#15803D',
-    bg: '#DCFCE7',
-    title: 'Sleep Analysis',
-    desc: 'Track sleep duration and quality. Set bedtime goals and wake up feeling genuinely restored with consistent routines.',
-    size: 'col-span-1',
-    tag: null,
+    color: "#15803D",
+    bg: "#DCFCE7",
+    key: "sleepAnalysis",
+    size: "col-span-1",
+    tagKey: null,
   },
   {
     icon: Droplets,
-    color: '#22C55E',
-    bg: '#DCFCE7',
-    title: 'Hydration Goals',
-    desc: 'Set daily water targets with smart glass tracking. Visual progress bars and reminders keep you hydrated throughout the day.',
-    size: 'col-span-1',
-    tag: null,
+    color: "#22C55E",
+    bg: "#DCFCE7",
+    key: "hydrationGoals",
+    size: "col-span-1",
+    tagKey: null,
   },
   {
     icon: Target,
-    color: '#16A34A',
-    bg: '#DCFCE7',
-    title: 'Habit Streaks',
-    desc: 'Build lasting routines with weekly habit tracking, exercise logs, and milestone badges that keep your momentum alive.',
-    size: 'col-span-2',
-    tag: 'New',
+    color: "#16A34A",
+    bg: "#DCFCE7",
+    key: "habitStreaks",
+    size: "col-span-2",
+    tagKey: "new",
   },
 ];
 
 const testimonials = [
   {
-    name: 'Sarah Chen',
-    role: 'Nutritionist',
+    name: "Sarah Chen",
+    key: "sarah",
     avatar:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&auto=format',
-    quote:
-      'Nutricca changed how I counsel clients. The data is honest and actionable — not just pretty numbers. The habit tracker really helps people stick to their goals.',
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&auto=format",
   },
   {
-    name: 'Marcus Oliveira',
-    role: 'Marathon runner',
+    name: "Marcus Oliveira",
+    key: "marcus",
     avatar:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&auto=format',
-    quote:
-      'I shaved 8 minutes off my marathon time after three months of using the sleep and nutrition tracking together. The weekly run tracker is a game-changer.',
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&auto=format",
   },
   {
-    name: 'Priya Nair',
-    role: 'Software engineer',
+    name: "Priya Nair",
+    key: "priya",
     avatar:
-      'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=80&h=80&fit=crop&auto=format',
-    quote:
-      "Finally an app that doesn't guilt-trip you. Nutricca feels like a calm coach — tracking habits, nutrition, and progress without the anxiety.",
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=80&h=80&fit=crop&auto=format",
   },
 ];
 
-const navLinks = ['Features', 'How it Works', 'Testimonials'];
+const navLinks = [
+  { key: "features", href: "#features" },
+  { key: "howItWorks", href: "#how-it-works" },
+  { key: "testimonials", href: "#testimonials" },
+];
 
 export const LandingPage = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useLocale();
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handler);
-    return () => window.removeEventListener('scroll', handler);
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
     <div
       className="min-h-screen bg-slate-50 text-slate-900"
-      style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
+      style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
     >
       {/* ── NAV ── */}
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200/60'
-            : 'bg-transparent'
+            ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200/60"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* logo */}
           <a href="#" className="flex items-center gap-2 group">
             {/* Changed Icon to public/favicon.svg */}
-            <img 
-              src="/favicon.svg" 
-              alt="Nutricca Logo" 
-              className="w-8 h-8 object-contain" 
+            <img
+              src="/favicon.svg"
+              alt={t("landing.logoAlt")}
+              className="w-8 h-8 object-contain"
             />
-            <span className="text-[15px] font-bold tracking-tight text-slate-900">
+            <span className="t-size4 font-bold tracking-tight text-slate-900">
               Nutricca
             </span>
           </a>
 
           {/* desktop links */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((l) => (
+            {navLinks.map(({ key, href }) => (
               <a
-                key={l}
-                href={`#${l.toLowerCase().replace(/ /g, '-')}`}
-                className="text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium"
+                key={key}
+                href={href}
+                className="t-size3 text-slate-500 hover:text-slate-900 transition-colors font-medium"
               >
-                {l}
+                {t(`nav.${key}`)}
               </a>
             ))}
           </nav>
 
           {/* cta */}
           <div className="hidden md:flex items-center gap-3">
-            <button onClick={()=> navigate('/login')} className="text-sm font-medium text-slate-500 hover:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all">
-              Sign In
+            <LanguageToggle />
+            <button
+              onClick={() => navigate("/login")}
+              className="t-size3 font-medium text-slate-500 hover:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all"
+            >
+              {t("nav.signIn")}
             </button>
-            <button onClick={()=> navigate('/onboarding')} className="text-sm font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-green-600/20">
-              Get Started
+            <button
+              onClick={() => navigate("/onboarding")}
+              className="t-size3 font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-green-600/20"
+            >
+              {t("nav.getStarted")}
             </button>
           </div>
 
@@ -367,22 +377,29 @@ export const LandingPage = () => {
         {/* mobile menu */}
         {mobileOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-4">
-            {navLinks.map((l) => (
+            {navLinks.map(({ key, href }) => (
               <a
-                key={l}
-                href={`#${l.toLowerCase().replace(/ /g, '-')}`}
-                className="text-sm font-medium text-slate-500"
+                key={key}
+                href={href}
+                className="t-size3 font-medium text-slate-500"
                 onClick={() => setMobileOpen(false)}
               >
-                {l}
+                {t(`nav.${key}`)}
               </a>
             ))}
             <div className="flex gap-3 pt-2">
-              <button onClick={()=> navigate('/login')} className="flex-1 text-sm font-medium text-slate-500 py-2 rounded-lg border border-slate-200">
-                Sign In
+              <LanguageToggle />
+              <button
+                onClick={() => navigate("/login")}
+                className="flex-1 t-size3 font-medium text-slate-500 py-2 rounded-lg border border-slate-200"
+              >
+                {t("nav.signIn")}
               </button>
-              <button onClick={()=> navigate('/onboarding')} className="flex-1 text-sm font-semibold text-white bg-green-600 py-2 rounded-lg">
-                Get Started
+              <button
+                onClick={() => navigate("/onboarding")}
+                className="flex-1 t-size3 font-semibold text-white bg-green-600 py-2 rounded-lg"
+              >
+                {t("nav.getStarted")}
               </button>
             </div>
           </div>
@@ -394,26 +411,33 @@ export const LandingPage = () => {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* left */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 border border-green-200">
+            <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 t-size2 font-semibold px-3 py-1.5 rounded-full mb-6 border border-green-200">
               <span className="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse" />
-              Nutricca - Health Tracker Application
+              {t("landing.hero.eyebrow")}
             </div>
-            <h1 className="text-[3.25rem] leading-[1.1] font-extrabold text-slate-900 tracking-tight mb-5">
-              Track Your Habits,{' '}
-              <span className="text-green-600">Transform</span> Your Health.
+            <h1 className="t-size13 leading-[1.1] font-extrabold text-slate-900 tracking-tight mb-5">
+              {t("landing.hero.titleBefore")}{" "}
+              <span className="text-green-600">
+                {t("landing.hero.titleAccent")}
+              </span>{" "}
+              {t("landing.hero.titleAfter")}
             </h1>
-            <p className="text-[1.05rem] text-slate-500 leading-relaxed mb-8 max-w-md">
-              Nutricca brings nutrition tracking, sleep analysis, hydration goals, 
-              and habit streaks into one intelligent dashboard. Track meals, log workouts, 
-              monitor weight progress, and build lasting healthy routines — all in one place.
+            <p className="t-size5 text-slate-500 leading-relaxed mb-8 max-w-md font-medium">
+              {t("landing.hero.description")}
             </p>
             <div className="flex flex-wrap gap-3">
-              <button onClick={()=> navigate('/onboarding')} className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-colors shadow-lg shadow-green-600/20">
-                Start for Free
+              <button
+                onClick={() => navigate("/onboarding")}
+                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold t-size3 px-6 py-3 rounded-xl transition-colors shadow-lg shadow-green-600/20"
+              >
+                {t("landing.hero.startFree")}
                 <ArrowRight size={16} />
               </button>
-              <button onClick={()=> navigate('/login')} className="inline-flex items-center gap-2 text-slate-900 font-semibold text-sm px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-all">
-                Sign In
+              <button
+                onClick={() => navigate("/login")}
+                className="inline-flex items-center gap-2 text-slate-900 font-semibold t-size3 px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-all"
+              >
+                {t("nav.signIn")}
                 <ChevronRight size={16} className="text-slate-500" />
               </button>
             </div>
@@ -422,24 +446,26 @@ export const LandingPage = () => {
             <div className="flex items-center gap-3 mt-8">
               <div className="flex -space-x-2">
                 {[
-                  'photo-1494790108377-be9c29b29330',
-                  'photo-1507003211169-0a1dd7228f2d',
-                  'photo-1573497019940-1c28c88b4f3e',
+                  "photo-1494790108377-be9c29b29330",
+                  "photo-1507003211169-0a1dd7228f2d",
+                  "photo-1573497019940-1c28c88b4f3e",
                 ].map((id) => (
                   <img
                     key={id}
                     src={`https://images.unsplash.com/${id}?w=40&h=40&fit=crop&auto=format`}
-                    alt="user"
+                    alt={t("landing.userAvatarAlt")}
                     className="w-8 h-8 rounded-full border-2 border-white object-cover bg-slate-100"
                   />
                 ))}
               </div>
               <div>
-                <div className="flex text-amber-400 text-xs">{'★★★★★'}</div>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Loved by{' '}
-                  <span className="font-semibold text-slate-900">12,000+</span>{' '}
-                  users
+                <div className="flex text-amber-400 t-size2 font-medium">
+                  {"★★★★★"}
+                </div>
+                <p className="t-size2 text-slate-500 mt-0.5 font-medium">
+                  {t("landing.hero.lovedBy")}{" "}
+                  <span className="font-semibold text-slate-900">12,000+</span>{" "}
+                  {t("landing.hero.users")}
                 </p>
               </div>
             </div>
@@ -460,15 +486,14 @@ export const LandingPage = () => {
       <section id="features" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-semibold uppercase tracking-widest text-green-600 mb-3">
-              Features
+            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+              {t("landing.features.eyebrow")}
             </p>
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              Everything you need in one place.
+            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+              {t("landing.features.title")}
             </h2>
-            <p className="mt-3 text-slate-500 text-base max-w-xl mx-auto">
-              Purpose-built health tracking tools that work together — nutrition, 
-              habits, sleep, and progress in one coherent dashboard.
+            <p className="mt-3 text-slate-500 t-size4 max-w-xl mx-auto font-medium">
+              {t("landing.features.description")}
             </p>
           </div>
 
@@ -480,7 +505,7 @@ export const LandingPage = () => {
                 <div
                   key={i}
                   className={`group bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ${
-                    f.size === 'col-span-2' ? 'md:col-span-2' : ''
+                    f.size === "col-span-2" ? "md:col-span-2" : ""
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -490,20 +515,20 @@ export const LandingPage = () => {
                     >
                       <Icon size={18} style={{ color: f.color }} />
                     </div>
-                    {f.tag && (
+                    {f.tagKey && (
                       <span
-                        className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                        className="t-size2 font-semibold px-2.5 py-1 rounded-full"
                         style={{ background: f.bg, color: f.color }}
                       >
-                        {f.tag}
+                        {t(`landing.features.items.${f.tagKey}`)}
                       </span>
                     )}
                   </div>
-                  <h3 className="text-base font-semibold text-slate-900 mb-2">
-                    {f.title}
+                  <h3 className="t-size4 font-semibold text-slate-900 mb-2">
+                    {t(`landing.features.items.${f.key}.title`)}
                   </h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">
-                    {f.desc}
+                  <p className="t-size3 text-slate-500 leading-relaxed font-medium">
+                    {t(`landing.features.items.${f.key}.description`)}
                   </p>
                 </div>
               );
@@ -516,41 +541,38 @@ export const LandingPage = () => {
       <section id="how-it-works" className="py-20 px-6 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-semibold uppercase tracking-widest text-green-600 mb-3">
-              How It Works
+            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+              {t("landing.howItWorks.eyebrow")}
             </p>
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              Up and running in minutes.
+            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+              {t("landing.howItWorks.title")}
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                step: '01',
-                title: 'Set your profile',
-                desc: 'Tell Nutricca your basic info — age, weight, height, and activity level. We calculate your BMI, calorie targets, and personalize your health dashboard instantly.',
+                step: "01",
+                key: "profile",
               },
               {
-                step: '02',
-                title: 'Track daily habits',
-                desc: 'Log meals with AI recommendations, record sleep times, add water glasses, and track workouts. Weekly run and exercise trackers help you stay consistent.',
+                step: "02",
+                key: "habits",
               },
               {
-                step: '03',
-                title: 'Review & improve',
-                desc: "Weekly insights surface patterns in your nutrition, weight trends, and habit consistency. Small adjustments compound into lasting health transformation.",
+                step: "03",
+                key: "improve",
               },
             ].map((item) => (
               <div key={item.step} className="flex flex-col gap-4">
-                <span className="text-5xl font-extrabold text-slate-200 leading-none">
+                <span className="t-size10 font-extrabold text-slate-200 leading-none">
                   {item.step}
                 </span>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {item.title}
+                <h3 className="t-size5 font-semibold text-slate-900">
+                  {t(`landing.howItWorks.steps.${item.key}.title`)}
                 </h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {item.desc}
+                <p className="t-size3 text-slate-500 leading-relaxed font-medium">
+                  {t(`landing.howItWorks.steps.${item.key}.description`)}
                 </p>
               </div>
             ))}
@@ -562,18 +584,18 @@ export const LandingPage = () => {
       <section id="testimonials" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-semibold uppercase tracking-widest text-green-600 mb-3">
-              Testimonials
+            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+              {t("landing.testimonials.eyebrow")}
             </p>
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              Real people, real results.
+            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+              {t("landing.testimonials.title")}
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
+            {testimonials.map((testimonial) => (
               <div
-                key={t.name}
+                key={testimonial.name}
                 className="bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-lg transition-shadow"
               >
                 {/* stars */}
@@ -586,20 +608,24 @@ export const LandingPage = () => {
                     />
                   ))}
                 </div>
-                <p className="text-sm text-slate-600 leading-relaxed mb-6 italic">
-                  &ldquo;{t.quote}&rdquo;
+                <p className="t-size3 text-slate-600 leading-relaxed mb-6 italic font-medium">
+                  &ldquo;
+                  {t(`landing.testimonials.items.${testimonial.key}.quote`)}
+                  &rdquo;
                 </p>
                 <div className="flex items-center gap-3">
                   <img
-                    src={t.avatar}
-                    alt={t.name}
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
                     className="w-10 h-10 rounded-full object-cover bg-slate-100"
                   />
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">
-                      {t.name}
+                    <p className="t-size3 font-semibold text-slate-900">
+                      {testimonial.name}
                     </p>
-                    <p className="text-xs text-slate-400">{t.role}</p>
+                    <p className="t-size2 text-slate-400 font-medium">
+                      {t(`landing.testimonials.items.${testimonial.key}.role`)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -617,28 +643,33 @@ export const LandingPage = () => {
               className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage:
-                  'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)',
-                backgroundSize: '60px 60px',
+                  "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)",
+                backgroundSize: "60px 60px",
               }}
             />
             <div className="relative">
-              <p className="text-green-100 text-sm font-semibold uppercase tracking-widest mb-4">
-                Start today — it's free
+              <p className="text-green-100 t-size3 font-semibold uppercase tracking-widest mb-4">
+                {t("landing.cta.eyebrow")}
               </p>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-                Ready to build better habits?
+              <h2 className="t-size10 font-extrabold text-white tracking-tight mb-4">
+                {t("landing.cta.title")}
               </h2>
-              <p className="text-green-100 text-base max-w-md mx-auto mb-8">
-                Join thousands of people who made Nutricca their daily health 
-                companion. Track nutrition, habits, sleep, and progress — all free.
+              <p className="text-green-100 t-size4 max-w-md mx-auto mb-8 font-medium">
+                {t("landing.cta.description")}
               </p>
               <div className="flex flex-wrap justify-center gap-3 mb-8">
-                <button onClick={()=> navigate('/onboarding')} className="inline-flex items-center gap-2 bg-white text-green-700 font-semibold text-sm px-6 py-3 rounded-xl hover:bg-green-50 transition-colors shadow-md">
-                  Start for Free
+                <button
+                  onClick={() => navigate("/onboarding")}
+                  className="inline-flex items-center gap-2 bg-white text-green-700 font-semibold t-size3 px-6 py-3 rounded-xl hover:bg-green-50 transition-colors shadow-md"
+                >
+                  {t("landing.hero.startFree")}
                   <ArrowRight size={16} />
                 </button>
-                <button onClick={()=> navigate('/login')} className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white/10 transition-colors">
-                  Sign In
+                <button
+                  onClick={() => navigate("/login")}
+                  className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold t-size3 px-6 py-3 rounded-xl hover:bg-white/10 transition-colors"
+                >
+                  {t("nav.signIn")}
                 </button>
               </div>
             </div>
@@ -651,18 +682,18 @@ export const LandingPage = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             {/* Changed Icon to public/favicon.svg */}
-            <img 
-              src="/favicon.svg" 
-              alt="Nutricca Logo" 
-              className="w-7 h-7 object-contain" 
+            <img
+              src="/favicon.svg"
+              alt={t("landing.logoAlt")}
+              className="w-7 h-7 object-contain"
             />
-            <span className="text-sm font-bold text-slate-900">Nutricca</span>
+            <span className="t-size3 font-bold text-slate-900">Nutricca</span>
           </div>
-          <p className="text-xs text-slate-400">
-            &copy; {new Date().getFullYear()} Nutricca - Health Tracker Application. All rights reserved.
+          <p className="t-size2 text-slate-400 font-medium">
+            {t("landing.footer", { year: new Date().getFullYear() })}
           </p>
         </div>
       </footer>
     </div>
-  );    
+  );
 };

@@ -1,38 +1,60 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { basicIdentityApi } from '../services/api.js';
-import { OnboardingLayout } from '../components/ui/OnboardingLayout';
-import { FormField, Input, Select, ErrorAlert, FormActions } from '../components/ui/FormComponents';
-import { showLoading, showSuccess, showError, closeSwal } from '../utils/swal';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { basicIdentityApi } from "../services/api.js";
+import { OnboardingLayout } from "../components/ui/OnboardingLayout";
+import {
+  FormField,
+  Input,
+  Select,
+  ErrorAlert,
+  FormActions,
+} from "../components/ui/FormComponents";
+import {
+  showLoading,
+  showSuccess,
+  showError,
+  closeFeedback,
+} from "../shared/ui/feedback";
+import { useLocale } from "../i18n/locale-context";
 
 export const BasicIdentity = () => {
   const navigate = useNavigate();
   const { completeOnboardingStep } = useAuth();
+  const { t } = useLocale();
 
   const [formData, setFormData] = useState({
-    age: '', gender: 'Male', weight: '', height: '', activityLevel: 'Lightly Active',
+    age: "",
+    gender: "Male",
+    weight: "",
+    height: "",
+    activityLevel: "Lightly Active",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     if (!formData.age || !formData.weight || !formData.height) {
-      setError('All fields are required'); return;
+      setError(t("onboarding.basicIdentity.validation.required"));
+      return;
     }
     if (formData.age < 18 || formData.age > 120) {
-      setError('Age must be between 18-120 years'); return;
+      setError(t("onboarding.basicIdentity.validation.age"));
+      return;
     }
     setLoading(true);
-    showLoading('Saving...', 'Storing your basic information.');
+    showLoading(
+      t("onboarding.basicIdentity.saving"),
+      t("onboarding.basicIdentity.savingDescription"),
+    );
     try {
       const payload = {
         ...formData,
@@ -43,60 +65,105 @@ export const BasicIdentity = () => {
       };
       await basicIdentityApi(payload);
       completeOnboardingStep(payload);
-      closeSwal();
-      await showSuccess('Saved!', 'Basic identity recorded. Moving to lifestyle.');
-      navigate('/onboarding/lifestyle');
+      closeFeedback();
+      await showSuccess(
+        t("onboarding.basicIdentity.saved"),
+        t("onboarding.basicIdentity.savedDescription"),
+      );
+      navigate("/onboarding/lifestyle");
     } catch (err) {
-      closeSwal();
-      const msg = err?.response?.data?.message || err.message || 'Failed to save data';
+      closeFeedback();
+      const msg =
+        err?.response?.data?.message ||
+        err.message ||
+        t("onboarding.basicIdentity.saveFailed");
       setError(msg);
-      showError('Failed to Save', msg);
+      showError(t("onboarding.basicIdentity.saveFailedTitle"), msg);
     } finally {
       setLoading(false);
     }
   };
 
-  const activityLevels = [
-    { value: 'Sedentary', label: 'Sedentary (Little/No activity)' },
-    { value: 'Lightly Active', label: 'Lightly Active (Light)' },
-    { value: 'Moderately Active', label: 'Moderately Active (Moderate)' },
-    { value: 'Very Active', label: 'Very Active (Active)' },
-    { value: 'Extra Active', label: 'Extra Active (Very active)' },
-  ];
+  const activityLevels = ["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extra Active"];
 
   return (
     <OnboardingLayout currentStep={1}>
       <div className="mb-8 md:mb-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">Let's get to know you.</h1>
-        <p className="text-base text-slate-500">We need some basic biometric information to personalize your health dashboard and daily targets.</p>
+        <h1 className="t-size9 font-extrabold tracking-tight text-slate-900 mb-3">
+          {t("onboarding.basicIdentity.heading")}
+        </h1>
+        <p className="t-size4 text-slate-500 font-medium">
+          {t("onboarding.basicIdentity.introduction")}
+        </p>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label="Age" required>
-            <Input type="number" name="age" min="18" max="120" value={formData.age} onChange={handleChange} placeholder="e.g. 24" />
+          <FormField label={t("onboarding.basicIdentity.fields.age")} required>
+            <Input
+              type="number"
+              name="age"
+              min="18"
+              max="120"
+              value={formData.age}
+              onChange={handleChange}
+              placeholder={t("onboarding.basicIdentity.placeholders.age")}
+            />
           </FormField>
-          <FormField label="Gender" required>
-            <Select name="gender" value={formData.gender} onChange={handleChange}>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+          <FormField label={t("onboarding.basicIdentity.fields.gender")} required>
+            <Select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+            >
+              <option value="Male">{t("onboarding.basicIdentity.male")}</option>
+              <option value="Female">{t("onboarding.basicIdentity.female")}</option>
             </Select>
           </FormField>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label="Weight (kg)" required>
-            <Input type="number" name="weight" step="0.1" min="30" max="300" value={formData.weight} onChange={handleChange} placeholder="e.g. 68" />
+          <FormField label={t("onboarding.basicIdentity.fields.weight")} required>
+            <Input
+              type="number"
+              name="weight"
+              step="0.1"
+              min="30"
+              max="300"
+              value={formData.weight}
+              onChange={handleChange}
+              placeholder={t("onboarding.basicIdentity.placeholders.weight")}
+            />
           </FormField>
-          <FormField label="Height (cm)" required>
-            <Input type="number" name="height" min="100" max="250" value={formData.height} onChange={handleChange} placeholder="e.g. 170" />
+          <FormField label={t("onboarding.basicIdentity.fields.height")} required>
+            <Input
+              type="number"
+              name="height"
+              min="100"
+              max="250"
+              value={formData.height}
+              onChange={handleChange}
+              placeholder={t("onboarding.basicIdentity.placeholders.height")}
+            />
           </FormField>
         </div>
-        <FormField label="Daily Physical Activity Level" required>
-          <Select name="activityLevel" value={formData.activityLevel} onChange={handleChange}>
-            {activityLevels.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
+        <FormField label={t("onboarding.basicIdentity.fields.activityLevel")} required>
+          <Select
+            name="activityLevel"
+            value={formData.activityLevel}
+            onChange={handleChange}
+          >
+            {activityLevels.map((level) => (
+              <option key={level} value={level}>
+                {t(`onboarding.basicIdentity.activityLevels.${level}`)}
+              </option>
+            ))}
           </Select>
         </FormField>
         <ErrorAlert message={error} />
-        <FormActions onBack={() => navigate('/onboarding')} submitLabel="Continue to Lifestyle" loading={loading} />
+        <FormActions
+          onBack={() => navigate("/onboarding")}
+          submitLabel={t("onboarding.basicIdentity.continue")}
+          loading={loading}
+        />
       </form>
     </OnboardingLayout>
   );

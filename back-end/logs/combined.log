@@ -387,3 +387,183 @@
 {"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 10:03:55"}
 {"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 10:03:55"}
 {"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 10:03:55"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 11:12:57"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 11:12:57"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 11:13:27"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 11:13:37"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 11:13:52"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 16:21:19"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:39:25"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:39:25"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:39:25"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:40:58"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:40:58"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:41:12"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:15"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:15"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:21"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:21"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:58"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:42:58"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288621710 - GET - ::1","timestamp":"2026-07-17 18:43:41"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288621709 - GET - ::1","timestamp":"2026-07-17 18:43:41"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:43:44"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:43:44"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:43:44"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:43:44"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288677185 - GET - ::1","timestamp":"2026-07-17 18:44:37"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288677184 - GET - ::1","timestamp":"2026-07-17 18:44:37"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:44:40"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:44:40"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:44:40"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:44:40"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288681251 - GET - ::1","timestamp":"2026-07-17 18:44:41"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288681251 - GET - ::1","timestamp":"2026-07-17 18:44:41"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:44:44"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:44:44"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:44:44"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:44:44"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288834194 - GET - ::1","timestamp":"2026-07-17 18:47:14"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288834196 - GET - ::1","timestamp":"2026-07-17 18:47:14"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:47:17"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:47:17"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:47:17"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:47:17"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288932409 - GET - ::1","timestamp":"2026-07-17 18:48:52"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784288932412 - GET - ::1","timestamp":"2026-07-17 18:48:52"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:48:55"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:48:55"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:48:55"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:48:55"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289011789 - GET - ::1","timestamp":"2026-07-17 18:50:11"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289011790 - GET - ::1","timestamp":"2026-07-17 18:50:11"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:50:14"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:50:14"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:50:14"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:50:14"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289321608 - GET - ::1","timestamp":"2026-07-17 18:55:21"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289321608 - GET - ::1","timestamp":"2026-07-17 18:55:21"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:55:24"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:55:24"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:55:25"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:55:25"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289375343 - GET - ::1","timestamp":"2026-07-17 18:56:15"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289375344 - GET - ::1","timestamp":"2026-07-17 18:56:15"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:56:18"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:56:18"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:56:18"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:56:18"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289496392 - GET - ::1","timestamp":"2026-07-17 18:58:16"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289496392 - GET - ::1","timestamp":"2026-07-17 18:58:16"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:58:19"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 18:58:19"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:58:19"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 18:58:19"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289905390 - GET - ::1","timestamp":"2026-07-17 19:05:05"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784289905388 - GET - ::1","timestamp":"2026-07-17 19:05:05"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:05:08"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:05:08"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:05:08"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:05:08"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290124501 - GET - ::1","timestamp":"2026-07-17 19:08:44"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290124502 - GET - ::1","timestamp":"2026-07-17 19:08:44"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:08:47"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:08:47"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:08:55"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:09:06"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290207579 - GET - ::1","timestamp":"2026-07-17 19:10:07"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290207577 - GET - ::1","timestamp":"2026-07-17 19:10:07"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:10"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:10"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:10:32"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:10:32"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290239797 - GET - ::1","timestamp":"2026-07-17 19:10:39"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290239798 - GET - ::1","timestamp":"2026-07-17 19:10:39"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290241657 - GET - ::1","timestamp":"2026-07-17 19:10:41"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290241657 - GET - ::1","timestamp":"2026-07-17 19:10:41"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:42"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:42"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:45"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:45"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:10:45"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:10:45"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:10:48"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290853379 - GET - ::1","timestamp":"2026-07-17 19:20:53"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290853379 - GET - ::1","timestamp":"2026-07-17 19:20:53"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:20:56"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:20:56"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290871630 - GET - ::1","timestamp":"2026-07-17 19:21:11"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290871630 - GET - ::1","timestamp":"2026-07-17 19:21:11"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:21:14"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:21:14"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290963136 - GET - ::1","timestamp":"2026-07-17 19:22:43"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784290963135 - GET - ::1","timestamp":"2026-07-17 19:22:43"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:22:46"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-17 19:22:46"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784291133852 - GET - ::1","timestamp":"2026-07-17 19:25:33"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784291133851 - GET - ::1","timestamp":"2026-07-17 19:25:33"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:41:29"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:41:29"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:43:56"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:44:53"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:44:53"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:45:29"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:45:29"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:48:28"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:48:28"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:50:21"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 19:50:21"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:26:15"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:26:15"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:26:17"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:26:17"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784294780094 - GET - ::1","timestamp":"2026-07-17 20:26:20"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-17?t=1784294780094 - GET - ::1","timestamp":"2026-07-17 20:26:20"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:27:03"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 20:27:03"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 20:28:15"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 20:33:39"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 20:51:48"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 20:58:19"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 20:58:47"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:05:46"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:06:01"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:06:10"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:07:43"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:07:49"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:07:56"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:08:01"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:09:21"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:09:23"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:09:30"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:10:06"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:10:06"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:10:14"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:11:22"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:11:32"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:13:37"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:13:45"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-17 21:15:56"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 21:16:11"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 21:16:11"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 21:16:11"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 21:16:22"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily--zRtpjgwjeXoSWRx/nutrition - GET - ::1","timestamp":"2026-07-17 21:16:22"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-18 10:04:12"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-18 10:04:12"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-18 10:04:12"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-18 10:04:12"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:05:38"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:05:38"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:08:16"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:08:16"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:08:54"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:08:54"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:05"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:05"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:19"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:19"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:30"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:30"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:40"}
+{"level":"warn","message":"ClientError (404): Nutrition logs not found. - /api/v1/nutrition-logs/daily-i_RO2tlYT2SDlhgs/nutrition - GET - ::1","timestamp":"2026-07-18 10:09:40"}
