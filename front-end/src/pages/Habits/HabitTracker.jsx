@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useApp } from '../../hooks/useApp';
+import { useState, useEffect } from "react";
+import { useApp } from "../../hooks/useApp";
 import {
   getRecommendationByDateApi,
   generateDailyPlanApi,
@@ -11,19 +11,22 @@ import {
   postActivityLog,
   deleteActivityLog,
   updateDailyLog,
-} from '../../services/api';
+} from "../../services/api";
+import { todayInAppTimeZone } from "../../shared/lib/date";
+import { useLocale } from "../../i18n/locale-context";
 import {
   MEAL_SLOTS,
   ACTIVITY_TYPES,
   calcSleepDuration,
   formatToHHMM,
-} from './constants';
+} from "./constants";
 
-const today = new Date().toISOString().split('T')[0];
 const GOAL = 8;
 
 export const HabitTracker = () => {
   const { dailyHealth, updateDailyHealth } = useApp();
+  const { t } = useLocale();
+  const today = todayInAppTimeZone();
 
   // Daily log
   const [dailyLogId, setDailyLogId] = useState(null);
@@ -38,7 +41,7 @@ export const HabitTracker = () => {
 
   // Activity
   const [activityList, setActivityList] = useState([]);
-  const [actType, setActType] = useState('Walking');
+  const [actType, setActType] = useState("Walking");
   const [actVal, setActVal] = useState(0);
   const [loadingAct, setLoadingAct] = useState(false);
   const [actError, setActError] = useState(null);
@@ -47,15 +50,15 @@ export const HabitTracker = () => {
   const [waterIntake, setWaterIntake] = useState(0);
   const [savedWaterIntake, setSavedWaterIntake] = useState(0);
   const [savingHydration, setSavingHydration] = useState(false);
-  const [msgHydration, setMsgHydration] = useState('');
+  const [msgHydration, setMsgHydration] = useState("");
 
   // Sleep
-  const [sleepStart, setSleepStart] = useState('');
-  const [sleepEnd, setSleepEnd] = useState('');
-  const [savedSleepStart, setSavedSleepStart] = useState('');
-  const [savedSleepEnd, setSavedSleepEnd] = useState('');
+  const [sleepStart, setSleepStart] = useState("");
+  const [sleepEnd, setSleepEnd] = useState("");
+  const [savedSleepStart, setSavedSleepStart] = useState("");
+  const [savedSleepEnd, setSavedSleepEnd] = useState("");
   const [savingSleep, setSavingSleep] = useState(false);
-  const [msgSleep, setMsgSleep] = useState('');
+  const [msgSleep, setMsgSleep] = useState("");
 
   useEffect(() => {
     const load = async () => {
@@ -70,7 +73,7 @@ export const HabitTracker = () => {
             const res = await getRecommendationByDateApi(today);
             setMealPlan(res?.data?.recommendation?.meal_plan_json || []);
           } catch (e) {
-            console.error('Generate failed:', e);
+            console.error("Generate failed:", e);
           }
         }
       } finally {
@@ -105,13 +108,13 @@ export const HabitTracker = () => {
           }
         }
       } catch (err) {
-        console.error('Failed to load logs:', err);
+        console.error("Failed to load logs:", err);
       }
     };
     load();
-  }, []);
+  }, [today]);
 
-  const meals = dailyHealth.meals || ['', '', ''];
+  const meals = dailyHealth.meals || ["", "", ""];
   const sleepDuration = calcSleepDuration(sleepStart, sleepEnd);
   const totalGlassesToRender = Math.max(GOAL, waterIntake);
   const glasses = Array.from({ length: totalGlassesToRender }, (_, i) => i);
@@ -134,13 +137,13 @@ export const HabitTracker = () => {
       { calories: 0, protein: 0, carbs: 0, fat: 0 },
     );
 
-    const mealSlotsOrder = ['Breakfast', 'Lunch', 'Dinner'];
+    const mealSlotsOrder = ["Breakfast", "Lunch", "Dinner"];
     const formattedMeals = meals
       .map((name, i) => ({ meal_type: mealSlotsOrder[i], food_name: name }))
-      .filter((m) => m.food_name.trim() !== '');
+      .filter((m) => m.food_name.trim() !== "");
 
     if (formattedMeals.length === 0) {
-      alert('Pilih minimal satu makanan.');
+      alert(t("habits.tracker.selectMeal"));
       setSavingNutrition(false);
       return;
     }
@@ -157,7 +160,7 @@ export const HabitTracker = () => {
       const res = await getNutritionLogsByDailyLogId(dailyLogId);
       setNutritionList(res.data?.nutritionLogs || []);
     } catch (err) {
-      alert(err.response?.data?.message || 'Gagal menyimpan nutrisi');
+      alert(err.response?.data?.message || t("habits.tracker.nutritionFailed"));
     } finally {
       setSavingNutrition(false);
     }
@@ -168,7 +171,7 @@ export const HabitTracker = () => {
       await deleteNutritionLog(id);
       setNutritionList((prev) => prev.filter((n) => n.id !== id));
     } catch (err) {
-      console.error('Failed to delete nutrition:', err);
+      console.error("Failed to delete nutrition:", err);
     }
   };
 
@@ -187,7 +190,9 @@ export const HabitTracker = () => {
       setActivityList(res.data?.activityLogs || []);
       setActVal(0);
     } catch (err) {
-      setActError(err.response?.data?.message || 'Gagal menyimpan aktivitas.');
+      setActError(
+        err.response?.data?.message || t("habits.tracker.activityFailed"),
+      );
     } finally {
       setLoadingAct(false);
     }
@@ -198,7 +203,7 @@ export const HabitTracker = () => {
       await deleteActivityLog(id);
       setActivityList((prev) => prev.filter((a) => a.id !== id));
     } catch (err) {
-      console.error('Failed to delete activity:', err);
+      console.error("Failed to delete activity:", err);
     }
   };
 
@@ -206,15 +211,15 @@ export const HabitTracker = () => {
   const handleSaveHydration = async () => {
     if (!dailyLogId) return;
     setSavingHydration(true);
-    setMsgHydration('');
+    setMsgHydration("");
     try {
       await updateDailyLog(dailyLogId, { total_water_ml: waterIntake * 250 });
       setSavedWaterIntake(waterIntake);
-      setMsgHydration('✅ Saved successfully!');
-    } catch (err) {
-      setMsgHydration('❌ Failed to save.');
+      setMsgHydration(t("habits.tracker.saved"));
+    } catch {
+      setMsgHydration(t("habits.tracker.saveFailed"));
     } finally {
-      setTimeout(() => setMsgHydration(''), 3000);
+      setTimeout(() => setMsgHydration(""), 3000);
       setSavingHydration(false);
     }
   };
@@ -223,7 +228,7 @@ export const HabitTracker = () => {
   const handleSaveSleep = async () => {
     if (!dailyLogId) return;
     setSavingSleep(true);
-    setMsgSleep('');
+    setMsgSleep("");
     try {
       await updateDailyLog(dailyLogId, {
         sleep_start_time: sleepStart,
@@ -231,23 +236,26 @@ export const HabitTracker = () => {
       });
       setSavedSleepStart(sleepStart);
       setSavedSleepEnd(sleepEnd);
-      setMsgSleep('✅ Saved successfully!');
-    } catch (err) {
-      setMsgSleep('❌ Failed to save.');
+      setMsgSleep(t("habits.tracker.saved"));
+    } catch {
+      setMsgSleep(t("habits.tracker.saveFailed"));
     } finally {
-      setTimeout(() => setMsgSleep(''), 3000);
+      setTimeout(() => setMsgSleep(""), 3000);
       setSavingSleep(false);
     }
   };
 
   const summaryMetrics = [
     {
-      label: 'Hydration',
+      label: t("habits.tracker.hydration"),
       value: Math.min(100, Math.round((waterIntake / GOAL) * 100)),
     },
-    { label: 'Activity', value: activityList.length > 0 ? 100 : 0 },
     {
-      label: 'Nutrition',
+      label: t("habits.tracker.activity"),
+      value: activityList.length > 0 ? 100 : 0,
+    },
+    {
+      label: t("habits.tracker.nutrition"),
       value:
         meals.filter(Boolean).length > 0
           ? Math.round((meals.filter(Boolean).length / 3) * 100)
@@ -269,7 +277,7 @@ export const HabitTracker = () => {
     { calories: 0, protein: 0, carbs: 0, fat: 0 },
   );
 
-  const isDistance = ['Walking', 'Running', 'Cycling', 'Swimming'].includes(
+  const isDistance = ["Walking", "Running", "Cycling", "Swimming"].includes(
     actType,
   );
 
@@ -278,27 +286,29 @@ export const HabitTracker = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
         {/* ─── Nutrition Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-            Nutrition Log
+          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+            {t("habits.tracker.nutritionLog")}
           </div>
           <div className="flex flex-col gap-3">
-            {MEAL_SLOTS.map(({ key, label, placeholder }, i) => (
+            {MEAL_SLOTS.map(({ key, placeholder }, i) => (
               <div key={key} className="flex items-start gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
                 <div className="flex-1">
-                  <div className="text-xs text-slate-400 mb-1">{label}</div>
+                  <div className="t-size2 text-slate-400 mb-1 font-medium">
+                    {t(`habits.tracker.mealSlots.${key}`)}
+                  </div>
                   <select
-                    value={meals[i] || ''}
+                    value={meals[i] || ""}
                     onChange={(e) => {
                       const u = [...meals];
                       u[i] = e.target.value;
                       updateDailyHealth({ meals: u });
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer"
+                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
                     disabled={loadingPlan}
                   >
                     <option value="" disabled hidden>
-                      {loadingPlan ? 'Loading...' : placeholder}
+                      {loadingPlan ? t("habits.tracker.loading") : placeholder}
                     </option>
                     {mealPlan.map((m) => (
                       <option key={m.id} value={m.name}>
@@ -313,24 +323,24 @@ export const HabitTracker = () => {
             {totalsPreview.calories > 0 && (
               <div className="bg-green-50 border border-green-200 rounded-xl p-3.5">
                 <div className="flex justify-between border-b border-green-200 pb-2 mb-2.5">
-                  <span className="text-xs font-semibold text-green-700">
-                    Total Calories
+                  <span className="t-size2 font-semibold text-green-700">
+                    {t("habits.tracker.totalCalories")}
                   </span>
-                  <span className="text-base font-bold text-green-600">
+                  <span className="t-size4 font-bold text-green-600">
                     {totalsPreview.calories} kcal
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center">
                   {[
-                    ['Protein', totalsPreview.protein + 'g'],
-                    ['Carbs', totalsPreview.carbs + 'g'],
-                    ['Fat', totalsPreview.fat + 'g'],
+                    ["Protein", totalsPreview.protein + "g"],
+                    ["Carbs", totalsPreview.carbs + "g"],
+                    ["Fat", totalsPreview.fat + "g"],
                   ].map(([l, v]) => (
                     <div key={l}>
-                      <div className="text-xs text-slate-400 font-semibold uppercase">
+                      <div className="t-size2 text-slate-400 font-semibold uppercase">
                         {l}
                       </div>
-                      <div className="text-sm font-bold text-slate-700 mt-0.5">
+                      <div className="t-size3 font-bold text-slate-700 mt-0.5">
                         {v}
                       </div>
                     </div>
@@ -342,22 +352,24 @@ export const HabitTracker = () => {
             <button
               onClick={handleSaveNutrition}
               disabled={savingNutrition || meals.every((m) => !m)}
-              className={`w-full py-2 px-3 rounded-lg text-xs font-semibold text-white transition-colors ${
+              className={`w-full py-2 px-3 rounded-lg t-size2 font-semibold text-white transition-colors ${
                 savingNutrition || meals.every((m) => !m)
-                  ? 'bg-green-300 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+                  ? "bg-green-300 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 cursor-pointer"
               }`}
             >
-              {savingNutrition ? 'Saving...' : 'Save Nutrition'}
+              {savingNutrition
+                ? t("habits.tracker.saving")
+                : t("habits.tracker.saveNutrition")}
             </button>
 
             <div className="border-t border-slate-100 pt-3">
-              <div className="text-xs font-semibold text-slate-400 mb-2">
-                TODAY'S RECORD
+              <div className="t-size2 font-semibold text-slate-400 mb-2">
+                {t("habits.tracker.todayRecord")}
               </div>
               {nutritionList.length === 0 ? (
-                <div className="text-xs text-slate-300 italic">
-                  No meals logged yet.
+                <div className="t-size2 text-slate-300 italic font-medium">
+                  {t("habits.tracker.noMeals")}
                 </div>
               ) : (
                 nutritionList.map((log) => (
@@ -366,29 +378,29 @@ export const HabitTracker = () => {
                     className="bg-slate-50 p-2.5 rounded-md border border-slate-100 mb-2"
                   >
                     <div className="flex justify-between mb-1.5">
-                      <div className="text-xs font-semibold text-slate-700">
-                        Logged Meals
+                      <div className="t-size2 font-semibold text-slate-700">
+                        {t("habits.tracker.loggedMeals")}
                       </div>
                       <button
                         onClick={() => handleDeleteNutrition(log.id)}
-                        className="text-red-500 text-sm leading-none"
+                        className="text-red-500 t-size3 leading-none font-medium"
                       >
                         ×
                       </button>
                     </div>
-                    <div className="text-xs text-slate-500 flex flex-col gap-0.5">
+                    <div className="t-size2 text-slate-500 flex flex-col gap-0.5 font-medium">
                       {log.meals?.map((m, idx) => (
                         <span key={idx}>
                           • {m.meal_type}: {m.food_name}
                         </span>
                       ))}
                     </div>
-                    <div className="text-xs text-green-600 font-semibold mt-1.5 flex gap-2">
+                    <div className="t-size2 text-green-600 font-semibold mt-1.5 flex gap-2">
                       <span>🔥 {log.total_calories} kcal</span>
-                      <span className="text-slate-400">
+                      <span className="t-size2 font-medium text-slate-400">
                         | P: {log.total_protein_g}g
                       </span>
-                      <span className="text-slate-400">
+                      <span className="t-size2 font-medium text-slate-400">
                         | F: {log.total_fat_g}g
                       </span>
                     </div>
@@ -401,15 +413,15 @@ export const HabitTracker = () => {
 
         {/* ─── Hydration Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-            Hydration Tracker
+          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+            {t("habits.tracker.hydrationTracker")}
           </div>
           <div className="text-center mb-4">
-            <span className="text-5xl font-bold text-green-600 leading-none">
+            <span className="t-size10 font-bold text-green-600 leading-none">
               {waterIntake}
             </span>
-            <span className="text-sm text-slate-400 ml-1.5">
-              of {GOAL} glasses today
+            <span className="t-size3 text-slate-400 ml-1.5 font-medium">
+              {t("habits.tracker.ofGlasses", { goal: GOAL })}
             </span>
           </div>
           <div className="flex flex-wrap gap-2 justify-center mb-3">
@@ -420,12 +432,12 @@ export const HabitTracker = () => {
                 <button
                   key={i}
                   onClick={() => setWaterIntake(filled ? i : i + 1)}
-                  className={`w-[38px] h-[38px] rounded-lg flex items-center justify-center transition-all ${
+                  className={`w-9.5 h-9.5 rounded-lg flex items-center justify-center transition-all ${
                     filled
                       ? isExtra
-                        ? 'bg-green-400 text-white border-0'
-                        : 'bg-green-600 text-white border-0'
-                      : 'bg-transparent border-2 border-green-200 text-green-300'
+                        ? "bg-green-400 text-white border-0"
+                        : "bg-green-600 text-white border-0"
+                      : "bg-transparent border-2 border-green-200 text-green-300"
                   }`}
                 >
                   <svg
@@ -442,14 +454,14 @@ export const HabitTracker = () => {
           </div>
           <button
             onClick={() => setWaterIntake(waterIntake + 1)}
-            className="w-full py-2 rounded-lg bg-green-50 border border-green-200 text-green-600 text-sm font-semibold mb-2.5 hover:bg-green-100 transition-colors"
+            className="w-full py-2 rounded-lg bg-green-50 border border-green-200 text-green-600 t-size3 font-semibold mb-2.5 hover:bg-green-100 transition-colors"
           >
-            💧 + 1 glass
+            {t("habits.tracker.addGlass")}
           </button>
           {msgHydration && (
             <div
-              className={`text-xs text-center mb-2 ${
-                msgHydration.includes('✅') ? 'text-green-600' : 'text-red-600'
+              className={`t-size2 font-medium text-center mb-2 ${
+                msgHydration.includes("✅") ? "text-green-600" : "text-red-600"
               }`}
             >
               {msgHydration}
@@ -458,21 +470,23 @@ export const HabitTracker = () => {
           <button
             onClick={handleSaveHydration}
             disabled={savingHydration}
-            className={`w-full py-2 rounded-lg text-sm font-semibold text-white transition-colors ${
+            className={`w-full py-2 rounded-lg t-size3 font-semibold text-white transition-colors ${
               savingHydration
-                ? 'bg-green-300 cursor-not-allowed'
-                : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+                ? "bg-green-300 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 cursor-pointer"
             }`}
           >
-            {savingHydration ? 'Saving...' : 'Save Hydration'}
+            {savingHydration
+              ? t("habits.tracker.saving")
+              : t("habits.tracker.saveHydration")}
           </button>
           <div className="border-t border-slate-100 pt-3 mt-4">
-            <div className="text-xs font-semibold text-slate-400 mb-2">
-              TODAY'S RECORD
+            <div className="t-size2 font-semibold text-slate-400 mb-2">
+              {t("habits.tracker.todayRecord")}
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 text-xs font-semibold text-slate-700">
-              💧 {savedWaterIntake} Glasses{' '}
-              <span className="font-normal text-slate-400">
+            <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 t-size2 font-semibold text-slate-700">
+              💧 {savedWaterIntake} {t("habits.tracker.glasses")}{" "}
+              <span className="t-size2 font-normal text-slate-400">
                 ({savedWaterIntake * 250} ml)
               </span>
             </div>
@@ -483,18 +497,20 @@ export const HabitTracker = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* ─── Activity Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-            Activity Log
+          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+            {t("habits.tracker.activityLog")}
           </div>
           <div className="flex flex-col gap-3 mb-4">
             <div className="flex items-start gap-2.5">
               <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
               <div className="flex-1">
-                <div className="text-xs text-slate-400 mb-1">Activity type</div>
+                <div className="t-size2 text-slate-400 mb-1 font-medium">
+                  {t("habits.tracker.activityType")}
+                </div>
                 <select
                   value={actType}
                   onChange={(e) => setActType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer"
+                  className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
                 >
                   {ACTIVITY_TYPES.map((t) => (
                     <option key={t} value={t}>
@@ -507,8 +523,10 @@ export const HabitTracker = () => {
             <div className="flex items-start gap-2.5">
               <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
               <div className="flex-1">
-                <div className="text-xs text-slate-400 mb-1">
-                  {isDistance ? 'Distance' : 'Duration'}
+                <div className="t-size2 text-slate-400 mb-1 font-medium">
+                  {isDistance
+                    ? t("habits.tracker.distance")
+                    : t("habits.tracker.duration")}
                 </div>
                 <div className="flex items-center gap-1.5">
                   <input
@@ -517,34 +535,38 @@ export const HabitTracker = () => {
                     step={isDistance ? 0.1 : 1}
                     value={actVal}
                     onChange={(e) => setActVal(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 text-center"
+                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 text-center font-medium"
                   />
-                  <span className="text-xs text-slate-400 shrink-0">
-                    {isDistance ? 'km' : 'min'}
+                  <span className="t-size2 text-slate-400 shrink-0 font-medium">
+                    {isDistance ? "km" : "min"}
                   </span>
                 </div>
               </div>
             </div>
-            {actError && <div className="text-xs text-red-600">{actError}</div>}
+            {actError && (
+              <div className="t-size2 text-red-600 font-medium">{actError}</div>
+            )}
             <button
               onClick={handleAddActivity}
               disabled={loadingAct || actVal <= 0}
-              className={`py-2 px-3 rounded-lg text-xs font-semibold text-white transition-colors ${
+              className={`py-2 px-3 rounded-lg t-size2 font-semibold text-white transition-colors ${
                 actVal > 0
-                  ? 'bg-green-600 hover:bg-green-700 cursor-pointer'
-                  : 'bg-green-300 cursor-not-allowed'
+                  ? "bg-green-600 hover:bg-green-700 cursor-pointer"
+                  : "bg-green-300 cursor-not-allowed"
               }`}
             >
-              {loadingAct ? 'Saving...' : '+ Add Activity'}
+              {loadingAct
+                ? t("habits.tracker.saving")
+                : t("habits.tracker.addActivity")}
             </button>
           </div>
           <div className="border-t border-slate-100 pt-3">
-            <div className="text-xs font-semibold text-slate-400 mb-2">
-              TODAY'S RECORD
+            <div className="t-size2 font-semibold text-slate-400 mb-2">
+              {t("habits.tracker.todayRecord")}
             </div>
             {activityList.length === 0 ? (
-              <div className="text-xs text-slate-300 italic">
-                No activities logged yet.
+              <div className="t-size2 text-slate-300 italic font-medium">
+                {t("habits.tracker.noActivities")}
               </div>
             ) : (
               activityList.map((log) => (
@@ -553,20 +575,20 @@ export const HabitTracker = () => {
                   className="flex items-center justify-between bg-slate-50 p-2 rounded-md border border-slate-100 mb-2"
                 >
                   <div>
-                    <div className="text-xs font-semibold text-slate-700">
-                      {log.activity_name}{' '}
-                      <span className="font-normal text-slate-400">
-                        ({log.input_value}{' '}
-                        {log.input_type === 'distance' ? 'km' : 'min'})
+                    <div className="t-size2 font-semibold text-slate-700">
+                      {log.activity_name}{" "}
+                      <span className="t-size2 font-normal text-slate-400">
+                        ({log.input_value}{" "}
+                        {log.input_type === "distance" ? "km" : "min"})
                       </span>
                     </div>
-                    <div className="text-xs text-green-600 font-semibold mt-0.5">
+                    <div className="t-size2 text-green-600 font-semibold mt-0.5">
                       🔥 {log.calories_burned} kcal
                     </div>
                   </div>
                   <button
                     onClick={() => handleDeleteActivity(log.id)}
-                    className="text-red-500 text-sm leading-none p-1"
+                    className="text-red-500 t-size3 leading-none p-1 font-medium"
                   >
                     ×
                   </button>
@@ -578,29 +600,29 @@ export const HabitTracker = () => {
 
         {/* ─── Sleep Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-            Sleep Log
+          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+            {t("habits.tracker.sleepLog")}
           </div>
           <div className="flex flex-col gap-3">
             {[
-              { key: 'sleepStart', label: 'Bedtime', icon: '🌙' },
-              { key: 'sleepEnd', label: 'Wake up', icon: '☀️' },
-            ].map(({ key, label, icon }) => (
+              { key: "sleepStart", labelKey: "bedtime", icon: "🌙" },
+              { key: "sleepEnd", labelKey: "wakeUp", icon: "☀️" },
+            ].map(({ key, labelKey, icon }) => (
               <div key={key} className="flex items-start gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
                 <div className="flex-1">
-                  <div className="text-xs text-slate-400 mb-1">
-                    {icon} {label}
+                  <div className="t-size2 text-slate-400 mb-1 font-medium">
+                    {icon} {t(`habits.tracker.${labelKey}`)}
                   </div>
                   <input
                     type="time"
-                    value={key === 'sleepStart' ? sleepStart : sleepEnd}
+                    value={key === "sleepStart" ? sleepStart : sleepEnd}
                     onChange={(e) =>
-                      key === 'sleepStart'
+                      key === "sleepStart"
                         ? setSleepStart(e.target.value)
                         : setSleepEnd(e.target.value)
                     }
-                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200"
+                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 font-medium"
                   />
                 </div>
               </div>
@@ -608,18 +630,18 @@ export const HabitTracker = () => {
           </div>
           {sleepDuration && (
             <div className="mt-3.5 flex items-center justify-between bg-green-50 rounded-lg py-2.5 px-3.5">
-              <span className="text-xs font-medium text-green-700">
-                Total sleep
+              <span className="t-size2 font-medium text-green-700">
+                {t("habits.tracker.totalSleep")}
               </span>
-              <span className="text-sm font-bold text-green-600">
+              <span className="t-size3 font-bold text-green-600">
                 {sleepDuration}
               </span>
             </div>
           )}
           {msgSleep && (
             <div
-              className={`text-xs text-center mt-3 ${
-                msgSleep.includes('✅') ? 'text-green-600' : 'text-red-600'
+              className={`t-size2 font-medium text-center mt-3 ${
+                msgSleep.includes("✅") ? "text-green-600" : "text-red-600"
               }`}
             >
               {msgSleep}
@@ -628,23 +650,25 @@ export const HabitTracker = () => {
           <button
             onClick={handleSaveSleep}
             disabled={savingSleep}
-            className={`w-full py-2 mt-3 rounded-lg text-sm font-semibold text-white transition-colors ${
+            className={`w-full py-2 mt-3 rounded-lg t-size3 font-semibold text-white transition-colors ${
               savingSleep
-                ? 'bg-green-300 cursor-not-allowed'
-                : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+                ? "bg-green-300 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 cursor-pointer"
             }`}
           >
-            {savingSleep ? 'Saving...' : 'Save Sleep Log'}
+            {savingSleep
+              ? t("habits.tracker.saving")
+              : t("habits.tracker.saveSleep")}
           </button>
           {(savedSleepStart || savedSleepEnd) && (
             <div className="border-t border-slate-100 pt-3 mt-4">
-              <div className="text-xs font-semibold text-slate-400 mb-2">
-                TODAY'S RECORD
+              <div className="t-size2 font-semibold text-slate-400 mb-2">
+                {t("habits.tracker.todayRecord")}
               </div>
               <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 flex items-center gap-2">
-                <span className="text-base">🛌</span>
-                <div className="text-xs font-semibold text-slate-700">
-                  {savedSleepStart || '--:--'} - {savedSleepEnd || '--:--'}
+                <span className="t-size4 font-medium">🛌</span>
+                <div className="t-size2 font-semibold text-slate-700">
+                  {savedSleepStart || "--:--"} - {savedSleepEnd || "--:--"}
                 </div>
               </div>
             </div>
@@ -653,13 +677,13 @@ export const HabitTracker = () => {
 
         {/* ─── Summary Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="text-sm font-bold text-slate-900 mb-4 tracking-tight">
-            Today's Summary
+          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
+            {t("habits.tracker.summary")}
           </div>
           <div className="flex flex-col gap-3">
             {summaryMetrics.map(({ label, value }) => (
               <div key={label} className="flex items-center gap-2.5">
-                <div className="text-xs text-slate-700 w-[74px] shrink-0">
+                <div className="t-size2 text-slate-700 w-18.5 shrink-0 font-medium">
                   {label}
                 </div>
                 <div className="flex-1 h-1.5 rounded bg-slate-100 overflow-hidden">
@@ -668,7 +692,7 @@ export const HabitTracker = () => {
                     style={{ width: `${value}%` }}
                   />
                 </div>
-                <div className="text-xs text-slate-400 w-[34px] text-right shrink-0">
+                <div className="t-size2 text-slate-400 w-8.5 text-right shrink-0 font-medium">
                   {value}%
                 </div>
               </div>

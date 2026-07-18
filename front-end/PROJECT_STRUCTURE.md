@@ -14,11 +14,11 @@ front-end/
 │   │
 │   ├── pages/
 │   │   ├── Dashboard.jsx            # Halaman dashboard utama
-│   │   ├── Kebiasaan.jsx           # Halaman habit tracking
-│   │   ├── Rekomendasi.jsx         # Halaman AI recommendations
+│   │   ├── Habits.jsx               # Habit tracking page
+│   │   ├── Recommendations.jsx      # AI recommendations page
 │   │   ├── Progress.jsx             # Halaman progress & achievements
-│   │   ├── Profil.jsx              # Halaman user profile
-│   │   └── Notifikasi.jsx          # Halaman notifications
+│   │   ├── Profile.jsx              # User profile page
+│   │   └── Notifications.jsx        # Notifications page
 │   │
 │   ├── context/
 │   │   └── AppContext.jsx           # Global state management dengan React Context

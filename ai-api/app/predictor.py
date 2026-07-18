@@ -90,7 +90,7 @@ def extract_first_image(
         return None
 
     urls = re.findall(
-        r'https://[^\s,"\)]+',
+        r'https://[^"\s\)]+',
         str(image_text)
     )
 

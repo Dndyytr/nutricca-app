@@ -1,0 +1,574 @@
+export const translations = {
+  en: {
+    common: {
+      language: "Language",
+      switchLanguage: "Switch language to {{language}}",
+      english: "English",
+      indonesian: "Indonesia",
+      logout: "Logout",
+      user: "User",
+      step: "Step {{current}} of {{total}}",
+      back: "Back",
+      saving: "Saving...",
+      continue: "Continue",
+      loadingPage: "Loading page...",
+      confirmTitle: "Are you sure?",
+      confirm: "Confirm",
+      cancel: "Cancel",
+    },
+    brand: { tagline: "Health Tracker App." },
+    nav: {
+      dashboard: "Dashboard",
+      habits: "Habits",
+      plan: "AI Plan",
+      progress: "Progress",
+      profile: "Profile",
+      features: "Features",
+      howItWorks: "How it Works",
+      testimonials: "Testimonials",
+      signIn: "Sign In",
+      getStarted: "Get Started",
+    },
+    topbar: {
+      dashboard: { title: "Dashboard", subtitle: "Your daily health overview" },
+      habits: { title: "Habit Tracker", subtitle: "Log your daily habits" },
+      recommendations: {
+        title: "AI Recommendation",
+        subtitle: "Personalized plan for today",
+      },
+      progress: { title: "My Progress", subtitle: "Track your health journey" },
+      profile: { title: "My Profile", subtitle: "Account & settings" },
+    },
+    auth: {
+      login: {
+        validation: "Email and password are required",
+        loading: "Signing in...",
+        verifying: "Verifying your credentials.",
+        failed: "Login failed",
+        failedTitle: "Login Failed",
+        platform: "Healthy Lifestyle Platform",
+        welcome: "Welcome Back.",
+        description:
+          "Track your nutrition, monitor your progress, and build healthier habits every day with personalized recommendations.",
+        footer: "© 2026 Nutricca. Helping you build a healthier future.",
+        title: "Sign in",
+        subtitle: "Welcome back! Please enter your account details.",
+        email: "Email Address",
+        password: "Password",
+        submit: "Sign In",
+        noAccount: "Don't have an account?",
+        createAccount: "Create Account",
+        logoAlt: "Nutricca logo",
+      },
+      register: {
+        validation: {
+          fullName: "Full name is required",
+          email: "Email is required",
+          invalidEmail: "Invalid email address",
+          passwordLength: "Password must be at least 6 characters",
+          passwordMatch: "Passwords do not match",
+        },
+        loading: "Creating account...",
+        setup: "Setting up your health profile.",
+        success: "Account Created!",
+        successDescription: "Welcome to Nutricca. Let's set up your profile.",
+        failed: "Registration failed",
+        failedTitle: "Registration Failed",
+        platform: "Healthy Lifestyle Platform",
+        title: "Join Nutricca.",
+        description:
+          "Start your journey towards a healthier lifestyle with personalized nutrition insights, daily tracking, and meaningful progress.",
+        footer: "© 2026 Nutricca. Helping you build a healthier future.",
+        formTitle: "Create account",
+        subtitle: "Create your account to start your health journey.",
+        submit: "Create Account",
+        hasAccount: "Already have an account?",
+        signIn: "Sign in",
+        logoAlt: "Nutricca logo",
+        fields: {
+          fullName: { label: "Full Name", placeholder: "John Doe" },
+          email: { label: "Email Address", placeholder: "you@example.com" },
+          password: { label: "Password", placeholder: "Minimum 6 characters" },
+          confirmPassword: {
+            label: "Confirm Password",
+            placeholder: "Re-enter your password",
+          },
+        },
+      },
+    },
+    dashboard: {
+      loading: 'Loading today\'s activities...',
+      banner: { title: 'Your daily plan is ready!', description: 'AI has generated today\'s personalized recommendations', action: 'View plan →' },
+      metrics: { initialWeight: 'Initial weight', currentWeight: 'Current weight', waterIntake: 'Water intake today', firstRecorded: 'First recorded weight', noWeight: 'No weight logged yet', fromInitial: '{{value}} kg from initial', target: 'Target: {{value}} kg', glasses: 'glasses', dailyGoal: '{{value}} ml · {{percent}}% of daily goal' },
+      habits: { title: 'Today\'s habits', update: 'Update today\'s habits →', tags: { food: 'Food', water: 'Water', sport: 'Sport', sleep: 'Sleep' }, items: { breakfast: { name: 'Breakfast', time: '07:00' }, lunch: { name: 'Lunch', time: '12:00' }, dinner: { name: 'Dinner', time: '19:00' }, water: { name: 'Drink water ({{goal}}L goal)', time: 'All day' }, activity: { name: 'Exercise / Activity', time: 'Any time' }, sleep: { name: 'Log sleep time', time: '22:00' } } },
+      calories: { title: 'Calorie balance', intake: 'Calories in', burned: 'Burned', net: 'Net', burnedSummary: '{{value}} kcal burned' },
+      actions: { habits: 'Update habits', recommendations: 'See today\'s recommendations →' },
+    },
+    habits: {
+      title: 'Habit Tracker', description: 'Complete your daily habits and track your progress.', live: 'Live Tracking', tabs: { habit: 'Habit Tracker', run: 'Weekly Run', exercise: 'Weekly Exercise' },
+      tracker: { nutritionLog: 'Nutrition Log', hydrationTracker: 'Hydration Tracker', activityLog: 'Activity Log', sleepLog: 'Sleep Log', summary: "Today's Summary", totalCalories: 'Total Calories', saveNutrition: 'Save Nutrition', saveHydration: 'Save Hydration', saveSleep: 'Save Sleep Log', saving: 'Saving...', todayRecord: "TODAY'S RECORD", noMeals: 'No meals logged yet.', noActivities: 'No activities logged yet.', loggedMeals: 'Logged Meals', activityType: 'Activity type', distance: 'Distance', duration: 'Duration', addActivity: '+ Add Activity', bedtime: 'Bedtime', wakeUp: 'Wake up', totalSleep: 'Total sleep', hydration: 'Hydration', activity: 'Activity', nutrition: 'Nutrition', ofGlasses: 'of {{goal}} glasses today', addGlass: '💧 + 1 glass', glasses: 'Glasses', saved: '✅ Saved successfully!', saveFailed: '❌ Failed to save.', selectMeal: 'Select at least one meal.', nutritionFailed: 'Failed to save nutrition', activityFailed: 'Failed to save activity.', loading: 'Loading...', mealSlots: { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner' } },
+      weeklyExercise: {
+        level: 'Level:', title: '💪 Weekly Exercise', weeklyProgress: 'Weekly Progress', sessions: '{{done}} / {{total}} sessions', save: 'Save weekly exercise', update: 'Update weekly exercise', saveFailed: 'Failed to save.', sets: '{{reps}} {{unit}} × {{sets}} sets × {{days}} days',
+        units: { reps: 'reps', sec: 'sec', min: 'min', steps: 'steps' },
+        days: { Mon: 'Mon', Tue: 'Tue', Wed: 'Wed', Thu: 'Thu', Fri: 'Fri', Sat: 'Sat', Sun: 'Sun' },
+        levels: { beginner: { name: 'Beginner', label: '🌱 Beginner', description: 'Start light and build consistency. Focus on form over volume.' }, intermediate: { name: 'Intermediate', label: '⚡ Intermediate', description: 'Increase volume and intensity. Push past your comfort zone.' }, advanced: { name: 'Advanced', label: '🔥 Advanced', description: 'Maximum output. Elite volume, short rest, high intensity.' } },
+        sections: { Dips: 'Dips', 'Pull Up': 'Pull Up', 'Push Up': 'Push Up', Core: 'Core', Squat: 'Squat' },
+        exercises: { dips: 'Dips', pu_wide: 'Pull Up — Wide/Chest', pu_norm: 'Pull Up — Normal', pu_close: 'Pull Up — Close', pu_chin: 'Chin Up', push_norm: 'Push Up — Normal', push_dec: 'Push Up — Decline', push_inc: 'Push Up — Incline', push_dia: 'Push Up — Diamond', situp: 'Sit Up', riseup: 'Rise Up', climb: 'Mountain Climbing', plank: 'Plank', sqjump: 'Squat Jump', lunge: 'Lunges' },
+      },
+      weeklyRun: { level: 'Level:', title: '🏃 Weekly Run Target', kilometers: 'km', save: 'Save weekly run', update: 'Update weekly run', saveFailed: 'Failed to save.' },
+      saveBar: { saveChanges: 'Save changes', saveFailed: 'Failed to save.', saved: '✅ Saved!', saving: '⏳ Saving...' },
+    },
+    recommendations: {
+      match: '{{score}}% match', minutes: '{{value}} min', servings: '{{value}} serving', viewRecipe: 'View full recipe →', unknownRecipe: 'Unknown Recipe', balanced: 'Balanced', aiPick: 'AI Pick', mixed: 'Mixed', defaultDescription: 'A nutritious and balanced meal recommended by your AI plan for sustained energy.', recipeUnavailable: 'Recipe details currently unavailable.', defaultStep: 'Follow standard preparations', refreshing: 'Refreshing...', refresh: 'Refresh', title: 'Meal Plan', description: "Today's recommended meals based on your health profile", generating: 'Generating your personalized meal plan...', empty: 'No meal plan available. Try hitting Refresh.',
+      banner: { title: 'Daily recommendations updated', subtitle: 'Personalized for you — {{date}}' },
+      tags: { 'High Fiber': 'High Fiber', 'High Protein': 'High Protein', 'Low Sugar': 'Low Sugar', 'Low Calorie': 'Low Calorie', 'Low Sodium': 'Low Sodium' },
+    },
+    progress: {
+      title: 'Health Progress', description: 'Track your health journey over time', periods: { week: '7 days', month: '30 days', quarter: '3 months' }, currentWeight: 'Current weight', targetWeight: 'Target weight', activeStreak: 'Active streak', days: 'days', fromTarget: '{{value}} kg from target', longest: 'Longest: {{value}} days', logWeight: "Log today's weight", weightPlaceholder: 'e.g. 68.5', saving: 'Saving...', save: 'Save', current: 'Current', target: 'Target', notLogged: 'Not logged yet', weightTrend: 'Weight trend', weightTrendChart: 'Weight trend chart', loading: 'Loading...', noData: 'No data for this period', todayNutrition: "Today's nutrition", nutritionDescription: 'From all meals logged today', calories: 'Calories', protein: 'Protein', carbs: 'Carbs', fat: 'Fat', noMeals: 'No meals logged today.', streakConsistency: 'Streak & consistency', daysInRow: 'Days in a row', totalXp: 'Total XP', longestStreak: 'Longest streak', achievements: 'Achievements', noBadges: 'No badges earned yet.', savingWeight: 'Saving weight...', loggingWeight: 'Logging your weight entry.', weightLogged: 'Weight Logged!', weightSaved: 'Your weight has been saved successfully.', saveFailed: 'Failed to Save', weightSaveFailed: 'Could not log your weight. Please try again.', chartTooltip: '{{day}}<br/><b>{{weight}} kg</b>',
+    },
+    profile: {
+      tabs: { general: 'General Info', health: 'Health', lifestyle: 'Lifestyle', goals: 'Goals', settings: 'Settings' }, saving: 'Saving profile...', updating: 'Updating your information.', updated: 'Profile Updated!', updatedDescription: 'Your changes have been saved.', saveFailed: 'Failed to Save', logoutTitle: 'Logout?', logoutDescription: 'Are you sure you want to sign out of Nutricca?', logoutConfirm: 'Yes, logout', edit: 'Edit Profile', cancel: 'Cancel', save: 'Save', weight: 'Weight', height: 'Height', age: 'Age', targetWeight: 'Target Weight', years: '{{value}} years', points: '{{value}} pts', basicInformation: 'Basic Information', fullName: 'Full Name', email: 'Email', emailImmutable: 'Email cannot be changed', biometricData: 'Biometric Data', gender: 'Gender', male: 'Male', female: 'Female', bodyMeasurements: 'Body Measurements', weightKg: 'Weight (kg)', heightCm: 'Height (cm)', healthInformation: 'Health Information', medicalHistory: 'Medical History', allergies: 'Allergies', bloodPressure: 'Blood Pressure', none: 'None', dietaryPattern: 'Dietary Pattern', mealFrequency: 'Meal Frequency', timesPerDay: '{{value}} times/day', dailyWaterGoal: 'Daily Water Goal', mlPerDay: '{{value}} ml/day', avgSleepHours: 'Avg Sleep Hours', hours: '{{value}} hours', activityLevel: 'Activity Level', healthGoals: 'Health Goals', primaryGoal: 'Primary Goal', gapToTarget: 'Gap to Target', commitment: 'Commitment', workoutsPerWeek: 'Workouts Per Week', days: '{{value}} days', preferredActivities: 'Preferred Activities', account: 'Account', joined: 'Joined', dangerZone: 'Danger Zone',
+    },
+    notifications: { title: 'Notifications', newCount: '{{count}} new notifications', markAllRead: 'Mark all as read', empty: 'No notifications' },
+    recipe: {
+      unknownRecipe: 'Unknown Recipe', balanced: 'Balanced', aiPick: 'AI Pick', mixed: 'Mixed', defaultDescription: 'A nutritious and balanced meal recommended by your AI plan for sustained energy.', defaultRecipeDescription: 'Recipe details are currently generated by AI. Enjoy your healthy meal!', defaultIngredients: { link: 'Follow detailed recipe link or check standard preparations.', seasoning: 'Salt and pepper to taste.', oil: 'Olive oil for cooking.' }, defaultSteps: { prepare: 'Prepare and wash all ingredients.', cook: 'Cook according to standard procedures.', serve: 'Serve warm and enjoy!' }, loading: 'Loading recipe...', notFound: 'Recipe not found.', back: 'Back', backToRecommendations: 'Back to recommendations', match: '{{score}}% match', contains: 'Contains:', description: 'Description', ingredients: 'Ingredients', howToCook: 'How to cook', nutrition: { calories: 'Calories', protein: 'Protein', fat: 'Fat', saturated: 'Saturated Fat', carbs: 'Carbohydrates', fiber: 'Fiber', sugar: 'Sugar', sodium: 'Sodium', cholesterol: 'Cholesterol' },
+    },
+    onboarding: {
+      progress: "Onboarding Progress",
+      basicIdentity: {
+        title: "Basic Identity",
+        description: "Age, Weight, Height",
+        heading: "Let's get to know you.",
+        introduction: "We need some basic biometric information to personalize your health dashboard and daily targets.",
+        fields: { age: 'Age', gender: 'Gender', weight: 'Weight (kg)', height: 'Height (cm)', activityLevel: 'Daily Physical Activity Level' },
+        placeholders: { age: 'e.g. 24', weight: 'e.g. 68', height: 'e.g. 170' },
+        male: 'Male', female: 'Female', continue: 'Continue to Lifestyle', saving: 'Saving...', savingDescription: 'Storing your basic information.', saved: 'Saved!', savedDescription: 'Basic identity recorded. Moving to lifestyle.', saveFailed: 'Failed to save data', saveFailedTitle: 'Failed to Save', validation: { required: 'All fields are required', age: 'Age must be between 18-120 years' },
+        activityLevels: { Sedentary: 'Sedentary (Little/No activity)', 'Lightly Active': 'Lightly Active (Light)', 'Moderately Active': 'Moderately Active (Moderate)', 'Very Active': 'Very Active (Active)', 'Extra Active': 'Extra Active (Very active)' },
+      },
+      lifestyle: {
+        title: "Lifestyle", description: "Diet & Sleep habits", heading: 'Lifestyle & Diet Habits.', introduction: 'Tell us about your daily habits so we can personalize your nutrition plan and wellness recommendations.', fields: { dietaryPattern: 'Dietary Pattern', mealsPerDay: 'Meals Per Day', waterGoal: 'Daily Water Goal (ml)', sleepHours: 'Avg Sleep Hours' }, placeholders: { meals: 'e.g. 3', water: 'e.g. 2000', sleep: 'e.g. 7' }, patterns: { highProtein: 'High Protein', lowProtein: 'Low Protein', highFiber: 'High Fiber', vegan: 'Vegan' }, continue: 'Continue to Medical', saving: 'Saving...', savingDescription: 'Storing your lifestyle preferences.', saved: 'Saved!', savedDescription: 'Lifestyle data recorded. Moving to medical history.', saveFailed: 'Failed to save', saveFailedTitle: 'Failed to Save', validation: { sleep: 'Average sleep hours must be between 4 and 12 hours.' },
+      },
+      medical: {
+        title: "Medical", description: "Health conditions", heading: 'Health & Medical History.', introduction: 'Your medical history and health restrictions help us ensure AI recommendations are safe for you.', warning: 'This information is very important to ensure AI recommendations are safe for your health condition.', fields: { medicalHistory: 'Medical History', injuries: 'Physical Injuries', medication: 'Current Medication', systolic: 'Systolic', diastolic: 'Diastolic', heartRate: 'Heart Rate (bpm)', allergies: 'Food Allergies' }, placeholders: { injuries: 'e.g. Knee injury in 2023...', medication: 'e.g. Metformin, Atorvastatin...' }, continue: 'Continue to Goals', saving: 'Saving...', savingDescription: 'Storing your medical information securely.', saved: 'Saved!', savedDescription: 'Medical history recorded. One last step!', saveFailed: 'Failed to save data', saveFailedTitle: 'Failed to Save', validation: { bloodPressure: 'Invalid blood pressure', heartRate: 'Heart rate must be between 30-200 bpm' },
+        conditions: { Hypertension: 'Hypertension', Diabetes: 'Diabetes', Asthma: 'Asthma', Cholesterol: 'Cholesterol', 'Heart Disease': 'Heart Disease', Other: 'Other' },
+        allergies: { Peanuts: 'Peanuts', Gluten: 'Gluten', Dairy: 'Dairy', Eggs: 'Eggs', Shellfish: 'Shellfish', 'Tree Nuts': 'Tree Nuts', Fish: 'Fish', Soy: 'Soy' },
+      },
+      goals: {
+        title: "Goals", description: "Your main objectives", heading: 'Set your health goals.', introduction: 'Tell us your targets and commitment so we can build a personalized plan just for you.', fields: { primaryGoal: 'Primary Health Goal', targetWeight: 'Target Weight (kg)', exerciseDays: 'Exercise Days Per Week', activities: 'Preferred Activities' }, placeholder: 'e.g. 65', difference: 'Difference from now', daysPerWeek: 'days/week', finish: 'Finish & Go to Dashboard', saving: 'Saving goals...', savingDescription: 'Almost done! Setting up your health plan.', generating: '✨ Generating your AI plan...', generatingDescription: 'Our AI is crafting a personalized daily plan based on your goals.', done: 'All done! 🎉', doneDescription: 'Your personalized health plan is ready. Welcome to Nutricca!', saveFailed: 'Failed to save data', saveFailedTitle: 'Failed to Save', validation: { targetWeight: 'Target weight is required', activity: 'Select at least one preferred activity', weightRange: 'Target weight must be between 30-300 kg' },
+        goalOptions: { 'Weight Loss': 'Weight Loss', 'Muscle Gain': 'Muscle Gain', Endurance: 'Endurance', 'General Well-being': 'General Well-being' },
+        activities: { Yoga: 'Yoga', Running: 'Running', 'Weight Training': 'Weight Training', Walking: 'Walking', Swimming: 'Swimming', Cycling: 'Cycling', HIIT: 'HIIT', Pilates: 'Pilates' },
+      },
+    },
+    landing: {
+      logoAlt: "Nutricca logo",
+      iconAlt: "Nutricca icon",
+      userAvatarAlt: "User avatar",
+      mockup: {
+        date: "Sunday, 29 Jun",
+        greeting: "Good morning, Arya 👋",
+        calories: "Calories",
+        protein: "Protein",
+        waterIntake: "Water Intake",
+        hydration: "Hydration",
+        glasses: "{{count}}/8 glasses",
+        weightTrend: "Weight Trend",
+        weightAverage: "65 kg avg",
+        weeklySleepTrend: "Weekly sleep trend",
+        thisWeek: "+12% this week",
+        hours: "{{value}} hours",
+        days: {
+          Mon: "Mon",
+          Tue: "Tue",
+          Wed: "Wed",
+          Thu: "Thu",
+          Fri: "Fri",
+          Sat: "Sat",
+          Sun: "Sun",
+        },
+      },
+      hero: {
+        eyebrow: "Nutricca - Health Tracker Application",
+        titleBefore: "Track Your Habits,",
+        titleAccent: "Transform",
+        titleAfter: "Your Health.",
+        description:
+          "Nutricca brings nutrition tracking, sleep analysis, hydration goals, and habit streaks into one intelligent dashboard. Track meals, log workouts, monitor weight progress, and build lasting healthy routines - all in one place.",
+        startFree: "Start for Free",
+        lovedBy: "Loved by",
+        users: "users",
+      },
+      features: {
+        eyebrow: "Features",
+        title: "Everything you need in one place.",
+        description:
+          "Purpose-built health tracking tools that work together - nutrition, habits, sleep, and progress in one coherent dashboard.",
+        items: {
+          mostUsed: "Most used",
+          new: "New",
+          dietNutrition: {
+            title: "Diet & Nutrition",
+            description:
+              "Log meals, track macros, and monitor calorie balance with AI-powered daily recommendations tailored to your health profile.",
+          },
+          sleepAnalysis: {
+            title: "Sleep Analysis",
+            description:
+              "Track sleep duration and quality. Set bedtime goals and wake up feeling genuinely restored with consistent routines.",
+          },
+          hydrationGoals: {
+            title: "Hydration Goals",
+            description:
+              "Set daily water targets with smart glass tracking. Visual progress bars and reminders keep you hydrated throughout the day.",
+          },
+          habitStreaks: {
+            title: "Habit Streaks",
+            description:
+              "Build lasting routines with weekly habit tracking, exercise logs, and milestone badges that keep your momentum alive.",
+          },
+        },
+      },
+      howItWorks: {
+        eyebrow: "How It Works",
+        title: "Up and running in minutes.",
+        steps: {
+          profile: {
+            title: "Set your profile",
+            description:
+              "Tell Nutricca your basic info - age, weight, height, and activity level. We calculate your BMI, calorie targets, and personalize your health dashboard instantly.",
+          },
+          habits: {
+            title: "Track daily habits",
+            description:
+              "Log meals with AI recommendations, record sleep times, add water glasses, and track workouts. Weekly run and exercise trackers help you stay consistent.",
+          },
+          improve: {
+            title: "Review & improve",
+            description:
+              "Weekly insights surface patterns in your nutrition, weight trends, and habit consistency. Small adjustments compound into lasting health transformation.",
+          },
+        },
+      },
+      testimonials: {
+        eyebrow: "Testimonials",
+        title: "Real people, real results.",
+        items: {
+          sarah: {
+            role: "Nutritionist",
+            quote:
+              "Nutricca changed how I counsel clients. The data is honest and actionable - not just pretty numbers. The habit tracker really helps people stick to their goals.",
+          },
+          marcus: {
+            role: "Marathon runner",
+            quote:
+              "I shaved 8 minutes off my marathon time after three months of using the sleep and nutrition tracking together. The weekly run tracker is a game-changer.",
+          },
+          priya: {
+            role: "Software engineer",
+            quote:
+              "Finally an app that doesn't guilt-trip you. Nutricca feels like a calm coach - tracking habits, nutrition, and progress without the anxiety.",
+          },
+        },
+      },
+      cta: {
+        eyebrow: "Start today - it's free",
+        title: "Ready to build better habits?",
+        description:
+          "Join thousands of people who made Nutricca their daily health companion. Track nutrition, habits, sleep, and progress - all free.",
+      },
+      footer:
+        "© {{year}} Nutricca - Health Tracker Application. All rights reserved.",
+    },
+  },
+  id: {
+    common: {
+      language: "Bahasa",
+      switchLanguage: "Ubah bahasa ke {{language}}",
+      english: "English",
+      indonesian: "Indonesia",
+      logout: "Keluar",
+      user: "Pengguna",
+      step: "Langkah {{current}} dari {{total}}",
+      back: "Kembali",
+      saving: "Menyimpan...",
+      continue: "Lanjut",
+      loadingPage: "Memuat halaman...",
+      confirmTitle: "Apakah Anda yakin?",
+      confirm: "Konfirmasi",
+      cancel: "Batal",
+    },
+    brand: { tagline: "Aplikasi Pelacak Kesehatan." },
+    nav: {
+      dashboard: "Dasbor",
+      habits: "Kebiasaan",
+      plan: "Rencana AI",
+      progress: "Progres",
+      profile: "Profil",
+      features: "Fitur",
+      howItWorks: "Cara Kerja",
+      testimonials: "Testimoni",
+      signIn: "Masuk",
+      getStarted: "Mulai",
+    },
+    topbar: {
+      dashboard: {
+        title: "Dasbor",
+        subtitle: "Ringkasan kesehatan harian Anda",
+      },
+      habits: {
+        title: "Pelacak Kebiasaan",
+        subtitle: "Catat kebiasaan harian Anda",
+      },
+      recommendations: {
+        title: "Rekomendasi AI",
+        subtitle: "Rencana personal hari ini",
+      },
+      progress: {
+        title: "Progres Saya",
+        subtitle: "Pantau perjalanan kesehatan Anda",
+      },
+      profile: { title: "Profil Saya", subtitle: "Akun dan pengaturan" },
+    },
+    auth: {
+      login: {
+        validation: "Email dan kata sandi wajib diisi",
+        loading: "Sedang masuk...",
+        verifying: "Memverifikasi kredensial Anda.",
+        failed: "Login gagal",
+        failedTitle: "Login Gagal",
+        platform: "Platform Gaya Hidup Sehat",
+        welcome: "Selamat Datang Kembali.",
+        description:
+          "Pantau nutrisi, progres, dan bangun kebiasaan yang lebih sehat setiap hari dengan rekomendasi personal.",
+        footer:
+          "© 2026 Nutricca. Membantu Anda membangun masa depan yang lebih sehat.",
+        title: "Masuk",
+        subtitle: "Selamat datang kembali! Masukkan detail akun Anda.",
+        email: "Alamat Email",
+        password: "Kata Sandi",
+        submit: "Masuk",
+        noAccount: "Belum punya akun?",
+        createAccount: "Buat Akun",
+        logoAlt: "Logo Nutricca",
+      },
+      register: {
+        validation: {
+          fullName: "Nama lengkap wajib diisi",
+          email: "Email wajib diisi",
+          invalidEmail: "Alamat email tidak valid",
+          passwordLength: "Kata sandi minimal 6 karakter",
+          passwordMatch: "Kata sandi tidak sama",
+        },
+        loading: "Membuat akun...",
+        setup: "Menyiapkan profil kesehatan Anda.",
+        success: "Akun Berhasil Dibuat!",
+        successDescription:
+          "Selamat datang di Nutricca. Mari atur profil Anda.",
+        failed: "Pendaftaran gagal",
+        failedTitle: "Pendaftaran Gagal",
+        platform: "Platform Gaya Hidup Sehat",
+        title: "Bergabung dengan Nutricca.",
+        description:
+          "Mulai perjalanan menuju gaya hidup lebih sehat dengan wawasan nutrisi personal, pencatatan harian, dan progres yang bermakna.",
+        footer:
+          "© 2026 Nutricca. Membantu Anda membangun masa depan yang lebih sehat.",
+        formTitle: "Buat akun",
+        subtitle: "Buat akun untuk memulai perjalanan kesehatan Anda.",
+        submit: "Buat Akun",
+        hasAccount: "Sudah punya akun?",
+        signIn: "Masuk",
+        logoAlt: "Logo Nutricca",
+        fields: {
+          fullName: { label: "Nama Lengkap", placeholder: "John Doe" },
+          email: { label: "Alamat Email", placeholder: "you@example.com" },
+          password: { label: "Kata Sandi", placeholder: "Minimal 6 karakter" },
+          confirmPassword: {
+            label: "Konfirmasi Kata Sandi",
+            placeholder: "Masukkan ulang kata sandi",
+          },
+        },
+      },
+    },
+    dashboard: {
+      loading: 'Memuat aktivitas hari ini...',
+      banner: { title: 'Rencana harian Anda siap!', description: 'AI telah membuat rekomendasi personal untuk hari ini', action: 'Lihat rencana →' },
+      metrics: { initialWeight: 'Berat awal', currentWeight: 'Berat saat ini', waterIntake: 'Asupan air hari ini', firstRecorded: 'Berat pertama tercatat', noWeight: 'Belum ada berat yang dicatat', fromInitial: '{{value}} kg dari berat awal', target: 'Target: {{value}} kg', glasses: 'gelas', dailyGoal: '{{value}} ml · {{percent}}% dari target harian' },
+      habits: { title: 'Kebiasaan hari ini', update: 'Perbarui kebiasaan hari ini →', tags: { food: 'Makan', water: 'Air', sport: 'Olahraga', sleep: 'Tidur' }, items: { breakfast: { name: 'Sarapan', time: '07:00' }, lunch: { name: 'Makan siang', time: '12:00' }, dinner: { name: 'Makan malam', time: '19:00' }, water: { name: 'Minum air (target {{goal}}L)', time: 'Sepanjang hari' }, activity: { name: 'Latihan / Aktivitas', time: 'Kapan saja' }, sleep: { name: 'Catat waktu tidur', time: '22:00' } } },
+      calories: { title: 'Keseimbangan kalori', intake: 'Kalori masuk', burned: 'Terbakar', net: 'Bersih', burnedSummary: '{{value}} kkal terbakar' },
+      actions: { habits: 'Perbarui kebiasaan', recommendations: 'Lihat rekomendasi hari ini →' },
+    },
+    habits: {
+      title: 'Pelacak Kebiasaan', description: 'Selesaikan kebiasaan harian dan pantau progres Anda.', live: 'Pelacakan Langsung', tabs: { habit: 'Pelacak Kebiasaan', run: 'Lari Mingguan', exercise: 'Latihan Mingguan' },
+      tracker: { nutritionLog: 'Catatan Nutrisi', hydrationTracker: 'Pelacak Hidrasi', activityLog: 'Catatan Aktivitas', sleepLog: 'Catatan Tidur', summary: 'Ringkasan Hari Ini', totalCalories: 'Total Kalori', saveNutrition: 'Simpan Nutrisi', saveHydration: 'Simpan Hidrasi', saveSleep: 'Simpan Catatan Tidur', saving: 'Menyimpan...', todayRecord: 'CATATAN HARI INI', noMeals: 'Belum ada makanan dicatat.', noActivities: 'Belum ada aktivitas dicatat.', loggedMeals: 'Makanan Tercatat', activityType: 'Jenis aktivitas', distance: 'Jarak', duration: 'Durasi', addActivity: '+ Tambah Aktivitas', bedtime: 'Waktu tidur', wakeUp: 'Bangun tidur', totalSleep: 'Total tidur', hydration: 'Hidrasi', activity: 'Aktivitas', nutrition: 'Nutrisi', ofGlasses: 'dari {{goal}} gelas hari ini', addGlass: '💧 + 1 gelas', glasses: 'Gelas', saved: '✅ Berhasil disimpan!', saveFailed: '❌ Gagal menyimpan.', selectMeal: 'Pilih minimal satu makanan.', nutritionFailed: 'Gagal menyimpan nutrisi', activityFailed: 'Gagal menyimpan aktivitas.', loading: 'Memuat...', mealSlots: { breakfast: 'Sarapan', lunch: 'Makan siang', dinner: 'Makan malam' } },
+      weeklyExercise: {
+        level: 'Level:', title: '💪 Latihan Mingguan', weeklyProgress: 'Progres Mingguan', sessions: '{{done}} / {{total}} sesi', save: 'Simpan latihan mingguan', update: 'Perbarui latihan mingguan', saveFailed: 'Gagal menyimpan.', sets: '{{reps}} {{unit}} × {{sets}} set × {{days}} hari',
+        units: { reps: 'repetisi', sec: 'detik', min: 'menit', steps: 'langkah' },
+        days: { Mon: 'Sen', Tue: 'Sel', Wed: 'Rab', Thu: 'Kam', Fri: 'Jum', Sat: 'Sab', Sun: 'Min' },
+        levels: { beginner: { name: 'Pemula', label: '🌱 Pemula', description: 'Mulai dengan ringan dan bangun konsistensi. Utamakan teknik daripada jumlah.' }, intermediate: { name: 'Menengah', label: '⚡ Menengah', description: 'Tingkatkan volume dan intensitas. Dorong diri melampaui zona nyaman.' }, advanced: { name: 'Lanjutan', label: '🔥 Lanjutan', description: 'Performa maksimal. Volume tinggi, istirahat singkat, dan intensitas tinggi.' } },
+        sections: { Dips: 'Dips', 'Pull Up': 'Pull Up', 'Push Up': 'Push Up', Core: 'Inti', Squat: 'Squat' },
+        exercises: { dips: 'Dips', pu_wide: 'Pull Up — Lebar/Dada', pu_norm: 'Pull Up — Normal', pu_close: 'Pull Up — Rapat', pu_chin: 'Chin Up', push_norm: 'Push Up — Normal', push_dec: 'Push Up — Menurun', push_inc: 'Push Up — Menanjak', push_dia: 'Push Up — Diamond', situp: 'Sit Up', riseup: 'Rise Up', climb: 'Mountain Climbing', plank: 'Plank', sqjump: 'Squat Jump', lunge: 'Lunges' },
+      },
+      weeklyRun: { level: 'Level:', title: '🏃 Target Lari Mingguan', kilometers: 'km', save: 'Simpan lari mingguan', update: 'Perbarui lari mingguan', saveFailed: 'Gagal menyimpan.' },
+      saveBar: { saveChanges: 'Simpan perubahan', saveFailed: 'Gagal menyimpan.', saved: '✅ Disimpan!', saving: '⏳ Menyimpan...' },
+    },
+    recommendations: {
+      match: '{{score}}% cocok', minutes: '{{value}} menit', servings: '{{value}} porsi', viewRecipe: 'Lihat resep lengkap →', unknownRecipe: 'Resep Tidak Diketahui', balanced: 'Seimbang', aiPick: 'Pilihan AI', mixed: 'Campuran', defaultDescription: 'Makanan bergizi dan seimbang yang direkomendasikan oleh rencana AI Anda untuk energi yang berkelanjutan.', recipeUnavailable: 'Detail resep belum tersedia.', defaultStep: 'Ikuti langkah persiapan standar', refreshing: 'Memperbarui...', refresh: 'Perbarui', title: 'Rencana Makan', description: 'Rekomendasi makanan hari ini berdasarkan profil kesehatan Anda', generating: 'Membuat rencana makan personal Anda...', empty: 'Belum ada rencana makan. Coba tekan Perbarui.',
+      banner: { title: 'Rekomendasi harian diperbarui', subtitle: 'Dipersonalisasi untuk Anda — {{date}}' },
+      tags: { 'High Fiber': 'Tinggi Serat', 'High Protein': 'Tinggi Protein', 'Low Sugar': 'Rendah Gula', 'Low Calorie': 'Rendah Kalori', 'Low Sodium': 'Rendah Natrium' },
+    },
+    progress: {
+      title: 'Progres Kesehatan', description: 'Pantau perjalanan kesehatan Anda dari waktu ke waktu', periods: { week: '7 hari', month: '30 hari', quarter: '3 bulan' }, currentWeight: 'Berat saat ini', targetWeight: 'Target berat', activeStreak: 'Rangkaian aktif', days: 'hari', fromTarget: '{{value}} kg dari target', longest: 'Terpanjang: {{value}} hari', logWeight: 'Catat berat badan hari ini', weightPlaceholder: 'mis. 68,5', saving: 'Menyimpan...', save: 'Simpan', current: 'Saat ini', target: 'Target', notLogged: 'Belum dicatat', weightTrend: 'Tren berat badan', weightTrendChart: 'Grafik tren berat badan', loading: 'Memuat...', noData: 'Tidak ada data untuk periode ini', todayNutrition: 'Nutrisi hari ini', nutritionDescription: 'Dari semua makanan yang dicatat hari ini', calories: 'Kalori', protein: 'Protein', carbs: 'Karbohidrat', fat: 'Lemak', noMeals: 'Belum ada makanan yang dicatat hari ini.', streakConsistency: 'Rangkaian & konsistensi', daysInRow: 'Hari berurutan', totalXp: 'Total XP', longestStreak: 'Rangkaian terpanjang', achievements: 'Pencapaian', noBadges: 'Belum ada lencana yang diperoleh.', savingWeight: 'Menyimpan berat badan...', loggingWeight: 'Mencatat berat badan Anda.', weightLogged: 'Berat Badan Dicatat!', weightSaved: 'Berat badan Anda berhasil disimpan.', saveFailed: 'Gagal Menyimpan', weightSaveFailed: 'Tidak dapat mencatat berat badan. Silakan coba lagi.', chartTooltip: '{{day}}<br/><b>{{weight}} kg</b>',
+    },
+    profile: {
+      tabs: { general: 'Info Umum', health: 'Kesehatan', lifestyle: 'Gaya Hidup', goals: 'Tujuan', settings: 'Pengaturan' }, saving: 'Menyimpan profil...', updating: 'Memperbarui informasi Anda.', updated: 'Profil Diperbarui!', updatedDescription: 'Perubahan Anda berhasil disimpan.', saveFailed: 'Gagal Menyimpan', logoutTitle: 'Keluar?', logoutDescription: 'Apakah Anda yakin ingin keluar dari Nutricca?', logoutConfirm: 'Ya, keluar', edit: 'Edit Profil', cancel: 'Batal', save: 'Simpan', weight: 'Berat', height: 'Tinggi', age: 'Usia', targetWeight: 'Target Berat', years: '{{value}} tahun', points: '{{value}} poin', basicInformation: 'Informasi Dasar', fullName: 'Nama Lengkap', email: 'Email', emailImmutable: 'Email tidak dapat diubah', biometricData: 'Data Biometrik', gender: 'Jenis Kelamin', male: 'Laki-laki', female: 'Perempuan', bodyMeasurements: 'Ukuran Tubuh', weightKg: 'Berat (kg)', heightCm: 'Tinggi (cm)', healthInformation: 'Informasi Kesehatan', medicalHistory: 'Riwayat Medis', allergies: 'Alergi', bloodPressure: 'Tekanan Darah', none: 'Tidak ada', dietaryPattern: 'Pola Makan', mealFrequency: 'Frekuensi Makan', timesPerDay: '{{value}} kali/hari', dailyWaterGoal: 'Target Air Harian', mlPerDay: '{{value}} ml/hari', avgSleepHours: 'Rata-rata Jam Tidur', hours: '{{value}} jam', activityLevel: 'Tingkat Aktivitas', healthGoals: 'Tujuan Kesehatan', primaryGoal: 'Tujuan Utama', gapToTarget: 'Selisih ke Target', commitment: 'Komitmen', workoutsPerWeek: 'Latihan per Minggu', days: '{{value}} hari', preferredActivities: 'Aktivitas Pilihan', account: 'Akun', joined: 'Bergabung', dangerZone: 'Zona Berbahaya',
+    },
+    notifications: { title: 'Notifikasi', newCount: '{{count}} notifikasi baru', markAllRead: 'Tandai semua sudah dibaca', empty: 'Tidak ada notifikasi' },
+    recipe: {
+      unknownRecipe: 'Resep Tidak Diketahui', balanced: 'Seimbang', aiPick: 'Pilihan AI', mixed: 'Campuran', defaultDescription: 'Makanan bergizi dan seimbang yang direkomendasikan oleh rencana AI Anda untuk energi yang berkelanjutan.', defaultRecipeDescription: 'Detail resep saat ini dibuat oleh AI. Selamat menikmati makanan sehat Anda!', defaultIngredients: { link: 'Ikuti tautan resep terperinci atau periksa persiapan standar.', seasoning: 'Garam dan lada secukupnya.', oil: 'Minyak zaitun untuk memasak.' }, defaultSteps: { prepare: 'Siapkan dan cuci semua bahan.', cook: 'Masak sesuai prosedur standar.', serve: 'Sajikan hangat dan nikmati!' }, loading: 'Memuat resep...', notFound: 'Resep tidak ditemukan.', back: 'Kembali', backToRecommendations: 'Kembali ke rekomendasi', match: '{{score}}% cocok', contains: 'Mengandung:', description: 'Deskripsi', ingredients: 'Bahan-bahan', howToCook: 'Cara memasak', nutrition: { calories: 'Kalori', protein: 'Protein', fat: 'Lemak', saturated: 'Lemak Jenuh', carbs: 'Karbohidrat', fiber: 'Serat', sugar: 'Gula', sodium: 'Natrium', cholesterol: 'Kolesterol' },
+    },
+    onboarding: {
+      progress: "Progres Onboarding",
+      basicIdentity: {
+        title: "Identitas Dasar",
+        description: "Usia, berat, tinggi",
+        heading: 'Mari mengenal Anda lebih dekat.',
+        introduction: 'Kami memerlukan beberapa informasi biometrik dasar untuk mempersonalisasi dasbor kesehatan dan target harian Anda.',
+        fields: { age: 'Usia', gender: 'Jenis Kelamin', weight: 'Berat (kg)', height: 'Tinggi (cm)', activityLevel: 'Tingkat Aktivitas Fisik Harian' },
+        placeholders: { age: 'mis. 24', weight: 'mis. 68', height: 'mis. 170' },
+        male: 'Laki-laki', female: 'Perempuan', continue: 'Lanjut ke Gaya Hidup', saving: 'Menyimpan...', savingDescription: 'Menyimpan informasi dasar Anda.', saved: 'Disimpan!', savedDescription: 'Identitas dasar tercatat. Melanjutkan ke gaya hidup.', saveFailed: 'Gagal menyimpan data', saveFailedTitle: 'Gagal Menyimpan', validation: { required: 'Semua kolom wajib diisi', age: 'Usia harus antara 18-120 tahun' },
+        activityLevels: { Sedentary: 'Tidak Aktif (Sedikit/Tanpa aktivitas)', 'Lightly Active': 'Sedikit Aktif (Ringan)', 'Moderately Active': 'Cukup Aktif (Sedang)', 'Very Active': 'Sangat Aktif (Aktif)', 'Extra Active': 'Ekstra Aktif (Sangat aktif)' },
+      },
+      lifestyle: {
+        title: "Gaya Hidup", description: "Pola makan dan tidur", heading: 'Gaya Hidup & Kebiasaan Makan.', introduction: 'Beritahu kami kebiasaan harian Anda agar kami dapat mempersonalisasi rencana nutrisi dan rekomendasi kesehatan.', fields: { dietaryPattern: 'Pola Makan', mealsPerDay: 'Frekuensi Makan per Hari', waterGoal: 'Target Air Harian (ml)', sleepHours: 'Rata-rata Jam Tidur' }, placeholders: { meals: 'mis. 3', water: 'mis. 2000', sleep: 'mis. 7' }, patterns: { highProtein: 'Tinggi Protein', lowProtein: 'Rendah Protein', highFiber: 'Tinggi Serat', vegan: 'Vegan' }, continue: 'Lanjut ke Medis', saving: 'Menyimpan...', savingDescription: 'Menyimpan preferensi gaya hidup Anda.', saved: 'Disimpan!', savedDescription: 'Data gaya hidup tercatat. Melanjutkan ke riwayat medis.', saveFailed: 'Gagal menyimpan', saveFailedTitle: 'Gagal Menyimpan', validation: { sleep: 'Rata-rata jam tidur harus antara 4 dan 12 jam.' },
+      },
+      medical: {
+        title: "Medis", description: "Kondisi kesehatan", heading: 'Kesehatan & Riwayat Medis.', introduction: 'Riwayat medis dan batasan kesehatan Anda membantu kami memastikan rekomendasi AI aman untuk Anda.', warning: 'Informasi ini sangat penting untuk memastikan rekomendasi AI aman bagi kondisi kesehatan Anda.', fields: { medicalHistory: 'Riwayat Medis', injuries: 'Cedera Fisik', medication: 'Obat yang Sedang Digunakan', systolic: 'Sistolik', diastolic: 'Diastolik', heartRate: 'Detak Jantung (bpm)', allergies: 'Alergi Makanan' }, placeholders: { injuries: 'mis. Cedera lutut pada 2023...', medication: 'mis. Metformin, Atorvastatin...' }, continue: 'Lanjut ke Tujuan', saving: 'Menyimpan...', savingDescription: 'Menyimpan informasi medis Anda dengan aman.', saved: 'Disimpan!', savedDescription: 'Riwayat medis tercatat. Satu langkah lagi!', saveFailed: 'Gagal menyimpan data', saveFailedTitle: 'Gagal Menyimpan', validation: { bloodPressure: 'Tekanan darah tidak valid', heartRate: 'Detak jantung harus antara 30-200 bpm' },
+        conditions: { Hypertension: 'Hipertensi', Diabetes: 'Diabetes', Asthma: 'Asma', Cholesterol: 'Kolesterol', 'Heart Disease': 'Penyakit Jantung', Other: 'Lainnya' },
+        allergies: { Peanuts: 'Kacang Tanah', Gluten: 'Gluten', Dairy: 'Produk Susu', Eggs: 'Telur', Shellfish: 'Kerang', 'Tree Nuts': 'Kacang Pohon', Fish: 'Ikan', Soy: 'Kedelai' },
+      },
+      goals: {
+        title: "Tujuan", description: "Target utama Anda", heading: 'Tentukan tujuan kesehatan Anda.', introduction: 'Beritahu kami target dan komitmen Anda agar kami dapat membuat rencana yang dipersonalisasi untuk Anda.', fields: { primaryGoal: 'Tujuan Kesehatan Utama', targetWeight: 'Target Berat (kg)', exerciseDays: 'Hari Latihan per Minggu', activities: 'Aktivitas Pilihan' }, placeholder: 'mis. 65', difference: 'Selisih dari saat ini', daysPerWeek: 'hari/minggu', finish: 'Selesai & Ke Dasbor', saving: 'Menyimpan tujuan...', savingDescription: 'Hampir selesai! Menyiapkan rencana kesehatan Anda.', generating: '✨ Membuat rencana AI Anda...', generatingDescription: 'AI kami sedang menyusun rencana harian personal berdasarkan tujuan Anda.', done: 'Selesai! 🎉', doneDescription: 'Rencana kesehatan personal Anda siap. Selamat datang di Nutricca!', saveFailed: 'Gagal menyimpan data', saveFailedTitle: 'Gagal Menyimpan', validation: { targetWeight: 'Target berat wajib diisi', activity: 'Pilih minimal satu aktivitas pilihan', weightRange: 'Target berat harus antara 30-300 kg' },
+        goalOptions: { 'Weight Loss': 'Menurunkan Berat Badan', 'Muscle Gain': 'Membangun Otot', Endurance: 'Daya Tahan', 'General Well-being': 'Kesehatan Umum' },
+        activities: { Yoga: 'Yoga', Running: 'Lari', 'Weight Training': 'Latihan Beban', Walking: 'Jalan Kaki', Swimming: 'Berenang', Cycling: 'Bersepeda', HIIT: 'HIIT', Pilates: 'Pilates' },
+      },
+    },
+    landing: {
+      logoAlt: "Logo Nutricca",
+      iconAlt: "Ikon Nutricca",
+      userAvatarAlt: "Avatar pengguna",
+      mockup: {
+        date: "Minggu, 29 Jun",
+        greeting: "Selamat pagi, Arya 👋",
+        calories: "Kalori",
+        protein: "Protein",
+        waterIntake: "Asupan Air",
+        hydration: "Hidrasi",
+        glasses: "{{count}}/8 gelas",
+        weightTrend: "Tren Berat Badan",
+        weightAverage: "rata-rata 65 kg",
+        weeklySleepTrend: "Tren tidur mingguan",
+        thisWeek: "+12% minggu ini",
+        hours: "{{value}} jam",
+        days: {
+          Mon: "Sen",
+          Tue: "Sel",
+          Wed: "Rab",
+          Thu: "Kam",
+          Fri: "Jum",
+          Sat: "Sab",
+          Sun: "Min",
+        },
+      },
+      hero: {
+        eyebrow: "Nutricca - Aplikasi Pelacak Kesehatan",
+        titleBefore: "Lacak Kebiasaanmu,",
+        titleAccent: "Ubah",
+        titleAfter: "Kesehatanmu.",
+        description:
+          "Nutricca menyatukan pencatatan nutrisi, analisis tidur, target hidrasi, dan kebiasaan dalam satu dasbor cerdas. Catat makanan, latihan, progres berat badan, lalu bangun rutinitas sehat yang bertahan lama.",
+        startFree: "Mulai Gratis",
+        lovedBy: "Disukai oleh",
+        users: "pengguna",
+      },
+      features: {
+        eyebrow: "Fitur",
+        title: "Semua yang Anda butuhkan di satu tempat.",
+        description:
+          "Alat pelacak kesehatan yang dirancang untuk bekerja bersama - nutrisi, kebiasaan, tidur, dan progres dalam satu dasbor.",
+        items: {
+          mostUsed: "Paling sering dipakai",
+          new: "Baru",
+          dietNutrition: {
+            title: "Pola Makan & Nutrisi",
+            description:
+              "Catat makanan, pantau makro, dan seimbangkan kalori dengan rekomendasi AI harian yang disesuaikan dengan profil kesehatan Anda.",
+          },
+          sleepAnalysis: {
+            title: "Analisis Tidur",
+            description:
+              "Pantau durasi dan kualitas tidur. Tentukan target waktu tidur dan bangun dengan lebih bugar melalui rutinitas yang konsisten.",
+          },
+          hydrationGoals: {
+            title: "Target Hidrasi",
+            description:
+              "Tentukan target air harian dengan pelacak gelas pintar. Progres visual dan pengingat membantu Anda tetap terhidrasi sepanjang hari.",
+          },
+          habitStreaks: {
+            title: "Rangkaian Kebiasaan",
+            description:
+              "Bangun rutinitas jangka panjang dengan pelacakan kebiasaan mingguan, catatan latihan, dan lencana pencapaian.",
+          },
+        },
+      },
+      howItWorks: {
+        eyebrow: "Cara Kerja",
+        title: "Siap digunakan dalam hitungan menit.",
+        steps: {
+          profile: {
+            title: "Atur profil Anda",
+            description:
+              "Masukkan data dasar - usia, berat badan, tinggi badan, dan tingkat aktivitas. Nutricca menghitung BMI, target kalori, dan menyesuaikan dasbor kesehatan Anda.",
+          },
+          habits: {
+            title: "Lacak kebiasaan harian",
+            description:
+              "Catat makanan dengan rekomendasi AI, waktu tidur, gelas air, dan latihan. Pelacak lari serta latihan mingguan membantu Anda tetap konsisten.",
+          },
+          improve: {
+            title: "Tinjau & tingkatkan",
+            description:
+              "Wawasan mingguan menampilkan pola nutrisi, tren berat badan, dan konsistensi kebiasaan. Perubahan kecil membangun kesehatan yang bertahan lama.",
+          },
+        },
+      },
+      testimonials: {
+        eyebrow: "Testimoni",
+        title: "Orang nyata, hasil nyata.",
+        items: {
+          sarah: {
+            role: "Ahli gizi",
+            quote:
+              "Nutricca mengubah cara saya membimbing klien. Datanya jujur dan bisa ditindaklanjuti, bukan hanya angka yang indah. Pelacak kebiasaan benar-benar membantu orang mencapai targetnya.",
+          },
+          marcus: {
+            role: "Pelari maraton",
+            quote:
+              "Saya memangkas 8 menit dari waktu maraton setelah tiga bulan memakai pelacakan tidur dan nutrisi bersama-sama. Pelacak lari mingguan sangat membantu.",
+          },
+          priya: {
+            role: "Insinyur perangkat lunak",
+            quote:
+              "Akhirnya ada aplikasi yang tidak membuat saya merasa bersalah. Nutricca seperti pelatih yang tenang - melacak kebiasaan, nutrisi, dan progres tanpa kecemasan.",
+          },
+        },
+      },
+      cta: {
+        eyebrow: "Mulai hari ini - gratis",
+        title: "Siap membangun kebiasaan lebih baik?",
+        description:
+          "Bergabunglah dengan ribuan orang yang menjadikan Nutricca teman kesehatan harian. Pantau nutrisi, kebiasaan, tidur, dan progres - semuanya gratis.",
+      },
+      footer:
+        "© {{year}} Nutricca - Aplikasi Pelacak Kesehatan. Seluruh hak cipta dilindungi.",
+    },
+  },
+};

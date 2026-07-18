@@ -1,37 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request Interceptor: Menyisipkan JWT Token
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('healthplan_auth');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-// Response Interceptor: Langsung mengembalikan response.data
-apiClient.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    console.error('API Error:', error);
-    throw error;
-  },
-);
+import { apiClient } from "../shared/api/client";
 
 /* =========================================
    Authentication APIs
@@ -105,7 +72,7 @@ export const updateBasicIdentity = (data) => {
 };
 
 export const updateGoalSetting = (data) => {
-  return apiClient.put('/goal-setting', data);
+  return apiClient.put("/goal-setting", data);
 };
 
 /* =========================================
@@ -134,7 +101,7 @@ export const getDailyLogHistory = () => {
 };
 
 export const addNutritionLog = (data) => {
-  return apiClient.post('/nutrition-logs', data);
+  return apiClient.post("/nutrition-logs", data);
 };
 
 export const getNutritionLogsByDailyLogId = (dailyLogId) => {
@@ -170,11 +137,11 @@ export const putWeeklyExercise = (weeklyExerciseId, data) => {
 };
 
 export const getWeightLogs = () => {
-  return apiClient.get('/weight-logs');
+  return apiClient.get("/weight-logs");
 };
 
 export const postWeightLog = (data) => {
-  return apiClient.post('/weight-logs', data);
+  return apiClient.post("/weight-logs", data);
 };
 /* =========================================
    Activity Log APIs
@@ -237,7 +204,7 @@ export const putRecommendationAi = (targetDate, data) => {
 /* =========================================
    Progress & Notification APIs
 ========================================= */
-export const getProgressData = (period = '7') => {
+export const getProgressData = (period = "7") => {
   return apiClient.get(`/progress`, { params: { period } });
 };
 

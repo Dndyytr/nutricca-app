@@ -51,7 +51,7 @@ class AiRecommendationService {
     // 3. Kirim ke FastAPI AI Engine
     try {
       const response = await axios.post(
-        'http://ai-api:8000/recommend',
+        `${process.env.AI_API_URL || 'http://ai-api:8000'}/recommend`,
         userProfileForAi,
         {
           timeout: 30000,
