@@ -1,3 +1,4 @@
+import { Pool } from 'pg';
 import * as MasterExercisesRepo from '../repositories/master_exercises.js';
 import * as MasterCardiosRepo from '../repositories/master_cardios.js';
 import * as UserWeeklyActivitiesRepo from '../repositories/user_weekly_activities.js';
@@ -7,6 +8,58 @@ import {
   updateWeeklyActivityPayloadSchema,
   activityProgressPayloadSchema,
 } from '../validator/index.js';
+
+const pool = new Pool();
+
+/**
+ * Verify that activity belongs to authenticated user
+ * Prevents unauthorized access to other users' activities
+ */
+const verifyActivityOwnership = async (activityId, userId) => {
+  const query = `SELECT user_id FROM user_weekly_activities WHERE id = $1`;
+  const result = await pool.query(query, [activityId]);
+
+  if (result.rows.length === 0) {
+    const error = new Error('Activity not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (result.rows[0].user_id !== userId) {
+    const error = new Error('Unauthorized access');
+    error.statusCode = 403;
+    throw error;
+  }
+
+  return true;
+};
+
+/**
+ * Verify that progress belongs to activity and activity belongs to user
+ */
+const verifyProgressOwnership = async (progressId, userId) => {
+  const query = `
+    SELECT ap.id, uwa.user_id
+    FROM activity_progress ap
+    JOIN user_weekly_activities uwa ON ap.user_activity_id = uwa.id
+    WHERE ap.id = $1
+  `;
+  const result = await pool.query(query, [progressId]);
+
+  if (result.rows.length === 0) {
+    const error = new Error('Progress not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (result.rows[0].user_id !== userId) {
+    const error = new Error('Unauthorized access');
+    error.statusCode = 403;
+    throw error;
+  }
+
+  return true;
+};
 
 // Get all master exercises
 export const getMasterExercisesHandler = async (req, res, next) => {
@@ -51,7 +104,7 @@ export const postUserWeeklyActivityHandler = async (req, res, next) => {
       });
     }
 
-    const userId = req.user.id; // Assuming user is authenticated
+    const userId = req.user.id;
     const activity = await UserWeeklyActivitiesRepo.createUserWeeklyActivity(
       userId,
       value.level,
@@ -76,12 +129,18 @@ export const postUserWeeklyActivityHandler = async (req, res, next) => {
 export const getUserWeeklyActivityHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
+
     if (isNaN(id)) {
       return res.status(404).json({
         status: 'fail',
         message: 'Weekly activity not found',
       });
     }
+
+    // Verify ownership
+    await verifyActivityOwnership(id, userId);
+
     const activity = await UserWeeklyActivitiesRepo.getUserWeeklyActivity(id);
 
     if (!activity) {
@@ -99,6 +158,18 @@ export const getUserWeeklyActivityHandler = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 403) {
+      return res.status(403).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
     next(error);
   }
 };
@@ -115,6 +186,11 @@ export const putUserWeeklyActivityHandler = async (req, res, next) => {
     }
 
     const { id } = req.params;
+    const userId = req.user.id;
+
+    // Verify ownership
+    await verifyActivityOwnership(id, userId);
+
     const activity = await UserWeeklyActivitiesRepo.updateUserWeeklyActivity(id, value);
 
     res.status(200).json({
@@ -125,6 +201,18 @@ export const putUserWeeklyActivityHandler = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 403) {
+      return res.status(403).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
     next(error);
   }
 };
@@ -133,6 +221,11 @@ export const putUserWeeklyActivityHandler = async (req, res, next) => {
 export const getActivityProgressHandler = async (req, res, next) => {
   try {
     const { activity_id } = req.params;
+    const userId = req.user.id;
+
+    // Verify ownership
+    await verifyActivityOwnership(activity_id, userId);
+
     const progress = await ActivityProgressRepo.getActivityProgress(activity_id);
     const totalCaloriesBurned = await ActivityProgressRepo.getTotalCaloriesBurned(activity_id);
 
@@ -147,6 +240,18 @@ export const getActivityProgressHandler = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 403) {
+      return res.status(403).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
     next(error);
   }
 };
@@ -163,6 +268,11 @@ export const postActivityProgressHandler = async (req, res, next) => {
     }
 
     const { activity_id } = req.params;
+    const userId = req.user.id;
+
+    // Verify ownership
+    await verifyActivityOwnership(activity_id, userId);
+
     const progress = await ActivityProgressRepo.createActivityProgress(activity_id, value);
 
     res.status(201).json({
@@ -173,6 +283,18 @@ export const postActivityProgressHandler = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 403) {
+      return res.status(403).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
     next(error);
   }
 };
@@ -189,6 +311,11 @@ export const putActivityProgressHandler = async (req, res, next) => {
     }
 
     const { progress_id } = req.params;
+    const userId = req.user.id;
+
+    // Verify ownership
+    await verifyProgressOwnership(progress_id, userId);
+
     const progress = await ActivityProgressRepo.updateActivityProgress(progress_id, value);
 
     res.status(200).json({
@@ -199,6 +326,18 @@ export const putActivityProgressHandler = async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error.statusCode === 403) {
+      return res.status(403).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        status: 'fail',
+        message: error.message,
+      });
+    }
     next(error);
   }
 };
