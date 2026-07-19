@@ -102,7 +102,7 @@ export const up = async (pgm) => {
       primaryKey: true,
     },
     user_id: {
-      type: 'int',
+      type: 'VARCHAR(50)',
       notNull: true,
       references: '"users"(id)',
       onDelete: 'cascade',
