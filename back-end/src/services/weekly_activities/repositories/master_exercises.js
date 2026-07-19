@@ -4,7 +4,7 @@ const pool = new Pool();
 
 export const getAllMasterExercises = async () => {
   const query = `
-    SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at
+    SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at, level
     FROM master_exercises
     ORDER BY name ASC
   `;
@@ -14,7 +14,7 @@ export const getAllMasterExercises = async () => {
 
 export const getMasterExerciseById = async (id) => {
   const query = `
-    SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at
+    SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at, level
     FROM master_exercises
     WHERE id = $1
   `;

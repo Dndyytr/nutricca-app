@@ -4,7 +4,7 @@ const pool = new Pool();
 
 export const getAllMasterCardios = async () => {
   const query = `
-    SELECT id, name, type, icon_url, description, target_distance, calories_per_unit, duration_days, created_at
+    SELECT id, name, type, icon_url, description, target_distance, calories_per_unit, duration_days, created_at, level
     FROM master_cardios
     ORDER BY name ASC
   `;
@@ -14,7 +14,7 @@ export const getAllMasterCardios = async () => {
 
 export const getMasterCardioById = async (id) => {
   const query = `
-    SELECT id, name, type, icon_url, description, target_distance, calories_per_unit, duration_days, created_at
+    SELECT id, name, type, icon_url, description, target_distance, calories_per_unit, duration_days, created_at, level
     FROM master_cardios
     WHERE id = $1
   `;
