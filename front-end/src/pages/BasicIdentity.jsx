@@ -84,7 +84,13 @@ export const BasicIdentity = () => {
     }
   };
 
-  const activityLevels = ["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extra Active"];
+  const activityLevels = [
+    "Sedentary",
+    "Lightly Active",
+    "Moderately Active",
+    "Very Active",
+    "Extra Active",
+  ];
 
   return (
     <OnboardingLayout currentStep={1}>
@@ -109,19 +115,27 @@ export const BasicIdentity = () => {
               placeholder={t("onboarding.basicIdentity.placeholders.age")}
             />
           </FormField>
-          <FormField label={t("onboarding.basicIdentity.fields.gender")} required>
+          <FormField
+            label={t("onboarding.basicIdentity.fields.gender")}
+            required
+          >
             <Select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
             >
               <option value="Male">{t("onboarding.basicIdentity.male")}</option>
-              <option value="Female">{t("onboarding.basicIdentity.female")}</option>
+              <option value="Female">
+                {t("onboarding.basicIdentity.female")}
+              </option>
             </Select>
           </FormField>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label={t("onboarding.basicIdentity.fields.weight")} required>
+          <FormField
+            label={t("onboarding.basicIdentity.fields.weight")}
+            required
+          >
             <Input
               type="number"
               name="weight"
@@ -133,7 +147,10 @@ export const BasicIdentity = () => {
               placeholder={t("onboarding.basicIdentity.placeholders.weight")}
             />
           </FormField>
-          <FormField label={t("onboarding.basicIdentity.fields.height")} required>
+          <FormField
+            label={t("onboarding.basicIdentity.fields.height")}
+            required
+          >
             <Input
               type="number"
               name="height"
@@ -145,7 +162,10 @@ export const BasicIdentity = () => {
             />
           </FormField>
         </div>
-        <FormField label={t("onboarding.basicIdentity.fields.activityLevel")} required>
+        <FormField
+          label={t("onboarding.basicIdentity.fields.activityLevel")}
+          required
+        >
           <Select
             name="activityLevel"
             value={formData.activityLevel}

@@ -1,3 +1,13 @@
+import { Children, isValidElement } from "react";
+import {
+  Select as ShadcnSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+import { useLocale } from "../../i18n/locale-context";
+
 const INPUT_CLASS =
   "w-full px-4 py-3.5 border-2 border-transparent rounded-xl t-size3 font-medium text-slate-900 bg-slate-100 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200";
 
@@ -19,20 +29,49 @@ export const Input = ({ className = "", ...props }) => (
   <input className={`${INPUT_CLASS} ${className}`} {...props} />
 );
 
-/** Styled select with custom arrow */
-export const Select = ({ className = "", children, ...props }) => (
-  <div className="relative">
-    <select
-      className={`${INPUT_CLASS} appearance-none pr-10 ${className}`}
+/** Shadcn select with a native-like onChange adapter. */
+export const Select = ({
+  className = "",
+  children,
+  name,
+  value,
+  onChange,
+  ...props
+}) => {
+  const options = Children.toArray(children).filter(isValidElement);
+  const placeholder = options.find((option) => option.props.value === "");
+
+  return (
+    <ShadcnSelect
+      name={name}
+      value={value === "" ? undefined : String(value)}
+      onValueChange={(nextValue) =>
+        onChange?.({ target: { name, value: nextValue } })
+      }
       {...props}
     >
-      {children}
-    </select>
-    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 t-size2 font-medium">
-      ▼
-    </div>
-  </div>
-);
+      <SelectTrigger className={`${INPUT_CLASS} h-auto! ${className}`}>
+        <SelectValue placeholder={placeholder?.props.children} />
+      </SelectTrigger>
+      <SelectContent position="popper">
+        {options
+          .filter((option) => option.props.value !== "")
+          .map((option) => {
+            const optionValue = option.props.value ?? option.props.children;
+            return (
+              <SelectItem
+                key={String(optionValue)}
+                value={String(optionValue)}
+                disabled={option.props.disabled}
+              >
+                {option.props.children}
+              </SelectItem>
+            );
+          })}
+      </SelectContent>
+    </ShadcnSelect>
+  );
+};
 
 /** Styled textarea */
 export const Textarea = ({ className = "", ...props }) => (
@@ -91,41 +130,36 @@ export const ErrorAlert = ({ message }) =>
   ) : null;
 
 /** Back / Submit button row */
-export const FormActions = ({
-  onBack,
-  submitLabel,
-  loading = false,
-}) => {
+export const FormActions = ({ onBack, submitLabel, loading = false }) => {
   const { t } = useLocale();
 
   return (
     <>
-    <div className="h-px bg-slate-100" />
-    <div className="flex justify-between items-center gap-4">
-      {onBack ? (
+      <div className="h-px bg-slate-100" />
+      <div className="flex justify-between items-center gap-4">
+        {onBack ? (
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-5 py-3 rounded-xl t-size3 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          >
+            ← {t("common.back")}
+          </button>
+        ) : (
+          <span />
+        )}
         <button
-          type="button"
-          onClick={onBack}
-          className="px-5 py-3 rounded-xl t-size3 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          type="submit"
+          disabled={loading}
+          className={`px-8 py-3.5 rounded-xl t-size3 font-bold text-white transition-all duration-200 ${
+            loading
+              ? "bg-green-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+          }`}
         >
-          ← {t("common.back")}
+          {loading ? t("common.saving") : submitLabel || t("common.continue")}
         </button>
-      ) : (
-        <span />
-      )}
-      <button
-        type="submit"
-        disabled={loading}
-        className={`px-8 py-3.5 rounded-xl t-size3 font-bold text-white transition-all duration-200 ${
-          loading
-            ? "bg-green-400 cursor-not-allowed"
-            : "bg-green-600 hover:bg-green-700 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
-        }`}
-      >
-        {loading ? t("common.saving") : submitLabel || t("common.continue")}
-      </button>
-    </div>
+      </div>
     </>
   );
 };
-import { useLocale } from "../../i18n/locale-context";

@@ -85,7 +85,9 @@ const MealCard = ({ meal, onViewRecipe, t }) => {
 
         {/* Time + servings */}
         <div className="flex gap-2 t-size2 text-slate-400 font-medium">
-          <span>⏰ {t("recommendations.minutes", { value: meal.total_time })}</span>
+          <span>
+            ⏰ {t("recommendations.minutes", { value: meal.total_time })}
+          </span>
           <span>
             🍽 {t("recommendations.servings", { value: meal.servings })}
           </span>
@@ -256,9 +258,9 @@ export const Recommendations = () => {
   return (
     <div className="flex flex-col gap-5 font-sans">
       {/* AI Banner */}
-      <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-xl py-3.5 px-5 flex items-center justify-between shadow-md shadow-green-600/15">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+      <div className="bg-linear-to-r from-green-600 to-green-500 rounded-xl p-2 md:p-3 lg:p-4 xl:p-4.5 2xl:p-5 flex items-center flex-wrap gap-2 justify-between shadow-md shadow-green-600/15">
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
+          <div className="w-9 h-9 shrink-0 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
             <span className="t-size5 font-medium">✨</span>
           </div>
           <div>
@@ -312,7 +314,12 @@ export const Recommendations = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
           {normalizedMealPlan.map((m) => (
-            <MealCard key={m.id} meal={m} onViewRecipe={handleViewRecipe} t={t} />
+            <MealCard
+              key={m.id}
+              meal={m}
+              onViewRecipe={handleViewRecipe}
+              t={t}
+            />
           ))}
         </div>
       )}

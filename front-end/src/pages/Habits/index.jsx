@@ -4,11 +4,7 @@ import { WeeklyRunTracker } from "./WeeklyRunTracker";
 import { WeeklyExercise } from "./WeeklyExercise";
 import { useLocale } from "../../i18n/locale-context";
 
-const TABS = [
-  { key: "habit" },
-  { key: "run" },
-  { key: "exercise" },
-];
+const TABS = [{ key: "habit" }, { key: "run" }, { key: "exercise" }];
 
 export const Habits = () => {
   const [activeTab, setActiveTab] = useState("habit");

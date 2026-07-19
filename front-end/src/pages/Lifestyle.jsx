@@ -46,7 +46,10 @@ export const Lifestyle = () => {
       return;
     }
     setLoading(true);
-    showLoading(t("onboarding.lifestyle.saving"), t("onboarding.lifestyle.savingDescription"));
+    showLoading(
+      t("onboarding.lifestyle.saving"),
+      t("onboarding.lifestyle.savingDescription"),
+    );
     try {
       const payload = {
         dietary_pattern: form.dietaryPattern,
@@ -87,19 +90,33 @@ export const Lifestyle = () => {
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label={t("onboarding.lifestyle.fields.dietaryPattern")} required>
+          <FormField
+            label={t("onboarding.lifestyle.fields.dietaryPattern")}
+            required
+          >
             <Select
               name="dietaryPattern"
               value={form.dietaryPattern}
               onChange={handleChange}
             >
-              <option value="High Protein">{t("onboarding.lifestyle.patterns.highProtein")}</option>
-              <option value="Low Protein">{t("onboarding.lifestyle.patterns.lowProtein")}</option>
-              <option value="High Fiber">{t("onboarding.lifestyle.patterns.highFiber")}</option>
-              <option value="Vegan">{t("onboarding.lifestyle.patterns.vegan")}</option>
+              <option value="High Protein">
+                {t("onboarding.lifestyle.patterns.highProtein")}
+              </option>
+              <option value="Low Protein">
+                {t("onboarding.lifestyle.patterns.lowProtein")}
+              </option>
+              <option value="High Fiber">
+                {t("onboarding.lifestyle.patterns.highFiber")}
+              </option>
+              <option value="Vegan">
+                {t("onboarding.lifestyle.patterns.vegan")}
+              </option>
             </Select>
           </FormField>
-          <FormField label={t("onboarding.lifestyle.fields.mealsPerDay")} required>
+          <FormField
+            label={t("onboarding.lifestyle.fields.mealsPerDay")}
+            required
+          >
             <Input
               type="number"
               name="mealsPerDay"
@@ -112,7 +129,10 @@ export const Lifestyle = () => {
           </FormField>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label={t("onboarding.lifestyle.fields.waterGoal")} required>
+          <FormField
+            label={t("onboarding.lifestyle.fields.waterGoal")}
+            required
+          >
             <Input
               type="number"
               name="dailyWaterIntakeGoal"
@@ -121,7 +141,10 @@ export const Lifestyle = () => {
               placeholder={t("onboarding.lifestyle.placeholders.water")}
             />
           </FormField>
-          <FormField label={t("onboarding.lifestyle.fields.sleepHours")} required>
+          <FormField
+            label={t("onboarding.lifestyle.fields.sleepHours")}
+            required
+          >
             <Input
               type="number"
               name="avgSleepHours"

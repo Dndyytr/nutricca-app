@@ -104,8 +104,8 @@ const buildWeightChart = (logs, period, locale) => {
       day: new Date(log.log_date).toLocaleDateString(
         locale === "id" ? "id-ID" : "en-US",
         {
-        day: "2-digit",
-        month: "numeric",
+          day: "2-digit",
+          month: "numeric",
         },
       ),
       weight: Number.parseFloat(log.weight_kg),
@@ -245,10 +245,7 @@ export const Progress = () => {
       showSuccess(t("progress.weightLogged"), t("progress.weightSaved"));
     } catch {
       closeFeedback();
-      showError(
-        t("progress.saveFailed"),
-        t("progress.weightSaveFailed"),
-      );
+      showError(t("progress.saveFailed"), t("progress.weightSaveFailed"));
     } finally {
       setSavingWeight(false);
     }
@@ -294,7 +291,9 @@ export const Progress = () => {
           unit="kg"
           sub={
             weightDiff !== null
-              ? t("progress.fromTarget", { value: `${weightDiff > 0 ? "+" : ""}${weightDiff}` })
+              ? t("progress.fromTarget", {
+                  value: `${weightDiff > 0 ? "+" : ""}${weightDiff}`,
+                })
               : "-"
           }
           subColor={weightDiff <= 0 ? "#16A34A" : "#DC2626"}
@@ -317,7 +316,9 @@ export const Progress = () => {
           label={t("progress.activeStreak")}
           value={gamification?.current_streak ?? streak.consecutive ?? "-"}
           unit={t("progress.days")}
-          sub={t("progress.longest", { value: gamification?.longest_streak ?? streak.longest ?? "-" })}
+          sub={t("progress.longest", {
+            value: gamification?.longest_streak ?? streak.longest ?? "-",
+          })}
           subColor="#16A34A"
         />
       </div>
@@ -351,15 +352,20 @@ export const Progress = () => {
         </button>
         <span className="t-size2 text-slate-400 ml-auto font-medium">
           {t("progress.current")}:{" "}
-          {currentWeight !== "-" ? `${currentWeight} kg` : t("progress.notLogged")} ·
-          {t("progress.target")}: {targetWeight !== "-" ? `${targetWeight} kg` : "-"}
+          {currentWeight !== "-"
+            ? `${currentWeight} kg`
+            : t("progress.notLogged")}{" "}
+          ·{t("progress.target")}:{" "}
+          {targetWeight !== "-" ? `${targetWeight} kg` : "-"}
         </span>
       </div>
 
       {/* Weight trend chart */}
       <div className="bg-white border border-slate-200 rounded-xl py-4 px-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <div className="t-size3 font-bold text-slate-900">{t("progress.weightTrend")}</div>
+          <div className="t-size3 font-bold text-slate-900">
+            {t("progress.weightTrend")}
+          </div>
           <span className="t-size2 font-semibold text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full">
             {currentWeight !== "-" ? `${currentWeight} kg` : "-"} →{" "}
             {targetWeight !== "-" ? `${targetWeight} kg` : "-"}

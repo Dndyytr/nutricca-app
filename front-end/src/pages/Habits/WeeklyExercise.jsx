@@ -7,6 +7,7 @@ import {
 import { DAYS, LEVEL_CONFIG } from "./constants";
 import { SaveBar } from "./SaveBar";
 import { useLocale } from "../../i18n/locale-context";
+import { Select } from "../../components/ui/FormComponents";
 
 export const WeeklyExercise = () => {
   const { t } = useLocale();
@@ -90,7 +91,9 @@ export const WeeklyExercise = () => {
       setTimeout(() => setStatus("idle"), 2000);
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err.response?.data?.message || t("habits.weeklyExercise.saveFailed"));
+      setErrorMsg(
+        err.response?.data?.message || t("habits.weeklyExercise.saveFailed"),
+      );
       setTimeout(() => setStatus("idle"), 3000);
     }
   };
@@ -102,7 +105,7 @@ export const WeeklyExercise = () => {
         <span className="t-size3 font-medium text-slate-500">
           {t("habits.weeklyExercise.level")}
         </span>
-        <select
+        <Select
           value={level}
           onChange={(e) => {
             setLevel(e.target.value);
@@ -110,12 +113,18 @@ export const WeeklyExercise = () => {
           }}
           className="px-3 py-1.5 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer w-auto font-medium"
         >
-          <option value="beginner">{t("habits.weeklyExercise.levels.beginner.name")}</option>
-          <option value="intermediate">{t("habits.weeklyExercise.levels.intermediate.name")}</option>
-          <option value="advanced">{t("habits.weeklyExercise.levels.advanced.name")}</option>
-        </select>
+          <option value="beginner">
+            {t("habits.weeklyExercise.levels.beginner.name")}
+          </option>
+          <option value="intermediate">
+            {t("habits.weeklyExercise.levels.intermediate.name")}
+          </option>
+          <option value="advanced">
+            {t("habits.weeklyExercise.levels.advanced.name")}
+          </option>
+        </Select>
         <span
-          className="t-size2 font-semibold px-3 py-1 rounded-full"
+          className="t-size3 font-semibold px-3 py-1 rounded-full"
           style={{ background: cfg.pillBg, color: cfg.pillColor }}
         >
           {t(`habits.weeklyExercise.levels.${level}.label`)}
@@ -131,7 +140,7 @@ export const WeeklyExercise = () => {
         {DAYS.map((d) => (
           <span
             key={d}
-            className="t-size2 font-semibold text-slate-500 bg-slate-100 rounded-md px-2 py-1"
+            className="t-size3 font-semibold text-slate-500 bg-slate-100 rounded-md px-2 py-1"
           >
             {t(`habits.weeklyExercise.days.${d}`)}
           </span>
@@ -145,7 +154,7 @@ export const WeeklyExercise = () => {
         </div>
         {cfg.groups.map((group) => (
           <div key={group.section} className="mb-4">
-            <div className="t-size1 font-bold tracking-widest text-slate-300 uppercase pb-1.5 border-b border-slate-100 mb-2">
+            <div className="t-size2 font-bold tracking-widest text-slate-300 uppercase pb-1.5 border-b border-slate-100 mb-2">
               {t(`habits.weeklyExercise.sections.${group.section}`)}
             </div>
             {group.items.map((ex) => {
@@ -168,10 +177,17 @@ export const WeeklyExercise = () => {
                     >
                       {t(`habits.weeklyExercise.exercises.${ex.id}`)}
                     </span>
-                    <span className="t-size2 text-slate-500 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap shrink-0 font-medium">
-                      {t("habits.weeklyExercise.sets", { reps: ex.reps, unit: t(`habits.weeklyExercise.units.${ex.unit || "reps"}`), sets: ex.sets, days: ex.days })}
+                    <span className="t-size3 text-slate-500 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap shrink-0 font-medium">
+                      {t("habits.weeklyExercise.sets", {
+                        reps: ex.reps,
+                        unit: t(
+                          `habits.weeklyExercise.units.${ex.unit || "reps"}`,
+                        ),
+                        sets: ex.sets,
+                        days: ex.days,
+                      })}
                     </span>
-                    <span className="t-size2 font-bold min-w-[32px] text-right shrink-0 text-green-600">
+                    <span className="t-size3 font-bold min-w-[32px] text-right shrink-0 text-green-600">
                       {doneDays}/{ex.days}
                     </span>
                   </div>
@@ -191,7 +207,7 @@ export const WeeklyExercise = () => {
                           onClick={() => toggle(key)}
                           title={t(`habits.weeklyExercise.days.${day}`)}
                           className={`
-                            w-8 h-7 rounded-md flex items-center justify-center t-size2 font-semibold transition-all duration-150 shrink-0 cursor-pointer
+                            w-8 h-7 rounded-md flex items-center justify-center t-size3 font-semibold transition-all duration-150 shrink-0 cursor-pointer
                             ${
                               checked
                                 ? "bg-green-600 text-white border-0"
@@ -236,10 +252,13 @@ export const WeeklyExercise = () => {
                 style={{ width: `${weekPct}%` }}
               />
             </div>
-            <div className="flex justify-between mt-1.5 t-size2 text-slate-400 font-medium">
+            <div className="flex justify-between mt-1.5 t-size3 text-slate-400 font-medium">
               <span>{t("habits.weeklyExercise.weeklyProgress")}</span>
               <span>
-                {t("habits.weeklyExercise.sessions", { done: totalDone, total: totalTarget })}
+                {t("habits.weeklyExercise.sessions", {
+                  done: totalDone,
+                  total: totalTarget,
+                })}
               </span>
             </div>
           </div>
@@ -255,7 +274,11 @@ export const WeeklyExercise = () => {
         onSave={handleSave}
         status={status}
         errorMsg={errorMsg}
-        label={t(exerciseId ? "habits.weeklyExercise.update" : "habits.weeklyExercise.save")}
+        label={t(
+          exerciseId
+            ? "habits.weeklyExercise.update"
+            : "habits.weeklyExercise.save",
+        )}
       />
     </div>
   );
