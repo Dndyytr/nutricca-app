@@ -1,5 +1,6 @@
 import NutritionLogRepository from '../repositories/nutrition_log-repositories.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
+import UserRepository from '../../users/repositories/user-repositories.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 
@@ -14,6 +15,8 @@ export const addNutritionLog = async (req, res, next) => {
     total_fat_g: totalFatG,
   } = req.validated;
 
+  const userId = req.user.id;
+
   const nutritionLog = await NutritionLogRepository.addNutritionLog({
     dailyLogId,
     meals,
@@ -21,6 +24,7 @@ export const addNutritionLog = async (req, res, next) => {
     totalProteinG,
     totalCarbsG,
     totalFatG,
+    userId,
   });
 
   if (!nutritionLog) {
@@ -55,6 +59,46 @@ export const getNutritionLogsByDailyLogId = async (req, res, next) => {
   });
 };
 
+export const getNutritionLogsByUserId = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  const { page, limit, offset } = req.pagination;
+  const { startDate, endDate, search, sort = 'newest' } = req.query;
+
+  const filters = { startDate, endDate, search };
+
+  try {
+    const result = await NutritionLogRepository.getNutritionLogsByUserId(
+      userId,
+      limit,
+      offset,
+      filters,
+      sort,
+    );
+
+    if (!result.rows || result.rows.length === 0) {
+      return next(new NotFoundError('Nutrition logs not found.'));
+    }
+
+    const totalPages = result.total > 0 ? Math.ceil(result.total / limit) : 0;
+    const showingFrom = result.total === 0 ? 0 : offset + 1;
+    const showingTo = Math.min(offset + limit, result.total);
+
+    return response(res, 200, 'Nutrition logs successfully retrieved', {
+      nutritionLogs: result.rows,
+      meta: {
+        page,
+        limit,
+        totalData: result.total,
+        totalPages,
+        showingText: `Showing ${showingFrom} to ${showingTo} of ${result.total} records`,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deleteNutritionLogById = async (req, res, next) => {
   const { id } = req.params;
 
@@ -66,7 +110,9 @@ export const deleteNutritionLogById = async (req, res, next) => {
   }
 
   // Recalc calories setelah delete
-  await NutritionLogRepository.recalcCaloriesIn(deletedNutritionLog.daily_log_id);
+  await NutritionLogRepository.recalcCaloriesIn(
+    deletedNutritionLog.daily_log_id,
+  );
 
   return response(res, 200, 'Nutrition log successfully deleted', {
     id: deletedNutritionLog.id,

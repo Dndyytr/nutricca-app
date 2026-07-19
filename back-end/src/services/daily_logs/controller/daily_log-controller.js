@@ -102,11 +102,35 @@ export const updateDailyLog = async (req, res, next) => {
 };
 
 export const getDailyLogsByUserId = async (req, res, next) => {
-  const { id: userId } = req.user;
+  const userId = req.user?.id;
+
+  const { page, limit, offset } = req.pagination;
+  const { startDate, endDate, search, sort = 'newest' } = req.query;
+
+  const filters = { startDate, endDate, search };
+
   try {
-    const dailyLogs = await DailyLogRepository.getDailyLogByUserId(userId);
+    const result = await DailyLogRepository.getDailyLogByUserId(
+      userId,
+      limit,
+      offset,
+      filters,
+      sort,
+    );
+
+    const totalPages = result.total > 0 ? Math.ceil(result.total / limit) : 0;
+    const showingFrom = result.total === 0 ? 0 : offset + 1;
+    const showingTo = Math.min(offset + limit, result.total);
+
     return response(res, 200, 'Daily log history successfully retrieved', {
-      dailyLogs: dailyLogs || [],
+      dailyLogs: result.rows || [],
+      meta: {
+        page,
+        limit,
+        totalData: result.total,
+        totalPages,
+        showingText: `Showing ${showingFrom} to ${showingTo} of ${result.total} records`,
+      },
     });
   } catch (error) {
     next(error);

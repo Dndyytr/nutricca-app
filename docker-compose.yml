@@ -7,7 +7,8 @@ services:
     environment:
       POSTGRES_USER: dev_adhi
       POSTGRES_PASSWORD: Jakarta191004
-      POSTGRES_DB: health_plan_app
+      # Diubah menggunakan underscore agar aman dari error query
+      POSTGRES_DB: nutricca_db 
     ports:
       - "5433:5432"
     volumes:
@@ -17,29 +18,32 @@ services:
   ai-api:
     build: 
       context: ./ai-api
+    # Tambahan image tag untuk sinkronisasi Docker Hub
+    image: stevevaijohnpettruci/nutricca-ai:latest
     ports:
       - "8000:8000"
     volumes:
-      - ./ai-api:/app # <-- INI TETAP, UDAH BENAR!
+      - ./ai-api:/app 
 
   # 3. Service Backend Node.js
   backend-api:
     build: 
       context: ./back-end
+    # Tambahan image tag untuk sinkronisasi Docker Hub
+    image: stevevaijohnpettruci/nutricca-be:latest
     ports:
       - "3000:3000"
     volumes:
       - ./back-end:/app
       - /app/node_modules
-      # --- UPDATE BARIS INI ---
-      # Memetakan folder artifacts baru ke folder lama yang dibaca oleh Node.js
       - ./ai-api/app/artifacts:/ai-service/artifacts
     command: npm run start:dev
     environment:
       DB_USER: dev_adhi
       DB_PASSWORD: Jakarta191004
       DB_HOST: database
-      DB_NAME: health_plan_app
+      # Harus sama dengan POSTGRES_DB di atas
+      DB_NAME: nutricca_db 
       DB_PORT: 5432
     depends_on:
       - database
@@ -49,6 +53,8 @@ services:
   frontend-app:
     build:
       context: ./front-end
+    # Opsional: Jika frontend juga mau di-push ke Docker Hub nantinya
+    image: stevevaijohnpettruci/nutricca-fe:latest
     ports:
       - "5173:5173"
     volumes:
@@ -60,4 +66,5 @@ services:
       - backend-api
 
 volumes:
+  # Diperbaiki menjadi format YAML yang valid
   pg_data:

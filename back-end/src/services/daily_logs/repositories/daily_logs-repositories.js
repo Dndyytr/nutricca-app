@@ -69,13 +69,48 @@ class DailyLogRepository {
     return result.rows[0];
   }
 
-  async getDailyLogByUserId(userId) {
-    const query = {
-      text: 'SELECT * FROM daily_logs WHERE user_id = $1 ORDER BY log_date DESC',
-      values: [userId],
+  async getDailyLogByUserId(
+    userId,
+    limit,
+    offset,
+    filters = {},
+    sort = 'newest',
+  ) {
+    const values = [userId];
+    let whereClause = 'WHERE user_id = $1';
+
+    if (filters.startDate) {
+      values.push(filters.startDate);
+      whereClause += ` AND log_date >= $${values.length}`;
+    }
+    if (filters.endDate) {
+      values.push(filters.endDate);
+      whereClause += ` AND log_date <= $${values.length}`;
+    }
+
+    const orderClause =
+      sort === 'oldest' ? 'ORDER BY log_date ASC' : 'ORDER BY log_date DESC';
+
+    const dataValues = [...values, limit, offset];
+    const dataQuery = {
+      text: `SELECT * FROM daily_logs ${whereClause} ${orderClause} LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}`,
+      values: dataValues,
     };
-    const result = await this.pool.query(query);
-    return result.rows;
+
+    const countQuery = {
+      text: `SELECT COUNT(*) FROM daily_logs ${whereClause}`,
+      values,
+    };
+
+    const [dataResult, countResult] = await Promise.all([
+      this.pool.query(dataQuery),
+      this.pool.query(countQuery),
+    ]);
+
+    return {
+      rows: dataResult.rows,
+      total: parseInt(countResult.rows[0].count, 10),
+    };
   }
 
   // UPDATE menggunakan teknik COALESCE agar jika field tidak dikirim, nilai lama tidak terhapus
