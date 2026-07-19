@@ -41,14 +41,14 @@ router.put('/exercise/:id', authenticateToken, validate(UpdateWeeklyExerciseSche
 router.get('/master/exercises', getMasterExercisesHandler);
 router.get('/master/cardios', getMasterCardiosHandler);
 
+// Activity Progress Routes (HARUS SEBELUM User Weekly Activities /:id routes)
+router.get('/:activity_id/progress', authenticateToken, getActivityProgressHandler);
+router.post('/:activity_id/progress', authenticateToken, postActivityProgressHandler);
+router.put('/:activity_id/progress/:progress_id', authenticateToken, putActivityProgressHandler);
+
 // User Weekly Activities Routes
 router.post('/', authenticateToken, postUserWeeklyActivityHandler);
 router.get('/:id', authenticateToken, getUserWeeklyActivityHandler);
 router.put('/:id', authenticateToken, putUserWeeklyActivityHandler);
-
-// Activity Progress Routes
-router.get('/:activity_id/progress', authenticateToken, getActivityProgressHandler);
-router.post('/:activity_id/progress', authenticateToken, postActivityProgressHandler);
-router.put('/progress/:progress_id', authenticateToken, putActivityProgressHandler);
 
 export default router;
