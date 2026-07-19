@@ -16,6 +16,21 @@
   --breakpoint-bp575: 575px;
   --breakpoint-bp400: 400px;
   --breakpoint-bp360: 360px;
+
+  /* animations */
+  --animate-ping-slow: ping-slow 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes ping-slow {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    75%,
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
 }
 
 /* Base styles yang tidak ter-cover oleh Tailwind Preflight */
@@ -34,6 +49,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,

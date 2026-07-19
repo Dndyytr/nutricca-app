@@ -76,6 +76,12 @@ export const postUserWeeklyActivityHandler = async (req, res, next) => {
 export const getUserWeeklyActivityHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
+    if (isNaN(id)) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Weekly activity not found',
+      });
+    }
     const activity = await UserWeeklyActivitiesRepo.getUserWeeklyActivity(id);
 
     if (!activity) {

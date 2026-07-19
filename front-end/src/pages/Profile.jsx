@@ -14,6 +14,7 @@ import {
 } from "../shared/ui/feedback";
 import { useConfirm } from "../shared/ui/use-confirm";
 import { useLocale } from "../i18n/locale-context";
+import { Select } from "../components/ui/FormComponents";
 
 const TAB_LIST = [
   { key: "general" },
@@ -83,7 +84,10 @@ export const Profile = () => {
       showSuccess(t("profile.updated"), t("profile.updatedDescription"));
     } catch (err) {
       closeFeedback();
-      showError(t("profile.saveFailed"), err.response?.data?.message || err.message);
+      showError(
+        t("profile.saveFailed"),
+        err.response?.data?.message || err.message,
+      );
     }
   };
 
@@ -117,9 +121,9 @@ export const Profile = () => {
   return (
     <div className="flex flex-col gap-4 font-sans">
       {/* Header banner */}
-      <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-xl py-5 px-6 flex items-center justify-between shadow-md shadow-green-600/15">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center t-size6 font-bold text-white shrink-0 backdrop-blur-sm">
+      <div className="bg-linear-to-r from-green-600 to-green-500 rounded-xl p-2 md:p-3 lg:p-4 xl:p-4.5 2xl:p-5 flex items-center flex-wrap gap-2 justify-between shadow-md shadow-green-600/15">
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
+          <div className="size-10 md:size-11 lg:size-12 xl:size-12.5 2xl:size-13 rounded-full bg-white/20 flex items-center justify-center t-size6 font-bold text-white shrink-0 backdrop-blur-sm">
             {initials}
           </div>
           <div>
@@ -134,7 +138,9 @@ export const Profile = () => {
                 BMI {userProfile?.bmi?.toFixed(1)} · {userProfile?.bmiCategory}
               </span>
               <span className="t-size2 bg-white/20 text-white px-2.5 py-0.5 rounded-full font-medium">
-                {t("profile.points", { value: userProfile?.activityPoints || 0 })}
+                {t("profile.points", {
+                  value: userProfile?.activityPoints || 0,
+                })}
               </span>
             </div>
           </div>
@@ -172,8 +178,14 @@ export const Profile = () => {
         {[
           { label: t("profile.weight"), value: `${userProfile?.weight} kg` },
           { label: t("profile.height"), value: `${userProfile?.height} cm` },
-          { label: t("profile.age"), value: t("profile.years", { value: userProfile?.age }) },
-          { label: t("profile.targetWeight"), value: `${userProfile?.targetWeight} kg` },
+          {
+            label: t("profile.age"),
+            value: t("profile.years", { value: userProfile?.age }),
+          },
+          {
+            label: t("profile.targetWeight"),
+            value: `${userProfile?.targetWeight} kg`,
+          },
         ].map(({ label, value }) => (
           <div
             key={label}
@@ -254,7 +266,7 @@ export const Profile = () => {
                     />
                   </Field>
                   <Field label={t("profile.gender")}>
-                    <select
+                    <Select
                       name="gender"
                       value={formData?.gender || "Laki-laki"}
                       onChange={handleChange}
@@ -263,7 +275,7 @@ export const Profile = () => {
                     >
                       <option value="Laki-laki">{t("profile.male")}</option>
                       <option value="Perempuan">{t("profile.female")}</option>
-                    </select>
+                    </Select>
                   </Field>
                 </div>
               </div>
@@ -348,7 +360,9 @@ export const Profile = () => {
                   label={t("profile.mealFrequency")}
                   value={
                     userProfile?.mealsPerDay
-                      ? t("profile.timesPerDay", { value: userProfile.mealsPerDay })
+                      ? t("profile.timesPerDay", {
+                          value: userProfile.mealsPerDay,
+                        })
                       : "-"
                   }
                 />
@@ -356,7 +370,9 @@ export const Profile = () => {
                   label={t("profile.dailyWaterGoal")}
                   value={
                     userProfile?.dailyWaterIntakeGoal
-                      ? t("profile.mlPerDay", { value: userProfile.dailyWaterIntakeGoal })
+                      ? t("profile.mlPerDay", {
+                          value: userProfile.dailyWaterIntakeGoal,
+                        })
                       : "-"
                   }
                 />
@@ -444,7 +460,10 @@ export const Profile = () => {
                 <div className="t-size3 font-bold text-slate-900 mb-3.5">
                   {t("profile.account")}
                 </div>
-                <InfoRow label={t("profile.email")} value={userProfile?.email} />
+                <InfoRow
+                  label={t("profile.email")}
+                  value={userProfile?.email}
+                />
                 <InfoRow
                   label={t("profile.joined")}
                   value={

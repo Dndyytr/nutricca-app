@@ -1,11 +1,6 @@
 import { useLocale } from "../../i18n/locale-context";
 
-export const SaveBar = ({
-  onSave,
-  status,
-  errorMsg,
-  label,
-}) => {
+export const SaveBar = ({ onSave, status, errorMsg, label }) => {
   const { t } = useLocale();
   const saveLabel = label || t("habits.saveBar.saveChanges");
   const isLoading = status === "saving";

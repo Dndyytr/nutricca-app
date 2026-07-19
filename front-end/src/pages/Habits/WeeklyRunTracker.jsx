@@ -3,6 +3,7 @@ import { getWeeklyRun, postWeeklyRun, putWeeklyRun } from "../../services/api";
 import { DAYS, LEVEL_CONFIG, LEVEL_TO_INT, INT_TO_LEVEL } from "./constants";
 import { SaveBar } from "./SaveBar";
 import { useLocale } from "../../i18n/locale-context";
+import { Select } from "../../components/ui/FormComponents";
 
 export const WeeklyRunTracker = () => {
   const { t } = useLocale();
@@ -73,7 +74,9 @@ export const WeeklyRunTracker = () => {
       setTimeout(() => setStatus("idle"), 2000);
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err.response?.data?.message || t("habits.weeklyRun.saveFailed"));
+      setErrorMsg(
+        err.response?.data?.message || t("habits.weeklyRun.saveFailed"),
+      );
       setTimeout(() => setStatus("idle"), 3000);
     }
   };
@@ -85,17 +88,23 @@ export const WeeklyRunTracker = () => {
         <span className="t-size3 font-medium text-slate-500">
           {t("habits.weeklyRun.level")}
         </span>
-        <select
+        <Select
           value={level}
           onChange={(e) => setLevel(e.target.value)}
           className="px-3 py-1.5 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer w-auto font-medium"
         >
-          <option value="beginner">{t("habits.weeklyExercise.levels.beginner.name")}</option>
-          <option value="intermediate">{t("habits.weeklyExercise.levels.intermediate.name")}</option>
-          <option value="advanced">{t("habits.weeklyExercise.levels.advanced.name")}</option>
-        </select>
+          <option value="beginner">
+            {t("habits.weeklyExercise.levels.beginner.name")}
+          </option>
+          <option value="intermediate">
+            {t("habits.weeklyExercise.levels.intermediate.name")}
+          </option>
+          <option value="advanced">
+            {t("habits.weeklyExercise.levels.advanced.name")}
+          </option>
+        </Select>
         <span
-          className="t-size2 font-semibold px-3 py-1 rounded-full"
+          className="t-size3 font-semibold px-3 py-1 rounded-full"
           style={{ background: cfg.pillBg, color: cfg.pillColor }}
         >
           {t(`habits.weeklyExercise.levels.${level}.label`)}
@@ -128,7 +137,7 @@ export const WeeklyRunTracker = () => {
                 key={day}
                 className="grid grid-cols-[44px_1fr_60px_70px] items-center gap-2.5"
               >
-                <span className="t-size2 font-semibold text-slate-700">
+                <span className="t-size3 font-semibold text-slate-700">
                   {t(`habits.weeklyExercise.days.${day}`)}
                 </span>
                 <input
@@ -140,7 +149,9 @@ export const WeeklyRunTracker = () => {
                   onChange={(e) => updateKm(day, e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 text-center font-medium"
                 />
-                <span className="t-size2 text-slate-400 font-medium">{t("habits.weeklyRun.kilometers")}</span>
+                <span className="t-size3 text-slate-400 font-medium">
+                  {t("habits.weeklyRun.kilometers")}
+                </span>
                 <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
                   <div
                     className="h-full rounded-full bg-green-500 transition-all"

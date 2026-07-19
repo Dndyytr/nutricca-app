@@ -78,7 +78,10 @@ export const GoalSetting = () => {
     }
 
     setLoading(true);
-    showLoading(t("onboarding.goals.saving"), t("onboarding.goals.savingDescription"));
+    showLoading(
+      t("onboarding.goals.saving"),
+      t("onboarding.goals.savingDescription"),
+    );
     try {
       const payload = {
         primary_goal: formData.primaryGoal,
