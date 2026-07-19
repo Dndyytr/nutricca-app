@@ -77,7 +77,6 @@ export const updateDailyLog = async (req, res, next) => {
       ? `${baseDateString} ${sleepEndTime}:00`
       : undefined;
 
-    // 4. Kirim pembaruan ke database
     const updatedLog = await DailyLogRepository.updateDailyLog(id, userId, {
       totalWaterMl,
       sleepStartTime: formattedSleepStart,

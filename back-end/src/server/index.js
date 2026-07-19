@@ -23,7 +23,7 @@ app.use(helmet());
 // Contoh di file .env: ALLOWED_ORIGINS=http://localhost:5173,http://145.79.12.168
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost', 'http://localhost:5173', 'http://145.79.12.168']; // Fallback aman jika .env belum di-set
+  : ['http://localhost', 'http://localhost:5173', 'http://145.79.12.168', 'https://nutricca.vercel.app']; // Fallback aman jika .env belum di-set
 
 app.use(
   cors({
