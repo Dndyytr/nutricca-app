@@ -82,77 +82,76 @@ export const createActivityProgress = async (activityId, progressData) => {
   return result.rows[0];
 };
 
+/**
+ * Update activity progress with database-side calorie recalculation
+ * This prevents race conditions by doing calculation in SQL
+ */
 export const updateActivityProgress = async (progressId, progressData) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    // Get current progress to recalculate calories
-    const currentQuery = `
-      SELECT exercise_id, cardio_id, reps_done, distance_done FROM activity_progress WHERE id = $1
-    `;
-    const currentResult = await client.query(currentQuery, [progressId]);
-    const currentProgress = currentResult.rows[0];
+    // Build dynamic update query with calorie recalculation in SQL
+    const updates = [];
+    const values = [progressId];
+    let paramCount = 2;
 
-    // Prepare update fields
-    const fields = [];
-    const values = [];
-    let paramCount = 1;
-
+    // Update completed status
     if (progressData.completed !== undefined) {
-      fields.push(`completed = $${paramCount}`);
+      updates.push(`completed = $${paramCount}`);
       values.push(progressData.completed);
       paramCount++;
     }
 
-    // For reps/distance updates, recalculate calories
-    let newReps = progressData.reps_done;
-    let newDistance = progressData.distance_done;
-
-    if (newReps !== undefined) {
-      fields.push(`reps_done = $${paramCount}`);
-      values.push(newReps);
+    // Update reps_done
+    if (progressData.reps_done !== undefined) {
+      updates.push(`reps_done = $${paramCount}`);
+      values.push(progressData.reps_done);
       paramCount++;
-    } else {
-      newReps = currentProgress.reps_done;
     }
 
-    if (newDistance !== undefined) {
-      fields.push(`distance_done = $${paramCount}`);
-      values.push(newDistance);
+    // Update distance_done
+    if (progressData.distance_done !== undefined) {
+      updates.push(`distance_done = $${paramCount}`);
+      values.push(progressData.distance_done);
       paramCount++;
-    } else {
-      newDistance = currentProgress.distance_done;
     }
 
-    // Recalculate calories burned
-    const caloriesBurned = await calculateCaloriesBurned(
-      currentProgress.exercise_id,
-      currentProgress.cardio_id,
-      newReps || newDistance || 0,
-    );
-
-    fields.push(`calories_burned = $${paramCount}`);
-    values.push(caloriesBurned);
-    paramCount++;
-
+    // Update notes
     if (progressData.notes !== undefined) {
-      fields.push(`notes = $${paramCount}`);
+      updates.push(`notes = $${paramCount}`);
       values.push(progressData.notes);
       paramCount++;
     }
 
-    fields.push(`updated_at = CURRENT_TIMESTAMP`);
-    values.push(progressId);
+    // Always recalculate calories_burned using SQL (prevents race condition)
+    updates.push(`calories_burned = CASE
+      WHEN exercise_id IS NOT NULL THEN 
+        COALESCE(reps_done, (
+          SELECT reps_done FROM activity_progress WHERE id = $1
+        )) * (SELECT calories_per_unit FROM master_exercises WHERE id = exercise_id)
+      WHEN cardio_id IS NOT NULL THEN 
+        COALESCE(distance_done, (
+          SELECT distance_done FROM activity_progress WHERE id = $1
+        )) * (SELECT calories_per_unit FROM master_cardios WHERE id = cardio_id)
+      ELSE 0
+    END`);
+
+    updates.push('updated_at = CURRENT_TIMESTAMP');
 
     const updateQuery = `
       UPDATE activity_progress
-      SET ${fields.join(', ')}
-      WHERE id = $${paramCount}
+      SET ${updates.join(', ')}
+      WHERE id = $1
       RETURNING *
     `;
 
     const result = await client.query(updateQuery, values);
+
+    if (result.rows.length === 0) {
+      throw new Error('Activity progress not found');
+    }
+
     await client.query('COMMIT');
     return result.rows[0];
   } catch (error) {
