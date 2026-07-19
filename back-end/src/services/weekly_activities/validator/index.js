@@ -13,6 +13,11 @@ export const updateWeeklyActivityPayloadSchema = Joi.object({
   selected_cardio_ids: Joi.array().items(Joi.number().positive()).min(1),
 }).strict();
 
+/**
+ * Enhanced validation for activity progress with conditional checks
+ * - If exercise_id: must have reps_done
+ * - If cardio_id: must have distance_done
+ */
 export const activityProgressPayloadSchema = Joi.object({
   exercise_id: Joi.number().positive(),
   cardio_id: Joi.number().positive(),
@@ -23,4 +28,16 @@ export const activityProgressPayloadSchema = Joi.object({
   notes: Joi.string().max(500),
 })
   .or('exercise_id', 'cardio_id')
+  .when('exercise_id', {
+    is: Joi.exist(),
+    then: Joi.object({
+      reps_done: Joi.number().positive().required(),
+    }),
+  })
+  .when('cardio_id', {
+    is: Joi.exist(),
+    then: Joi.object({
+      distance_done: Joi.number().positive().required(),
+    }),
+  })
   .strict();
