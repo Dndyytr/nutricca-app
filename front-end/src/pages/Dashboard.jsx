@@ -258,10 +258,11 @@ export const Dashboard = () => {
     >
       {/* AI Banner */}
       <div
+        className="p-2 md:p-3 lg:p-4 xl:p-4.5 2xl:p-5"
         style={{
           background: "linear-gradient(135deg, #16A34A 0%, #22C55E 100%)",
           borderRadius: 14,
-          padding: "16px 20px",
+          // padding: "16px 20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -271,7 +272,10 @@ export const Dashboard = () => {
             "0 4px 6px -1px rgba(22, 163, 74, 0.15), 0 2px 4px -2px rgba(22, 163, 74, 0.1)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div
+          className="gap-2 md:gap-3 lg:gap-4"
+          style={{ display: "flex", alignItems: "center" }}
+        >
           <div
             style={{
               width: 40,
@@ -282,6 +286,7 @@ export const Dashboard = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexShrink: 0,
             }}
           >
             <svg
@@ -348,7 +353,11 @@ export const Dashboard = () => {
           label={t("dashboard.metrics.initialWeight")}
           value={initialWeight ?? "-"}
           unit={initialWeight ? "kg" : ""}
-          sub={initialWeight ? t("dashboard.metrics.firstRecorded") : t("dashboard.metrics.noWeight")}
+          sub={
+            initialWeight
+              ? t("dashboard.metrics.firstRecorded")
+              : t("dashboard.metrics.noWeight")
+          }
           barColor="#94A3B8"
         />
         <MetricCard
@@ -357,9 +366,13 @@ export const Dashboard = () => {
           unit={currentWeight || userProfile?.weight ? "kg" : ""}
           sub={
             initialWeight && currentWeight
-              ? t("dashboard.metrics.fromInitial", { value: `${currentWeight - initialWeight > 0 ? "+" : ""}${(currentWeight - initialWeight).toFixed(1)}` })
+              ? t("dashboard.metrics.fromInitial", {
+                  value: `${currentWeight - initialWeight > 0 ? "+" : ""}${(currentWeight - initialWeight).toFixed(1)}`,
+                })
               : userProfile?.targetWeight
-                ? t("dashboard.metrics.target", { value: userProfile.targetWeight })
+                ? t("dashboard.metrics.target", {
+                    value: userProfile.targetWeight,
+                  })
                 : "-"
           }
           subColor={
@@ -380,7 +393,10 @@ export const Dashboard = () => {
           label={t("dashboard.metrics.waterIntake")}
           value={`${waterGlasses} / ${waterGoalGlasses}`}
           unit={t("dashboard.metrics.glasses")}
-          sub={t("dashboard.metrics.dailyGoal", { value: waterMl, percent: waterPct })}
+          sub={t("dashboard.metrics.dailyGoal", {
+            value: waterMl,
+            percent: waterPct,
+          })}
           subColor={waterMl >= waterTarget ? "#16A34A" : "#CA8A04"}
           barPct={waterPct}
           barColor="#38BDF8"
@@ -558,11 +574,23 @@ export const Dashboard = () => {
           }}
         >
           {[
-            { label: t("dashboard.calories.intake"), value: caloriesIn, color: "#0F172A" },
+            {
+              label: t("dashboard.calories.intake"),
+              value: caloriesIn,
+              color: "#0F172A",
+            },
             { label: "−", value: null },
-            { label: t("dashboard.calories.burned"), value: caloriesOut, color: "#0F172A" },
+            {
+              label: t("dashboard.calories.burned"),
+              value: caloriesOut,
+              color: "#0F172A",
+            },
             { label: "=", value: null },
-            { label: t("dashboard.calories.net"), value: caloriesIn - caloriesOut, color: "#16A34A" },
+            {
+              label: t("dashboard.calories.net"),
+              value: caloriesIn - caloriesOut,
+              color: "#16A34A",
+            },
           ].map((item, i) =>
             item.value === null ? (
               <div

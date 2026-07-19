@@ -95,7 +95,10 @@ export const HealthSecurity = () => {
     }
 
     setLoading(true);
-    showLoading(t("onboarding.medical.saving"), t("onboarding.medical.savingDescription"));
+    showLoading(
+      t("onboarding.medical.saving"),
+      t("onboarding.medical.savingDescription"),
+    );
     try {
       const payload = {
         medical_history: formData.medicalHistory.join(", "),

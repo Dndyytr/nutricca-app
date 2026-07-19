@@ -283,9 +283,7 @@ export const RecipePage = () => {
             health_tag: found.health_tag || t("recipe.aiPick"),
             main_protein_source: found.main_protein_source || t("recipe.mixed"),
             servings: found.servings || 1,
-            description:
-              found.description ||
-              t("recipe.defaultDescription"),
+            description: found.description || t("recipe.defaultDescription"),
             nutrition: {
               calories: Math.round(found.calories || 0),
               protein: Math.round(found.protein || 0),
@@ -297,8 +295,7 @@ export const RecipePage = () => {
               cholesterol: Math.round(found.cholesterol || 0),
             },
             recipe: found.recipe || {
-              description:
-                t("recipe.defaultRecipeDescription"),
+              description: t("recipe.defaultRecipeDescription"),
               ingredients: [
                 t("recipe.defaultIngredients.link"),
                 t("recipe.defaultIngredients.seasoning"),

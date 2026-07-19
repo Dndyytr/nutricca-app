@@ -14,12 +14,14 @@ import {
 } from "../../services/api";
 import { todayInAppTimeZone } from "../../shared/lib/date";
 import { useLocale } from "../../i18n/locale-context";
+import { Select } from "../../components/ui/FormComponents";
 import {
   MEAL_SLOTS,
   ACTIVITY_TYPES,
   calcSleepDuration,
   formatToHHMM,
 } from "./constants";
+import { X } from "lucide-react";
 
 const GOAL = 8;
 
@@ -294,10 +296,10 @@ export const HabitTracker = () => {
               <div key={key} className="flex items-start gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
                 <div className="flex-1">
-                  <div className="t-size2 text-slate-400 mb-1 font-medium">
+                  <div className="t-size3 text-slate-400 mb-1 font-medium">
                     {t(`habits.tracker.mealSlots.${key}`)}
                   </div>
-                  <select
+                  <Select
                     value={meals[i] || ""}
                     onChange={(e) => {
                       const u = [...meals];
@@ -315,7 +317,7 @@ export const HabitTracker = () => {
                         {m.emoji} {m.name}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
               </div>
             ))}
@@ -323,7 +325,7 @@ export const HabitTracker = () => {
             {totalsPreview.calories > 0 && (
               <div className="bg-green-50 border border-green-200 rounded-xl p-3.5">
                 <div className="flex justify-between border-b border-green-200 pb-2 mb-2.5">
-                  <span className="t-size2 font-semibold text-green-700">
+                  <span className="t-size3 font-semibold text-green-700">
                     {t("habits.tracker.totalCalories")}
                   </span>
                   <span className="t-size4 font-bold text-green-600">
@@ -337,7 +339,7 @@ export const HabitTracker = () => {
                     ["Fat", totalsPreview.fat + "g"],
                   ].map(([l, v]) => (
                     <div key={l}>
-                      <div className="t-size2 text-slate-400 font-semibold uppercase">
+                      <div className="t-size3 text-slate-400 font-semibold uppercase">
                         {l}
                       </div>
                       <div className="t-size3 font-bold text-slate-700 mt-0.5">
@@ -352,7 +354,7 @@ export const HabitTracker = () => {
             <button
               onClick={handleSaveNutrition}
               disabled={savingNutrition || meals.every((m) => !m)}
-              className={`w-full py-2 px-3 rounded-lg t-size2 font-semibold text-white transition-colors ${
+              className={`w-full py-2 px-3 rounded-lg t-size3 font-semibold text-white transition-colors ${
                 savingNutrition || meals.every((m) => !m)
                   ? "bg-green-300 cursor-not-allowed"
                   : "bg-green-600 hover:bg-green-700 cursor-pointer"
@@ -364,11 +366,11 @@ export const HabitTracker = () => {
             </button>
 
             <div className="border-t border-slate-100 pt-3">
-              <div className="t-size2 font-semibold text-slate-400 mb-2">
+              <div className="t-size3 font-semibold text-slate-400 mb-2">
                 {t("habits.tracker.todayRecord")}
               </div>
               {nutritionList.length === 0 ? (
-                <div className="t-size2 text-slate-300 italic font-medium">
+                <div className="t-size3 text-slate-300 italic font-medium">
                   {t("habits.tracker.noMeals")}
                 </div>
               ) : (
@@ -378,7 +380,7 @@ export const HabitTracker = () => {
                     className="bg-slate-50 p-2.5 rounded-md border border-slate-100 mb-2"
                   >
                     <div className="flex justify-between mb-1.5">
-                      <div className="t-size2 font-semibold text-slate-700">
+                      <div className="t-size3 font-semibold text-slate-700">
                         {t("habits.tracker.loggedMeals")}
                       </div>
                       <button
@@ -388,19 +390,19 @@ export const HabitTracker = () => {
                         ×
                       </button>
                     </div>
-                    <div className="t-size2 text-slate-500 flex flex-col gap-0.5 font-medium">
+                    <div className="t-size3 text-slate-500 flex flex-col gap-0.5 font-medium">
                       {log.meals?.map((m, idx) => (
                         <span key={idx}>
                           • {m.meal_type}: {m.food_name}
                         </span>
                       ))}
                     </div>
-                    <div className="t-size2 text-green-600 font-semibold mt-1.5 flex gap-2">
+                    <div className="t-size3 text-green-600 font-semibold mt-1.5 flex gap-2">
                       <span>🔥 {log.total_calories} kcal</span>
-                      <span className="t-size2 font-medium text-slate-400">
+                      <span className="t-size3 font-medium text-slate-400">
                         | P: {log.total_protein_g}g
                       </span>
-                      <span className="t-size2 font-medium text-slate-400">
+                      <span className="t-size3 font-medium text-slate-400">
                         | F: {log.total_fat_g}g
                       </span>
                     </div>
@@ -460,7 +462,7 @@ export const HabitTracker = () => {
           </button>
           {msgHydration && (
             <div
-              className={`t-size2 font-medium text-center mb-2 ${
+              className={`t-size3 font-medium text-center mb-2 ${
                 msgHydration.includes("✅") ? "text-green-600" : "text-red-600"
               }`}
             >
@@ -481,12 +483,12 @@ export const HabitTracker = () => {
               : t("habits.tracker.saveHydration")}
           </button>
           <div className="border-t border-slate-100 pt-3 mt-4">
-            <div className="t-size2 font-semibold text-slate-400 mb-2">
+            <div className="t-size3 font-semibold text-slate-400 mb-2">
               {t("habits.tracker.todayRecord")}
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 t-size2 font-semibold text-slate-700">
+            <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 t-size3 font-semibold text-slate-700">
               💧 {savedWaterIntake} {t("habits.tracker.glasses")}{" "}
-              <span className="t-size2 font-normal text-slate-400">
+              <span className="t-size3 font-normal text-slate-400">
                 ({savedWaterIntake * 250} ml)
               </span>
             </div>
@@ -504,10 +506,10 @@ export const HabitTracker = () => {
             <div className="flex items-start gap-2.5">
               <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
               <div className="flex-1">
-                <div className="t-size2 text-slate-400 mb-1 font-medium">
+                <div className="t-size3 text-slate-400 mb-1 font-medium">
                   {t("habits.tracker.activityType")}
                 </div>
-                <select
+                <Select
                   value={actType}
                   onChange={(e) => setActType(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
@@ -517,13 +519,13 @@ export const HabitTracker = () => {
                       {t}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
             </div>
             <div className="flex items-start gap-2.5">
               <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
               <div className="flex-1">
-                <div className="t-size2 text-slate-400 mb-1 font-medium">
+                <div className="t-size3 text-slate-400 mb-1 font-medium">
                   {isDistance
                     ? t("habits.tracker.distance")
                     : t("habits.tracker.duration")}
@@ -537,19 +539,19 @@ export const HabitTracker = () => {
                     onChange={(e) => setActVal(Number(e.target.value))}
                     className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 text-center font-medium"
                   />
-                  <span className="t-size2 text-slate-400 shrink-0 font-medium">
+                  <span className="t-size3 text-slate-400 shrink-0 font-medium">
                     {isDistance ? "km" : "min"}
                   </span>
                 </div>
               </div>
             </div>
             {actError && (
-              <div className="t-size2 text-red-600 font-medium">{actError}</div>
+              <div className="t-size3 text-red-600 font-medium">{actError}</div>
             )}
             <button
               onClick={handleAddActivity}
               disabled={loadingAct || actVal <= 0}
-              className={`py-2 px-3 rounded-lg t-size2 font-semibold text-white transition-colors ${
+              className={`py-2 px-3 rounded-lg t-size3 font-semibold text-white transition-colors ${
                 actVal > 0
                   ? "bg-green-600 hover:bg-green-700 cursor-pointer"
                   : "bg-green-300 cursor-not-allowed"
@@ -561,11 +563,11 @@ export const HabitTracker = () => {
             </button>
           </div>
           <div className="border-t border-slate-100 pt-3">
-            <div className="t-size2 font-semibold text-slate-400 mb-2">
+            <div className="t-size3 font-semibold text-slate-400 mb-2">
               {t("habits.tracker.todayRecord")}
             </div>
             {activityList.length === 0 ? (
-              <div className="t-size2 text-slate-300 italic font-medium">
+              <div className="t-size3 text-slate-300 italic font-medium">
                 {t("habits.tracker.noActivities")}
               </div>
             ) : (
@@ -575,22 +577,22 @@ export const HabitTracker = () => {
                   className="flex items-center justify-between bg-slate-50 p-2 rounded-md border border-slate-100 mb-2"
                 >
                   <div>
-                    <div className="t-size2 font-semibold text-slate-700">
+                    <div className="t-size3 font-semibold text-slate-700">
                       {log.activity_name}{" "}
-                      <span className="t-size2 font-normal text-slate-400">
+                      <span className="t-size3 font-normal text-slate-400">
                         ({log.input_value}{" "}
                         {log.input_type === "distance" ? "km" : "min"})
                       </span>
                     </div>
-                    <div className="t-size2 text-green-600 font-semibold mt-0.5">
+                    <div className="t-size3 text-green-600 font-semibold mt-0.5">
                       🔥 {log.calories_burned} kcal
                     </div>
                   </div>
                   <button
                     onClick={() => handleDeleteActivity(log.id)}
-                    className="text-red-500 t-size3 leading-none p-1 font-medium"
+                    className="text-red-600 bg-red-50 border border-red-300 rounded-full transition-all duration-300 hover:bg-red-100 p-1 cursor-pointer"
                   >
-                    ×
+                    <X className="size-3 bp360:size-3.25 bp400:size-3.5 md:size-3.75 lg:size-4 xl:size-4.25 2xl:size-4.5" />
                   </button>
                 </div>
               ))
@@ -611,7 +613,7 @@ export const HabitTracker = () => {
               <div key={key} className="flex items-start gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
                 <div className="flex-1">
-                  <div className="t-size2 text-slate-400 mb-1 font-medium">
+                  <div className="t-size3 text-slate-400 mb-1 font-medium">
                     {icon} {t(`habits.tracker.${labelKey}`)}
                   </div>
                   <input
@@ -630,7 +632,7 @@ export const HabitTracker = () => {
           </div>
           {sleepDuration && (
             <div className="mt-3.5 flex items-center justify-between bg-green-50 rounded-lg py-2.5 px-3.5">
-              <span className="t-size2 font-medium text-green-700">
+              <span className="t-size3 font-medium text-green-700">
                 {t("habits.tracker.totalSleep")}
               </span>
               <span className="t-size3 font-bold text-green-600">
@@ -640,7 +642,7 @@ export const HabitTracker = () => {
           )}
           {msgSleep && (
             <div
-              className={`t-size2 font-medium text-center mt-3 ${
+              className={`t-size3 font-medium text-center mt-3 ${
                 msgSleep.includes("✅") ? "text-green-600" : "text-red-600"
               }`}
             >
@@ -662,12 +664,12 @@ export const HabitTracker = () => {
           </button>
           {(savedSleepStart || savedSleepEnd) && (
             <div className="border-t border-slate-100 pt-3 mt-4">
-              <div className="t-size2 font-semibold text-slate-400 mb-2">
+              <div className="t-size3 font-semibold text-slate-400 mb-2">
                 {t("habits.tracker.todayRecord")}
               </div>
               <div className="bg-slate-50 p-2.5 rounded-md border border-slate-100 flex items-center gap-2">
                 <span className="t-size4 font-medium">🛌</span>
-                <div className="t-size2 font-semibold text-slate-700">
+                <div className="t-size3 font-semibold text-slate-700">
                   {savedSleepStart || "--:--"} - {savedSleepEnd || "--:--"}
                 </div>
               </div>
@@ -683,7 +685,7 @@ export const HabitTracker = () => {
           <div className="flex flex-col gap-3">
             {summaryMetrics.map(({ label, value }) => (
               <div key={label} className="flex items-center gap-2.5">
-                <div className="t-size2 text-slate-700 w-18.5 shrink-0 font-medium">
+                <div className="t-size3 text-slate-700 w-18.5 shrink-0 font-medium">
                   {label}
                 </div>
                 <div className="flex-1 h-1.5 rounded bg-slate-100 overflow-hidden">
@@ -692,7 +694,7 @@ export const HabitTracker = () => {
                     style={{ width: `${value}%` }}
                   />
                 </div>
-                <div className="t-size2 text-slate-400 w-8.5 text-right shrink-0 font-medium">
+                <div className="t-size3 text-slate-400 w-8.5 text-right shrink-0 font-medium">
                   {value}%
                 </div>
               </div>

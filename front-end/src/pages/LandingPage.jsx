@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
   Menu,
   X,
@@ -29,11 +29,19 @@ const sleepData = [
 
 const getSleepChartOption = (t) => ({
   animationDuration: 650,
+  animationEasing: "cubicOut",
   grid: { top: 4, right: 2, bottom: 0, left: 2 },
   tooltip: {
     trigger: "axis",
+    axisPointer: {
+      type: "line",
+      lineStyle: { color: "#86EFAC", width: 1 },
+    },
     valueFormatter: (value) => t("landing.mockup.hours", { value }),
-    textStyle: { fontSize: 11 },
+    backgroundColor: "#0F172A",
+    borderWidth: 0,
+    padding: [6, 8],
+    textStyle: { color: "#FFFFFF", fontSize: 11, fontWeight: 500 },
   },
   xAxis: {
     type: "category",
@@ -48,6 +56,7 @@ const getSleepChartOption = (t) => ({
       data: sleepData.map(({ hours }) => hours),
       smooth: true,
       symbol: "none",
+      emphasis: { focus: "series" },
       lineStyle: { color: "#16A34A", width: 2 },
       areaStyle: { color: "rgba(22, 163, 74, 0.18)" },
     },
@@ -61,13 +70,26 @@ function ProgressRing({
   color = "#16A34A",
   label,
   sublabel,
+  delay = 0,
 }) {
+  const [animated, setAnimated] = useState(false);
   const r = (size - stroke) / 2;
   const circ = 2 * Math.PI * r;
-  const offset = circ - (pct / 100) * circ;
+  const offset = circ - ((animated ? pct : 0) / 100) * circ;
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   return (
-    <div className="flex flex-col items-center gap-2">
-      <svg width={size} height={size} className="-rotate-90">
+    <div className="group flex flex-col items-center gap-2" title={label}>
+      <svg
+        width={size}
+        height={size}
+        className="-rotate-90 transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
+        aria-label={`${label} ${sublabel}`}
+      >
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -86,7 +108,11 @@ function ProgressRing({
           strokeDasharray={circ}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1s ease" }}
+          style={{
+            transition:
+              "stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1)",
+            transitionDelay: `${delay}ms`,
+          }}
         />
       </svg>
       <div className="text-center -mt-1">
@@ -103,10 +129,12 @@ function WaterBar({ filled, total = 8 }) {
       {Array.from({ length: total }).map((_, i) => (
         <div
           key={i}
-          className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
+          className="w-7 h-7 rounded-lg flex items-center justify-center transition-transform hover:scale-110"
           style={{
             background: i < filled ? "#DCFCE7" : "#F1F5F9",
+            transition: `background-color 300ms ease ${i * 80}ms, transform 150ms ease`,
           }}
+          title={`${i + 1}/${total}`}
         >
           <Droplets
             size={14}
@@ -119,12 +147,13 @@ function WaterBar({ filled, total = 8 }) {
 }
 
 function DashboardMockup() {
-  const [waterFilled, setWaterFilled] = useState(5);
+  const [waterFilled, setWaterFilled] = useState(0);
   const { t } = useLocale();
+  const chartOption = useMemo(() => getSleepChartOption(t), [t]);
 
   useEffect(() => {
-    const t = setTimeout(() => setWaterFilled(6), 1200);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setWaterFilled(6), 300);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -161,6 +190,7 @@ function DashboardMockup() {
           color="#16A34A"
           label="82%"
           sublabel={t("landing.mockup.calories")}
+          delay={0}
         />
         <ProgressRing
           pct={67}
@@ -169,6 +199,7 @@ function DashboardMockup() {
           color="#22C55E"
           label="67%"
           sublabel={t("landing.mockup.protein")}
+          delay={120}
         />
         <ProgressRing
           pct={91}
@@ -177,6 +208,7 @@ function DashboardMockup() {
           color="#15803D"
           label="91%"
           sublabel={t("landing.mockup.waterIntake")}
+          delay={240}
         />
       </div>
 
@@ -211,7 +243,7 @@ function DashboardMockup() {
         </div>
         <div className="h-20">
           <EChartsChart
-            option={getSleepChartOption(t)}
+            option={chartOption}
             className="h-full w-full"
             ariaLabel={t("landing.mockup.weeklySleepTrend")}
           />
@@ -295,6 +327,45 @@ const navLinks = [
   { key: "howItWorks", href: "#how-it-works" },
   { key: "testimonials", href: "#testimonials" },
 ];
+
+function Reveal({
+  children,
+  className = "",
+  animation = "slide-in-from-bottom-6",
+}) {
+  const elementRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setVisible(true);
+        observer.unobserve(element);
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={elementRef}
+      className={`${className} ${
+        visible
+          ? `animate-in fade-in ${animation} duration-700 motion-reduce:animate-none`
+          : "opacity-0"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
 
 export const LandingPage = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -410,7 +481,7 @@ export const LandingPage = () => {
       <section className="pt-32 pb-20 px-6 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* left */}
-          <div>
+          <div className="animate-in fade-in slide-in-from-left-6 duration-700 motion-reduce:animate-none">
             <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 t-size2 font-semibold px-3 py-1.5 rounded-full mb-6 border border-green-200">
               <span className="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse" />
               {t("landing.hero.eyebrow")}
@@ -475,7 +546,7 @@ export const LandingPage = () => {
           <div className="relative flex justify-center">
             {/* glow */}
             <div className="absolute inset-0 bg-green-100 rounded-3xl blur-3xl opacity-40 scale-90" />
-            <div className="relative">
+            <div className="relative animate-in fade-in slide-in-from-right-6 duration-700 delay-200 fill-mode-backwards motion-reduce:animate-none">
               <DashboardMockup />
             </div>
           </div>
@@ -485,52 +556,59 @@ export const LandingPage = () => {
       {/* ── FEATURES (BENTO) ── */}
       <section id="features" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
-              {t("landing.features.eyebrow")}
-            </p>
-            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
-              {t("landing.features.title")}
-            </h2>
-            <p className="mt-3 text-slate-500 t-size4 max-w-xl mx-auto font-medium">
-              {t("landing.features.description")}
-            </p>
-          </div>
+          <Reveal animation="slide-in-from-bottom-6">
+            <div className="text-center mb-14">
+              <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+                {t("landing.features.eyebrow")}
+              </p>
+              <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+                {t("landing.features.title")}
+              </h2>
+              <p className="mt-3 text-slate-500 t-size4 max-w-xl mx-auto font-medium">
+                {t("landing.features.description")}
+              </p>
+            </div>
+          </Reveal>
 
           {/* bento grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {features.map((f, i) => {
               const Icon = f.icon;
               return (
-                <div
+                <Reveal
                   key={i}
-                  className={`group bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ${
-                    f.size === "col-span-2" ? "md:col-span-2" : ""
-                  }`}
+                  className={f.size === "col-span-2" ? "md:col-span-2" : ""}
+                  animation={
+                    i % 2 === 0
+                      ? "slide-in-from-left-6"
+                      : "slide-in-from-right-6"
+                  }
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: f.bg }}
-                    >
-                      <Icon size={18} style={{ color: f.color }} />
-                    </div>
-                    {f.tagKey && (
-                      <span
-                        className="t-size2 font-semibold px-2.5 py-1 rounded-full"
-                        style={{ background: f.bg, color: f.color }}
+                  <div className="group h-full bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                    <div className="flex items-start justify-between mb-4">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: f.bg }}
                       >
-                        {t(`landing.features.items.${f.tagKey}`)}
-                      </span>
-                    )}
+                        <Icon size={18} style={{ color: f.color }} />
+                      </div>
+                      {f.tagKey && (
+                        <span
+                          className="t-size2 font-semibold px-2.5 py-1 rounded-full"
+                          style={{ background: f.bg, color: f.color }}
+                        >
+                          {t(`landing.features.items.${f.tagKey}`)}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="t-size4 font-semibold text-slate-900 mb-2">
+                      {t(`landing.features.items.${f.key}.title`)}
+                    </h3>
+                    <p className="t-size3 text-slate-500 leading-relaxed font-medium">
+                      {t(`landing.features.items.${f.key}.description`)}
+                    </p>
                   </div>
-                  <h3 className="t-size4 font-semibold text-slate-900 mb-2">
-                    {t(`landing.features.items.${f.key}.title`)}
-                  </h3>
-                  <p className="t-size3 text-slate-500 leading-relaxed font-medium">
-                    {t(`landing.features.items.${f.key}.description`)}
-                  </p>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -540,14 +618,16 @@ export const LandingPage = () => {
       {/* ── HOW IT WORKS ── */}
       <section id="how-it-works" className="py-20 px-6 bg-slate-50">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
-              {t("landing.howItWorks.eyebrow")}
-            </p>
-            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
-              {t("landing.howItWorks.title")}
-            </h2>
-          </div>
+          <Reveal animation="slide-in-from-left-6">
+            <div className="text-center mb-14">
+              <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+                {t("landing.howItWorks.eyebrow")}
+              </p>
+              <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+                {t("landing.howItWorks.title")}
+              </h2>
+            </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -563,18 +643,25 @@ export const LandingPage = () => {
                 step: "03",
                 key: "improve",
               },
-            ].map((item) => (
-              <div key={item.step} className="flex flex-col gap-4">
-                <span className="t-size10 font-extrabold text-slate-200 leading-none">
-                  {item.step}
-                </span>
-                <h3 className="t-size5 font-semibold text-slate-900">
-                  {t(`landing.howItWorks.steps.${item.key}.title`)}
-                </h3>
-                <p className="t-size3 text-slate-500 leading-relaxed font-medium">
-                  {t(`landing.howItWorks.steps.${item.key}.description`)}
-                </p>
-              </div>
+            ].map((item, i) => (
+              <Reveal
+                key={item.step}
+                animation={
+                  i % 2 === 0 ? "slide-in-from-left-6" : "slide-in-from-right-6"
+                }
+              >
+                <div className="flex flex-col gap-4">
+                  <span className="t-size10 font-extrabold text-slate-200 leading-none">
+                    {item.step}
+                  </span>
+                  <h3 className="t-size5 font-semibold text-slate-900">
+                    {t(`landing.howItWorks.steps.${item.key}.title`)}
+                  </h3>
+                  <p className="t-size3 text-slate-500 leading-relaxed font-medium">
+                    {t(`landing.howItWorks.steps.${item.key}.description`)}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -583,52 +670,60 @@ export const LandingPage = () => {
       {/* ── TESTIMONIALS ── */}
       <section id="testimonials" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
-              {t("landing.testimonials.eyebrow")}
-            </p>
-            <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
-              {t("landing.testimonials.title")}
-            </h2>
-          </div>
+          <Reveal animation="slide-in-from-right-6">
+            <div className="text-center mb-14">
+              <p className="t-size2 font-semibold uppercase tracking-widest text-green-600 mb-3">
+                {t("landing.testimonials.eyebrow")}
+              </p>
+              <h2 className="t-size9 font-extrabold text-slate-900 tracking-tight">
+                {t("landing.testimonials.title")}
+              </h2>
+            </div>
+          </Reveal>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial) => (
-              <div
+            {testimonials.map((testimonial, i) => (
+              <Reveal
                 key={testimonial.name}
-                className="bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-lg transition-shadow"
+                animation={
+                  i % 2 === 0 ? "slide-in-from-left-6" : "slide-in-from-right-6"
+                }
               >
-                {/* stars */}
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      size={14}
-                      className="fill-amber-400 text-amber-400"
+                <div className="h-full bg-white rounded-2xl border border-slate-200/80 p-6 hover:shadow-lg transition-shadow">
+                  {/* stars */}
+                  <div className="flex gap-0.5 mb-4">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        className="fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                  </div>
+                  <p className="t-size3 text-slate-600 leading-relaxed mb-6 italic font-medium">
+                    &ldquo;
+                    {t(`landing.testimonials.items.${testimonial.key}.quote`)}
+                    &rdquo;
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      className="w-10 h-10 rounded-full object-cover bg-slate-100"
                     />
-                  ))}
-                </div>
-                <p className="t-size3 text-slate-600 leading-relaxed mb-6 italic font-medium">
-                  &ldquo;
-                  {t(`landing.testimonials.items.${testimonial.key}.quote`)}
-                  &rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="w-10 h-10 rounded-full object-cover bg-slate-100"
-                  />
-                  <div>
-                    <p className="t-size3 font-semibold text-slate-900">
-                      {testimonial.name}
-                    </p>
-                    <p className="t-size2 text-slate-400 font-medium">
-                      {t(`landing.testimonials.items.${testimonial.key}.role`)}
-                    </p>
+                    <div>
+                      <p className="t-size3 font-semibold text-slate-900">
+                        {testimonial.name}
+                      </p>
+                      <p className="t-size2 text-slate-400 font-medium">
+                        {t(
+                          `landing.testimonials.items.${testimonial.key}.role`,
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -636,7 +731,7 @@ export const LandingPage = () => {
 
       {/* ── FINAL CTA ── */}
       <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
+        <Reveal className="max-w-6xl mx-auto" animation="slide-in-from-top-6">
           <div className="relative overflow-hidden bg-green-600 rounded-3xl px-10 py-16 text-center shadow-xl shadow-green-600/20">
             {/* background texture */}
             <div
@@ -674,7 +769,7 @@ export const LandingPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── FOOTER ── */}

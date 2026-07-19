@@ -5,7 +5,9 @@ import { useLocale } from "../i18n/locale-context";
 export const Notifications = () => {
   const { notifications } = useApp();
   const { t } = useLocale();
-  const unreadCount = notifications.filter((notification) => !notification.read).length;
+  const unreadCount = notifications.filter(
+    (notification) => !notification.read,
+  ).length;
 
   return (
     <div className="p-8 max-w-2xl">
@@ -33,7 +35,9 @@ export const Notifications = () => {
       {notifications.length === 0 && (
         <div className="card text-center py-12">
           <p className="t-size10 mb-4 font-medium">🔔</p>
-          <p className="t-size3 font-medium text-gray-400">{t("notifications.empty")}</p>
+          <p className="t-size3 font-medium text-gray-400">
+            {t("notifications.empty")}
+          </p>
         </div>
       )}
     </div>
