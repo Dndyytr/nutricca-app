@@ -19,7 +19,7 @@ const getActivityWithDetails = async (client, activityId) => {
 
   // Get selected exercises
   const exercisesQuery = `
-    SELECT me.id, me.name, me.type, me.icon_url, me.description, me.target_reps, me.calories_per_unit, me.duration_days
+    SELECT me.id, me.name, me.type, me.icon_url, me.description, me.target_reps, me.calories_per_unit, me.duration_days, me.level
     FROM master_exercises me
     JOIN user_activity_exercises uae ON me.id = uae.exercise_id
     WHERE uae.user_activity_id = $1
@@ -28,7 +28,7 @@ const getActivityWithDetails = async (client, activityId) => {
 
   // Get selected cardios
   const cardiosQuery = `
-    SELECT mc.id, mc.name, mc.type, mc.icon_url, mc.description, mc.target_distance, mc.calories_per_unit, mc.duration_days
+    SELECT mc.id, mc.name, mc.type, mc.icon_url, mc.description, mc.target_distance, mc.calories_per_unit, mc.duration_days, mc.level
     FROM master_cardios mc
     JOIN user_activity_cardios uac ON mc.id = uac.cardio_id
     WHERE uac.user_activity_id = $1

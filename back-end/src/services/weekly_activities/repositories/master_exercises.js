@@ -12,6 +12,17 @@ export const getAllMasterExercises = async () => {
   return result.rows;
 };
 
+export const getMasterExerciseByLevel = async (level) => {
+  const query = `
+    SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at, level
+    FROM master_exercises
+    WHERE level = $1
+    ORDER BY name ASC
+  `;
+  const result = await pool.query(query, [level]);
+  return result.rows;
+}
+
 export const getMasterExerciseById = async (id) => {
   const query = `
     SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at, level

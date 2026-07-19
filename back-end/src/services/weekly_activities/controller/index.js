@@ -8,6 +8,7 @@ import {
   updateWeeklyActivityPayloadSchema,
   activityProgressPayloadSchema,
 } from '../validator/index.js';
+import e from 'express';
 
 const pool = new Pool();
 
@@ -77,6 +78,22 @@ export const getMasterExercisesHandler = async (req, res, next) => {
   }
 };
 
+export const getMasterExercisesByLevelHandler = async (req, res, next) => {
+  try {
+    const { level } = req.params;
+    const exercises = await MasterExercisesRepo.getMasterExerciseByLevel(level);
+    res.status(200).json({
+      status: 'success',
+      message: `Master exercises for level ${level} retrieved successfully`,
+      data: {
+        exercises,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Get all master cardios
 export const getMasterCardiosHandler = async (req, res, next) => {
   try {
@@ -92,11 +109,28 @@ export const getMasterCardiosHandler = async (req, res, next) => {
     next(error);
   }
 };
+export const getMasterCardiosByLevelHandler = async (req, res, next) => {
+  try {
+    const { level } = req.params;
+    const cardios = await MasterCardiosRepo.getMasterCardioByLevel(level);
+    res.status(200).json({
+      status: 'success',
+      message: `Master cardios for level ${level} retrieved successfully`,
+      data: {
+        cardios,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // Create user weekly activity
 export const postUserWeeklyActivityHandler = async (req, res, next) => {
   try {
-    const { error, value } = createWeeklyActivityPayloadSchema.validate(req.body);
+    const { error, value } = createWeeklyActivityPayloadSchema.validate(
+      req.body,
+    );
     if (error) {
       return res.status(400).json({
         status: 'fail',
@@ -177,7 +211,9 @@ export const getUserWeeklyActivityHandler = async (req, res, next) => {
 // Update user weekly activity
 export const putUserWeeklyActivityHandler = async (req, res, next) => {
   try {
-    const { error, value } = updateWeeklyActivityPayloadSchema.validate(req.body);
+    const { error, value } = updateWeeklyActivityPayloadSchema.validate(
+      req.body,
+    );
     if (error) {
       return res.status(400).json({
         status: 'fail',
@@ -191,7 +227,10 @@ export const putUserWeeklyActivityHandler = async (req, res, next) => {
     // Verify ownership
     await verifyActivityOwnership(id, userId);
 
-    const activity = await UserWeeklyActivitiesRepo.updateUserWeeklyActivity(id, value);
+    const activity = await UserWeeklyActivitiesRepo.updateUserWeeklyActivity(
+      id,
+      value,
+    );
 
     res.status(200).json({
       status: 'success',
@@ -226,8 +265,10 @@ export const getActivityProgressHandler = async (req, res, next) => {
     // Verify ownership
     await verifyActivityOwnership(activity_id, userId);
 
-    const progress = await ActivityProgressRepo.getActivityProgress(activity_id);
-    const totalCaloriesBurned = await ActivityProgressRepo.getTotalCaloriesBurned(activity_id);
+    const progress =
+      await ActivityProgressRepo.getActivityProgress(activity_id);
+    const totalCaloriesBurned =
+      await ActivityProgressRepo.getTotalCaloriesBurned(activity_id);
 
     res.status(200).json({
       status: 'success',
@@ -273,7 +314,10 @@ export const postActivityProgressHandler = async (req, res, next) => {
     // Verify ownership
     await verifyActivityOwnership(activity_id, userId);
 
-    const progress = await ActivityProgressRepo.createActivityProgress(activity_id, value);
+    const progress = await ActivityProgressRepo.createActivityProgress(
+      activity_id,
+      value,
+    );
 
     res.status(201).json({
       status: 'success',
@@ -316,7 +360,10 @@ export const putActivityProgressHandler = async (req, res, next) => {
     // Verify ownership
     await verifyProgressOwnership(progress_id, userId);
 
-    const progress = await ActivityProgressRepo.updateActivityProgress(progress_id, value);
+    const progress = await ActivityProgressRepo.updateActivityProgress(
+      progress_id,
+      value,
+    );
 
     res.status(200).json({
       status: 'success',

@@ -24,27 +24,63 @@ import {
   getActivityProgressHandler,
   postActivityProgressHandler,
   putActivityProgressHandler,
+  getMasterCardiosByLevelHandler,
+  getMasterExercisesByLevelHandler,
 } from '../controller/index.js';
 
 const router = Router();
 
 // Specific Weekly Run & Exercise Routes (Harus sebelum /:id agar tidak bentrok)
 router.get('/run', authenticateToken, getWeeklyRun);
-router.post('/run', authenticateToken, validate(CreateWeeklyRunSchema), postWeeklyRun);
-router.put('/run/:id', authenticateToken, validate(UpdateWeeklyRunSchema), putWeeklyRun);
+router.post(
+  '/run',
+  authenticateToken,
+  validate(CreateWeeklyRunSchema),
+  postWeeklyRun,
+);
+router.put(
+  '/run/:id',
+  authenticateToken,
+  validate(UpdateWeeklyRunSchema),
+  putWeeklyRun,
+);
 
 router.get('/exercise', authenticateToken, getWeeklyExercise);
-router.post('/exercise', authenticateToken, validate(CreateWeeklyExerciseSchema), postWeeklyExercise);
-router.put('/exercise/:id', authenticateToken, validate(UpdateWeeklyExerciseSchema), putWeeklyExercise);
+router.post(
+  '/exercise',
+  authenticateToken,
+  validate(CreateWeeklyExerciseSchema),
+  postWeeklyExercise,
+);
+router.put(
+  '/exercise/:id',
+  authenticateToken,
+  validate(UpdateWeeklyExerciseSchema),
+  putWeeklyExercise,
+);
 
 // Master Data Routes
 router.get('/master/exercises', getMasterExercisesHandler);
 router.get('/master/cardios', getMasterCardiosHandler);
+router.get('/master/exercises/:level', getMasterExercisesByLevelHandler);
+router.get('/master/cardios/:level', getMasterCardiosByLevelHandler);
 
 // Activity Progress Routes (HARUS SEBELUM User Weekly Activities /:id routes)
-router.get('/:activity_id/progress', authenticateToken, getActivityProgressHandler);
-router.post('/:activity_id/progress', authenticateToken, postActivityProgressHandler);
-router.put('/:activity_id/progress/:progress_id', authenticateToken, putActivityProgressHandler);
+router.get(
+  '/:activity_id/progress',
+  authenticateToken,
+  getActivityProgressHandler,
+);
+router.post(
+  '/:activity_id/progress',
+  authenticateToken,
+  postActivityProgressHandler,
+);
+router.put(
+  '/:activity_id/progress/:progress_id',
+  authenticateToken,
+  putActivityProgressHandler,
+);
 
 // User Weekly Activities Routes
 router.post('/', authenticateToken, postUserWeeklyActivityHandler);
