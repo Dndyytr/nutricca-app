@@ -1,71 +1,45 @@
 import { Router } from 'express';
 import authenticateToken from '../../../middleware/auth.js';
 import { validate } from '../../../middleware/validate.js';
+import { paginationMiddleware } from '../../../middleware/pagination.js';
 import {
-  CreateWeeklyRunSchema,
-  UpdateWeeklyRunSchema,
-  CreateWeeklyExerciseSchema,
-  UpdateWeeklyExerciseSchema,
-} from '../validator/schema.js';
-import {
-  getWeeklyRun,
-  postWeeklyRun,
-  putWeeklyRun,
-  getWeeklyExercise,
-  postWeeklyExercise,
-  putWeeklyExercise,
-} from '../controller/weekly_activities-controller.js';
+  createWeeklyActivityPayloadSchema,
+  updateWeeklyActivityPayloadSchema,
+  activityProgressPayloadSchema,
+} from '../validator/index.js';
 import {
   getMasterExercisesHandler,
   getMasterCardiosHandler,
   postUserWeeklyActivityHandler,
   getUserWeeklyActivityHandler,
+  getCurrentUserWeeklyActivityHandler,
   putUserWeeklyActivityHandler,
   getActivityProgressHandler,
   postActivityProgressHandler,
   putActivityProgressHandler,
-  getMasterCardiosByLevelHandler,
+  getActivityHistoryHandler,
+  getMasterCardioByLevelHandler,
   getMasterExercisesByLevelHandler,
 } from '../controller/index.js';
 
 const router = Router();
 
-// Specific Weekly Run & Exercise Routes (Harus sebelum /:id agar tidak bentrok)
-router.get('/run', authenticateToken, getWeeklyRun);
-router.post(
-  '/run',
-  authenticateToken,
-  validate(CreateWeeklyRunSchema),
-  postWeeklyRun,
-);
-router.put(
-  '/run/:id',
-  authenticateToken,
-  validate(UpdateWeeklyRunSchema),
-  putWeeklyRun,
-);
-
-router.get('/exercise', authenticateToken, getWeeklyExercise);
-router.post(
-  '/exercise',
-  authenticateToken,
-  validate(CreateWeeklyExerciseSchema),
-  postWeeklyExercise,
-);
-router.put(
-  '/exercise/:id',
-  authenticateToken,
-  validate(UpdateWeeklyExerciseSchema),
-  putWeeklyExercise,
-);
-
-// Master Data Routes
+// --- Master Data (referensi katalog exercise & cardio) ---
 router.get('/master/exercises', getMasterExercisesHandler);
 router.get('/master/cardios', getMasterCardiosHandler);
-router.get('/master/exercises/:level', getMasterExercisesByLevelHandler);
-router.get('/master/cardios/:level', getMasterCardiosByLevelHandler);
+router.get('/master/cardios/level/:level', getMasterCardioByLevelHandler);
+router.get('/master/exercises/level/:level', getMasterExercisesByLevelHandler);
 
-// Activity Progress Routes (HARUS SEBELUM User Weekly Activities /:id routes)
+// --- Route statis, HARUS didaftarkan sebelum '/:id' biar gak ketangkep sebagai param ---
+router.get('/current', authenticateToken, getCurrentUserWeeklyActivityHandler);
+router.get(
+  '/history',
+  authenticateToken,
+  paginationMiddleware,
+  getActivityHistoryHandler,
+);
+
+// --- Activity Progress (HARUS sebelum '/:id' juga) ---
 router.get(
   '/:activity_id/progress',
   authenticateToken,
@@ -74,17 +48,29 @@ router.get(
 router.post(
   '/:activity_id/progress',
   authenticateToken,
+  validate(activityProgressPayloadSchema),
   postActivityProgressHandler,
 );
 router.put(
   '/:activity_id/progress/:progress_id',
   authenticateToken,
+  validate(activityProgressPayloadSchema),
   putActivityProgressHandler,
 );
 
-// User Weekly Activities Routes
-router.post('/', authenticateToken, postUserWeeklyActivityHandler);
+// --- User Weekly Activity (CRUD utama) ---
+router.post(
+  '/',
+  authenticateToken,
+  validate(createWeeklyActivityPayloadSchema),
+  postUserWeeklyActivityHandler,
+);
 router.get('/:id', authenticateToken, getUserWeeklyActivityHandler);
-router.put('/:id', authenticateToken, putUserWeeklyActivityHandler);
+router.put(
+  '/:id',
+  authenticateToken,
+  validate(updateWeeklyActivityPayloadSchema),
+  putUserWeeklyActivityHandler,
+);
 
 export default router;

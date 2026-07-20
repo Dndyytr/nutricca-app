@@ -24,7 +24,10 @@ export const addActivityLog = async (req, res, next) => {
     }
 
     // 2. Validasi Limit 12km per minggu (Khusus lari & jalan)
-    if (activityMaster.category === 'weekly_run') {
+    if (
+      activityMaster.type === 'running' ||
+      activityMaster.type === 'walking'
+    ) {
       const currentDistance =
         await ActivityLogRepository.getCurrentWeeklyRunDistance(userId);
       const limit = 12; // Batasan mingguan dalam KM
@@ -89,6 +92,42 @@ export const getActivitiesByDailyLogId = async (req, res, next) => {
 
     return response(res, 200, 'Data aktivitas berhasil dimuat', {
       activityLogs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getActivityHistory = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  const { page, limit, offset } = req.pagination;
+  const { startDate, endDate, search, sort = 'newest' } = req.query;
+
+  const filters = { startDate, endDate, search };
+
+  try {
+    const result = await ActivityLogRepository.getActivityHistoryByUserId(
+      userId,
+      limit,
+      offset,
+      filters,
+      sort,
+    );
+
+    const totalPages = result.total > 0 ? Math.ceil(result.total / limit) : 0;
+    const showingFrom = result.total === 0 ? 0 : offset + 1;
+    const showingTo = Math.min(offset + limit, result.total);
+
+    return response(res, 200, 'Activity history berhasil dimuat', {
+      activityLogs: result.rows || [],
+      meta: {
+        page,
+        limit,
+        totalData: result.total,
+        totalPages,
+        showingText: `Showing ${showingFrom} to ${showingTo} of ${result.total} records`,
+      },
     });
   } catch (error) {
     next(error);

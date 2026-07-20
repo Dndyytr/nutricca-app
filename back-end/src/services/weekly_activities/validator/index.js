@@ -3,8 +3,14 @@ import Joi from 'joi';
 export const createWeeklyActivityPayloadSchema = Joi.object({
   level: Joi.string().valid('beginner', 'intermediate', 'advanced').required(),
   week_start_date: Joi.date().iso().required(),
-  selected_exercise_ids: Joi.array().items(Joi.number().positive()).min(1).required(),
-  selected_cardio_ids: Joi.array().items(Joi.number().positive()).min(1).required(),
+  selected_exercise_ids: Joi.array()
+    .items(Joi.number().positive())
+    .min(1)
+    .required(),
+  selected_cardio_ids: Joi.array()
+    .items(Joi.number().positive())
+    .min(1)
+    .required(),
 }).strict();
 
 export const updateWeeklyActivityPayloadSchema = Joi.object({
@@ -14,9 +20,9 @@ export const updateWeeklyActivityPayloadSchema = Joi.object({
 }).strict();
 
 /**
- * Enhanced validation for activity progress with conditional checks
- * - If exercise_id: must have reps_done
- * - If cardio_id: must have distance_done
+ * Validasi progress dengan aturan kondisional:
+ * - Kalau exercise_id: wajib isi reps_done
+ * - Kalau cardio_id: wajib isi distance_done
  */
 export const activityProgressPayloadSchema = Joi.object({
   exercise_id: Joi.number().positive(),
@@ -41,3 +47,16 @@ export const activityProgressPayloadSchema = Joi.object({
     }),
   })
   .strict();
+
+/**
+ * Query params untuk GET /history (semua opsional)
+ */
+export const activityHistoryQuerySchema = Joi.object({
+  page: Joi.number().integer().min(1),
+  limit: Joi.number().integer().min(1).max(5),
+  startDate: Joi.date().iso(),
+  endDate: Joi.date().iso(),
+  search: Joi.string().max(100),
+  type: Joi.string().valid('exercise', 'cardio'),
+  sort: Joi.string().valid('newest', 'oldest'),
+});

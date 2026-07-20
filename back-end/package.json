@@ -9,7 +9,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src",
     "seed:recipes": "node seeder/recipeSeeder.js",
-    "seed:activities": "node seeder/masterActivitiesSeeder.js",
     "seed:master_activities": "node seeder/masterExercisesAndCardiosSeeder.js"
   },
   "keywords": [],

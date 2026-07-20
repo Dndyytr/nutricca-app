@@ -55,7 +55,6 @@ export const getActivityProgress = async (activityId) => {
 };
 
 export const createActivityProgress = async (activityId, progressData) => {
-  // Calculate calories burned
   const caloriesBurned = await calculateCaloriesBurned(
     progressData.exercise_id,
     progressData.cardio_id,
@@ -83,48 +82,42 @@ export const createActivityProgress = async (activityId, progressData) => {
 };
 
 /**
- * Update activity progress with database-side calorie recalculation
- * This prevents race conditions by doing calculation in SQL
+ * Update activity progress dengan kalkulasi ulang kalori di sisi SQL
+ * (menghindari race condition dibanding hitung di JS).
  */
 export const updateActivityProgress = async (progressId, progressData) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    // Build dynamic update query with calorie recalculation in SQL
     const updates = [];
     const values = [progressId];
     let paramCount = 2;
 
-    // Update completed status
     if (progressData.completed !== undefined) {
       updates.push(`completed = $${paramCount}`);
       values.push(progressData.completed);
       paramCount++;
     }
 
-    // Update reps_done
     if (progressData.reps_done !== undefined) {
       updates.push(`reps_done = $${paramCount}`);
       values.push(progressData.reps_done);
       paramCount++;
     }
 
-    // Update distance_done
     if (progressData.distance_done !== undefined) {
       updates.push(`distance_done = $${paramCount}`);
       values.push(progressData.distance_done);
       paramCount++;
     }
 
-    // Update notes
     if (progressData.notes !== undefined) {
       updates.push(`notes = $${paramCount}`);
       values.push(progressData.notes);
       paramCount++;
     }
 
-    // Always recalculate calories_burned using SQL (prevents race condition)
     updates.push(`calories_burned = CASE
       WHEN exercise_id IS NOT NULL THEN 
         COALESCE(reps_done, (
@@ -163,8 +156,7 @@ export const updateActivityProgress = async (progressId, progressData) => {
 };
 
 /**
- * Get total calories burned for a weekly activity
- * Used for dashboard calculation
+ * Total kalori terbakar untuk 1 weekly activity (dari progress yang completed).
  */
 export const getTotalCaloriesBurned = async (activityId) => {
   const query = `
@@ -174,4 +166,95 @@ export const getTotalCaloriesBurned = async (activityId) => {
   `;
   const result = await pool.query(query, [activityId]);
   return result.rows[0].total_calories_burned;
+};
+
+/**
+ * Ambil history checklist aktivitas (yang completed = true) milik seorang user,
+ * lintas minggu, dengan pagination + filter. Dipakai untuk halaman "Activity History".
+ */
+export const getActivityHistoryByUserId = async (
+  userId,
+  limit,
+  offset,
+  filters = {},
+  sort = 'newest',
+) => {
+  const values = [userId];
+  let whereClause = 'WHERE uwa.user_id = $1 AND ap.completed = true';
+
+  if (filters.type === 'exercise') {
+    whereClause += ' AND ap.exercise_id IS NOT NULL';
+  } else if (filters.type === 'cardio') {
+    whereClause += ' AND ap.cardio_id IS NOT NULL';
+  }
+
+  if (filters.startDate) {
+    values.push(filters.startDate);
+    whereClause += ` AND uwa.week_start_date >= $${values.length}`;
+  }
+  if (filters.endDate) {
+    values.push(filters.endDate);
+    whereClause += ` AND uwa.week_start_date <= $${values.length}`;
+  }
+  if (filters.search) {
+    values.push(`%${filters.search}%`);
+    whereClause += ` AND COALESCE(me.name, mc.name) ILIKE $${values.length}`;
+  }
+
+  const orderClause =
+    sort === 'oldest'
+      ? 'ORDER BY ap.updated_at ASC'
+      : 'ORDER BY ap.updated_at DESC';
+
+  const dataValues = [...values, limit, offset];
+  const dataQuery = {
+    text: `
+      SELECT 
+        ap.id,
+        ap.user_activity_id,
+        ap.day_of_week,
+        ap.completed,
+        ap.reps_done,
+        ap.distance_done,
+        ap.calories_burned,
+        ap.notes,
+        ap.updated_at,
+        uwa.week_start_date,
+        uwa.level,
+        CASE WHEN ap.exercise_id IS NOT NULL THEN 'exercise' ELSE 'cardio' END AS type,
+        COALESCE(me.id, mc.id) AS item_id,
+        COALESCE(me.name, mc.name) AS item_name,
+        COALESCE(me.icon_url, mc.icon_url) AS icon_url
+      FROM activity_progress ap
+      JOIN user_weekly_activities uwa ON ap.user_activity_id = uwa.id
+      LEFT JOIN master_exercises me ON ap.exercise_id = me.id
+      LEFT JOIN master_cardios mc ON ap.cardio_id = mc.id
+      ${whereClause}
+      ${orderClause}
+      LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}
+    `,
+    values: dataValues,
+  };
+
+  const countQuery = {
+    text: `
+      SELECT COUNT(*)
+      FROM activity_progress ap
+      JOIN user_weekly_activities uwa ON ap.user_activity_id = uwa.id
+      LEFT JOIN master_exercises me ON ap.exercise_id = me.id
+      LEFT JOIN master_cardios mc ON ap.cardio_id = mc.id
+      ${whereClause}
+    `,
+    values,
+  };
+
+  const [dataResult, countResult] = await Promise.all([
+    pool.query(dataQuery),
+    pool.query(countQuery),
+  ]);
+
+  return {
+    rows: dataResult.rows,
+    total: parseInt(countResult.rows[0].count, 10),
+  };
 };
