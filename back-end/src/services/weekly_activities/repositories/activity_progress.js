@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { nanoid } from 'nanoid';
 
 const pool = new Pool();
 
@@ -24,6 +25,55 @@ const calculateCaloriesBurned = async (exerciseId, cardioId, quantity) => {
     }
   }
   return 0;
+};
+
+// ponytail: recompute one day from source rows; avoids double-counting weekly and manual activity logs.
+const syncDailyCaloriesOut = async (client, progressId) => {
+  const source = await client.query(
+    `
+      SELECT uwa.user_id, (uwa.week_start_date + ap.day_of_week)::date AS log_date
+      FROM activity_progress ap
+      JOIN user_weekly_activities uwa ON uwa.id = ap.user_activity_id
+      WHERE ap.id = $1
+        AND (uwa.week_start_date + ap.day_of_week)::date <= CURRENT_DATE
+    `,
+    [progressId],
+  );
+
+  if (!source.rows[0]) return;
+
+  const { user_id: userId, log_date: logDate } = source.rows[0];
+  await client.query(
+    `
+      INSERT INTO daily_logs (id, user_id, log_date)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (user_id, log_date) DO NOTHING
+    `,
+    [`daily-${nanoid(16)}`, userId, logDate],
+  );
+
+  await client.query(
+    `
+      UPDATE daily_logs dl
+      SET total_calories_out =
+        COALESCE((
+          SELECT SUM(al.calories_burned)
+          FROM activity_logs al
+          WHERE al.daily_log_id = dl.id
+        ), 0) +
+        COALESCE((
+          SELECT SUM(ap.calories_burned)
+          FROM activity_progress ap
+          JOIN user_weekly_activities uwa ON uwa.id = ap.user_activity_id
+          WHERE uwa.user_id = dl.user_id
+            AND ap.completed = true
+            AND (uwa.week_start_date + ap.day_of_week)::date = dl.log_date
+        ), 0),
+        updated_at = CURRENT_TIMESTAMP
+      WHERE dl.user_id = $1 AND dl.log_date = $2
+    `,
+    [userId, logDate],
+  );
 };
 
 export const getActivityProgress = async (activityId) => {
@@ -55,30 +105,43 @@ export const getActivityProgress = async (activityId) => {
 };
 
 export const createActivityProgress = async (activityId, progressData) => {
-  const caloriesBurned = await calculateCaloriesBurned(
-    progressData.exercise_id,
-    progressData.cardio_id,
-    progressData.reps_done || progressData.distance_done || 0,
-  );
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const caloriesBurned = await calculateCaloriesBurned(
+      progressData.exercise_id,
+      progressData.cardio_id,
+      progressData.reps_done || progressData.distance_done || 0,
+    );
+    const result = await client.query(
+      `
+        INSERT INTO activity_progress
+        (user_activity_id, exercise_id, cardio_id, day_of_week, completed, reps_done, distance_done, calories_burned, notes)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING *
+      `,
+      [
+        activityId,
+        progressData.exercise_id || null,
+        progressData.cardio_id || null,
+        progressData.day_of_week,
+        progressData.completed || false,
+        progressData.reps_done || null,
+        progressData.distance_done || null,
+        caloriesBurned,
+        progressData.notes || null,
+      ],
+    );
 
-  const query = `
-    INSERT INTO activity_progress 
-    (user_activity_id, exercise_id, cardio_id, day_of_week, completed, reps_done, distance_done, calories_burned, notes)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    RETURNING *
-  `;
-  const result = await pool.query(query, [
-    activityId,
-    progressData.exercise_id || null,
-    progressData.cardio_id || null,
-    progressData.day_of_week,
-    progressData.completed || false,
-    progressData.reps_done || null,
-    progressData.distance_done || null,
-    caloriesBurned,
-    progressData.notes || null,
-  ]);
-  return result.rows[0];
+    await syncDailyCaloriesOut(client, result.rows[0].id);
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 /**
@@ -145,6 +208,7 @@ export const updateActivityProgress = async (progressId, progressData) => {
       throw new Error('Activity progress not found');
     }
 
+    await syncDailyCaloriesOut(client, progressId);
     await client.query('COMMIT');
     return result.rows[0];
   } catch (error) {
@@ -256,5 +320,114 @@ export const getActivityHistoryByUserId = async (
   return {
     rows: dataResult.rows,
     total: parseInt(countResult.rows[0].count, 10),
+  };
+};
+
+// ponytail: one aggregate query is enough for the history list; detail stays out until its page exists.
+export const getWeeklyActivityHistoryByUserId = async (
+  userId,
+  limit,
+  offset,
+  filters = {},
+  sort = 'newest',
+) => {
+  const values = [userId];
+  const baseFilters = ['uwa.user_id = $1'];
+
+  if (filters.startDate) {
+    values.push(filters.startDate);
+    baseFilters.push(`(uwa.week_start_date + 6) >= $${values.length}`);
+  }
+  if (filters.endDate) {
+    values.push(filters.endDate);
+    baseFilters.push(`uwa.week_start_date <= $${values.length}`);
+  }
+
+  const baseQuery = `
+    WITH weekly_history AS (
+      SELECT
+        uwa.id,
+        uwa.week_start_date,
+        ARRAY(
+          SELECT me.name
+          FROM user_activity_exercises uae
+          JOIN master_exercises me ON me.id = uae.exercise_id
+          WHERE uae.user_activity_id = uwa.id
+          ORDER BY me.name
+        ) AS exercise_names,
+        ARRAY(
+          SELECT mc.name
+          FROM user_activity_cardios uac
+          JOIN master_cardios mc ON mc.id = uac.cardio_id
+          WHERE uac.user_activity_id = uwa.id
+          ORDER BY mc.name
+        ) AS cardio_names,
+        COALESCE((
+          SELECT COUNT(DISTINCT ap.day_of_week)
+          FROM activity_progress ap
+          WHERE ap.user_activity_id = uwa.id
+            AND ap.exercise_id IS NOT NULL
+            AND ap.completed = true
+        ), 0) AS exercise_completed_days,
+        COALESCE((
+          SELECT MAX(me.duration_days)
+          FROM user_activity_exercises uae
+          JOIN master_exercises me ON me.id = uae.exercise_id
+          WHERE uae.user_activity_id = uwa.id
+        ), 0) AS exercise_target_days,
+        COALESCE((
+          SELECT COUNT(DISTINCT ap.day_of_week)
+          FROM activity_progress ap
+          WHERE ap.user_activity_id = uwa.id
+            AND ap.cardio_id IS NOT NULL
+            AND ap.completed = true
+        ), 0) AS cardio_completed_days,
+        COALESCE((
+          SELECT MAX(mc.duration_days)
+          FROM user_activity_cardios uac
+          JOIN master_cardios mc ON mc.id = uac.cardio_id
+          WHERE uac.user_activity_id = uwa.id
+        ), 0) AS cardio_target_days,
+        COALESCE((
+          SELECT SUM(ap.calories_burned)
+          FROM activity_progress ap
+          WHERE ap.user_activity_id = uwa.id AND ap.completed = true
+        ), 0) AS total_calories_burned
+      FROM user_weekly_activities uwa
+      WHERE ${baseFilters.join(' AND ')}
+    )
+  `;
+
+  let searchClause = '';
+  if (filters.search) {
+    values.push(`%${filters.search}%`);
+    const searchParam = `$${values.length}`;
+    searchClause = `
+      WHERE COALESCE(array_to_string(exercise_names, ' '), '') ILIKE ${searchParam}
+         OR COALESCE(array_to_string(cardio_names, ' '), '') ILIKE ${searchParam}
+    `;
+  }
+
+  const orderClause = sort === 'oldest' ? 'ASC' : 'DESC';
+  const dataValues = [...values, limit, offset];
+  const dataQuery = `${baseQuery}
+    SELECT *
+    FROM weekly_history
+    ${searchClause}
+    ORDER BY week_start_date ${orderClause}
+    LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}
+  `;
+  const countQuery = `${baseQuery}
+    SELECT COUNT(*) FROM weekly_history ${searchClause}
+  `;
+
+  const [dataResult, countResult] = await Promise.all([
+    pool.query(dataQuery, dataValues),
+    pool.query(countQuery, values),
+  ]);
+
+  return {
+    rows: dataResult.rows,
+    total: Number(countResult.rows[0].count),
   };
 };

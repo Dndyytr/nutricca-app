@@ -19,6 +19,16 @@ export const updateWeeklyActivityPayloadSchema = Joi.object({
   selected_cardio_ids: Joi.array().items(Joi.number().positive()).min(1),
 }).strict();
 
+export const updateWeeklyExercisesPayloadSchema = Joi.object({
+  level: Joi.string().valid('beginner', 'intermediate', 'advanced').required(),
+  selected_exercise_ids: Joi.array().items(Joi.number().positive()).min(1).required(),
+}).strict();
+
+export const updateWeeklyCardiosPayloadSchema = Joi.object({
+  level: Joi.string().valid('beginner', 'intermediate', 'advanced').required(),
+  selected_cardio_ids: Joi.array().items(Joi.number().positive()).min(1).required(),
+}).strict();
+
 /**
  * Validasi progress dengan aturan kondisional:
  * - Kalau exercise_id: wajib isi reps_done
@@ -34,18 +44,6 @@ export const activityProgressPayloadSchema = Joi.object({
   notes: Joi.string().max(500),
 })
   .or('exercise_id', 'cardio_id')
-  .when('exercise_id', {
-    is: Joi.exist(),
-    then: Joi.object({
-      reps_done: Joi.number().positive().required(),
-    }),
-  })
-  .when('cardio_id', {
-    is: Joi.exist(),
-    then: Joi.object({
-      distance_done: Joi.number().positive().required(),
-    }),
-  })
   .strict();
 
 /**

@@ -1,27 +1,18 @@
 import { useState, useEffect } from "react";
-import { useApp } from "../../hooks/useApp";
+import { useApp } from "../../../hooks/useApp";
 import {
   getRecommendationByDateApi,
   generateDailyPlanApi,
   getDailyLogByDate,
-  getActivitiesByDailyLog,
   getNutritionLogsByDailyLogId,
   addNutritionLog,
   deleteNutritionLog,
-  postActivityLog,
-  deleteActivityLog,
   updateDailyLog,
-} from "../../services/api";
-import { todayInAppTimeZone } from "../../shared/lib/date";
-import { useLocale } from "../../i18n/locale-context";
-import { Select } from "../../components/ui/FormComponents";
-import {
-  MEAL_SLOTS,
-  ACTIVITY_TYPES,
-  calcSleepDuration,
-  formatToHHMM,
-} from "./constants";
-import { X } from "lucide-react";
+} from "../../../services/api";
+import { todayInAppTimeZone } from "../../../shared/lib/date";
+import { useLocale } from "../../../i18n/locale-context";
+import { Select } from "../../../components/ui/FormComponents";
+import { MEAL_SLOTS, calcSleepDuration, formatToHHMM } from "./constants";
 
 const GOAL = 8;
 
@@ -40,13 +31,6 @@ export const HabitTracker = () => {
   // Nutrition
   const [nutritionList, setNutritionList] = useState([]);
   const [savingNutrition, setSavingNutrition] = useState(false);
-
-  // Activity
-  const [activityList, setActivityList] = useState([]);
-  const [actType, setActType] = useState("Walking");
-  const [actVal, setActVal] = useState(0);
-  const [loadingAct, setLoadingAct] = useState(false);
-  const [actError, setActError] = useState(null);
 
   // Hydration
   const [waterIntake, setWaterIntake] = useState(0);
@@ -87,11 +71,14 @@ export const HabitTracker = () => {
         const id = logRes.data?.dailyLog?.id;
         if (id) {
           setDailyLogId(id);
-          const [actRes, nutriRes] = await Promise.all([
-            getActivitiesByDailyLog(id),
-            getNutritionLogsByDailyLogId(id),
-          ]);
-          setActivityList(actRes.data?.activityLogs || []);
+          const nutriRes = await getNutritionLogsByDailyLogId(id).catch(
+            (error) => {
+              if (error.response?.status === 404) {
+                return { data: { nutritionLogs: [] } };
+              }
+              throw error;
+            },
+          );
           setNutritionList(nutriRes.data?.nutritionLogs || []);
 
           const glasses = (logRes.data?.dailyLog?.total_water_ml || 0) / 250;
@@ -177,38 +164,6 @@ export const HabitTracker = () => {
     }
   };
 
-  /* ─── Activity ─── */
-  const handleAddActivity = async () => {
-    if (actVal <= 0 || !dailyLogId) return;
-    setLoadingAct(true);
-    setActError(null);
-    try {
-      await postActivityLog({
-        daily_log_id: dailyLogId,
-        activity_name: actType,
-        input_value: actVal,
-      });
-      const res = await getActivitiesByDailyLog(dailyLogId);
-      setActivityList(res.data?.activityLogs || []);
-      setActVal(0);
-    } catch (err) {
-      setActError(
-        err.response?.data?.message || t("habits.tracker.activityFailed"),
-      );
-    } finally {
-      setLoadingAct(false);
-    }
-  };
-
-  const handleDeleteActivity = async (id) => {
-    try {
-      await deleteActivityLog(id);
-      setActivityList((prev) => prev.filter((a) => a.id !== id));
-    } catch (err) {
-      console.error("Failed to delete activity:", err);
-    }
-  };
-
   /* ─── Hydration ─── */
   const handleSaveHydration = async () => {
     if (!dailyLogId) return;
@@ -253,10 +208,6 @@ export const HabitTracker = () => {
       value: Math.min(100, Math.round((waterIntake / GOAL) * 100)),
     },
     {
-      label: t("habits.tracker.activity"),
-      value: activityList.length > 0 ? 100 : 0,
-    },
-    {
       label: t("habits.tracker.nutrition"),
       value:
         meals.filter(Boolean).length > 0
@@ -277,10 +228,6 @@ export const HabitTracker = () => {
       return acc;
     },
     { calories: 0, protein: 0, carbs: 0, fat: 0 },
-  );
-
-  const isDistance = ["Walking", "Running", "Cycling", "Swimming"].includes(
-    actType,
   );
 
   return (
@@ -306,7 +253,7 @@ export const HabitTracker = () => {
                       u[i] = e.target.value;
                       updateDailyHealth({ meals: u });
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
+                    className="w-full px-3 py-2 bg-slate-50 rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-(--color-primary) focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
                     disabled={loadingPlan}
                   >
                     <option value="" disabled hidden>
@@ -496,110 +443,7 @@ export const HabitTracker = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* ─── Activity Card ─── */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">
-            {t("habits.tracker.activityLog")}
-          </div>
-          <div className="flex flex-col gap-3 mb-4">
-            <div className="flex items-start gap-2.5">
-              <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
-              <div className="flex-1">
-                <div className="t-size3 text-slate-400 mb-1 font-medium">
-                  {t("habits.tracker.activityType")}
-                </div>
-                <Select
-                  value={actType}
-                  onChange={(e) => setActType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
-                >
-                  {ACTIVITY_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
-              <div className="flex-1">
-                <div className="t-size3 text-slate-400 mb-1 font-medium">
-                  {isDistance
-                    ? t("habits.tracker.distance")
-                    : t("habits.tracker.duration")}
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <input
-                    type="number"
-                    min="0"
-                    step={isDistance ? 0.1 : 1}
-                    value={actVal}
-                    onChange={(e) => setActVal(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border-2 border-transparent rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 text-center font-medium"
-                  />
-                  <span className="t-size3 text-slate-400 shrink-0 font-medium">
-                    {isDistance ? "km" : "min"}
-                  </span>
-                </div>
-              </div>
-            </div>
-            {actError && (
-              <div className="t-size3 text-red-600 font-medium">{actError}</div>
-            )}
-            <button
-              onClick={handleAddActivity}
-              disabled={loadingAct || actVal <= 0}
-              className={`py-2 px-3 rounded-lg t-size3 font-semibold text-white transition-colors ${
-                actVal > 0
-                  ? "bg-green-600 hover:bg-green-700 cursor-pointer"
-                  : "bg-green-300 cursor-not-allowed"
-              }`}
-            >
-              {loadingAct
-                ? t("habits.tracker.saving")
-                : t("habits.tracker.addActivity")}
-            </button>
-          </div>
-          <div className="border-t border-slate-100 pt-3">
-            <div className="t-size3 font-semibold text-slate-400 mb-2">
-              {t("habits.tracker.todayRecord")}
-            </div>
-            {activityList.length === 0 ? (
-              <div className="t-size3 text-slate-300 italic font-medium">
-                {t("habits.tracker.noActivities")}
-              </div>
-            ) : (
-              activityList.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex items-center justify-between bg-slate-50 p-2 rounded-md border border-slate-100 mb-2"
-                >
-                  <div>
-                    <div className="t-size3 font-semibold text-slate-700">
-                      {log.activity_name}{" "}
-                      <span className="t-size3 font-normal text-slate-400">
-                        ({log.input_value}{" "}
-                        {log.input_type === "distance" ? "km" : "min"})
-                      </span>
-                    </div>
-                    <div className="t-size3 text-green-600 font-semibold mt-0.5">
-                      🔥 {log.calories_burned} kcal
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleDeleteActivity(log.id)}
-                    className="text-red-600 bg-red-50 border border-red-300 rounded-full transition-all duration-300 hover:bg-red-100 p-1 cursor-pointer"
-                  >
-                    <X className="size-3 bp360:size-3.25 bp400:size-3.5 md:size-3.75 lg:size-4 xl:size-4.25 2xl:size-4.5" />
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {/* ─── Sleep Card ─── */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
           <div className="t-size3 font-bold text-slate-900 mb-4 tracking-tight">

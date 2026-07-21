@@ -1,17 +1,22 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { Menu } from "lucide-react";
 import { useApp } from "../hooks/useApp";
 import { useLocale } from "../i18n/locale-context";
 import { LanguageToggle } from "./LanguageToggle";
 
 const PAGE_TITLES = {
   "/": "topbar.dashboard",
-  "/habits": "topbar.habits",
+  "/habit-tracker": "topbar.habits",
+  "/weekly-activity": "topbar.habits",
+  "/daily-log-history": "topbar.history",
+  "/nutrition-log-history": "topbar.history",
+  "/activity-log-history": "topbar.history",
   "/recommendations": "topbar.recommendations",
   "/progress": "topbar.progress",
   "/profile": "topbar.profile",
 };
 
-export const TopBar = () => {
+export const TopBar = ({ onMenuClick }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { userProfile } = useApp();
@@ -45,20 +50,19 @@ export const TopBar = () => {
       {/* Left */}
       <div className="flex items-center gap-3">
         {/* Logo — mobile only */}
-        <div className="flex md:hidden items-center gap-2 mr-1">
-          <div className="w-7 h-7 bg-green-600 rounded-lg flex items-center justify-center">
-            <img
-              src="/favicon.svg"
-              alt="Logo"
-              className="w-4 h-4 brightness-0 invert"
-            />
-          </div>
-        </div>
+        <button
+          type="button"
+          aria-label={t("common.openNavigation")}
+          onClick={onMenuClick}
+          className="flex items-center cursor-pointer justify-center p-1.5 rounded-lg text-slate-500 transition-all bg-slate-100 duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 lg:hidden"
+        >
+          <Menu className="size-6 bp360:size-6.25 bp400:size-6.5 md:size-6.75" />
+        </button>
         <div>
           <div className="t-size4 font-semibold text-slate-900 leading-tight">
             {t(`${titleKey}.title`)}
           </div>
-          <div className="hidden sm:block t-size2 text-slate-400 mt-0.5 font-medium">
+          <div className="hidden sm:block t-size3 text-slate-400 mt-0.5 font-medium">
             {t(`${titleKey}.subtitle`)} — {today}
           </div>
         </div>
@@ -70,7 +74,7 @@ export const TopBar = () => {
         {/* Avatar */}
         <button
           onClick={() => navigate("/profile")}
-          className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white t-size2 font-semibold flex-shrink-0 hover:bg-orange-600 transition-colors"
+          className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white t-size2 font-semibold shrink-0 hover:bg-orange-600 transition-colors"
         >
           {initials}
         </button>

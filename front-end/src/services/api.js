@@ -96,8 +96,8 @@ export const updateDailyLog = (dailyLogId, data) => {
 };
 
 // Mengambil seluruh riwayat log harian user aktif
-export const getDailyLogHistory = () => {
-  return apiClient.get(`/daily-logs/history`);
+export const getDailyLogHistory = (params) => {
+  return apiClient.get(`/daily-logs/user`, { params });
 };
 
 export const addNutritionLog = (data) => {
@@ -108,32 +108,54 @@ export const getNutritionLogsByDailyLogId = (dailyLogId) => {
   return apiClient.get(`/nutrition-logs/${dailyLogId}/nutrition`);
 };
 
+export const getNutritionLogHistory = (params) => {
+  return apiClient.get("/nutrition-logs/user", { params });
+};
+
 export const deleteNutritionLog = (nutritionLogId) => {
   return apiClient.delete(`/nutrition-logs/${nutritionLogId}`);
 };
 
-export const postWeeklyRun = (data) => {
-  return apiClient.post(`/weekly-activities/run`, data);
+/* =========================================
+   Unified Weekly Activity APIs
+========================================= */
+export const getMasterExercisesByLevel = (level) => {
+  return apiClient.get(`/weekly-activities/master/exercises/level/${level}`);
 };
 
-export const getWeeklyRun = () => {
-  return apiClient.get(`/weekly-activities/run`);
+export const getMasterCardiosByLevel = (level) => {
+  return apiClient.get(`/weekly-activities/master/cardios/level/${level}`);
 };
 
-export const putWeeklyRun = (weeklyRunId, data) => {
-  return apiClient.put(`/weekly-activities/run/${weeklyRunId}`, data);
+export const getCurrentWeeklyActivity = () => {
+  return apiClient.get(`/weekly-activities/current`);
 };
 
-export const postWeeklyExercise = (data) => {
-  return apiClient.post(`/weekly-activities/exercise`, data);
+export const getWeeklyActivityHistory = (params) => {
+  return apiClient.get(`/weekly-activities/history`, { params });
 };
 
-export const getWeeklyExercise = () => {
-  return apiClient.get(`/weekly-activities/exercise`);
+export const putCurrentWeeklyExercises = (data) => {
+  return apiClient.put(`/weekly-activities/current/exercises`, data);
 };
 
-export const putWeeklyExercise = (weeklyExerciseId, data) => {
-  return apiClient.put(`/weekly-activities/exercise/${weeklyExerciseId}`, data);
+export const putCurrentWeeklyCardios = (data) => {
+  return apiClient.put(`/weekly-activities/current/cardios`, data);
+};
+
+export const getWeeklyActivityProgress = (activityId) => {
+  return apiClient.get(`/weekly-activities/${activityId}/progress`);
+};
+
+export const postWeeklyActivityProgress = (activityId, data) => {
+  return apiClient.post(`/weekly-activities/${activityId}/progress`, data);
+};
+
+export const putWeeklyActivityProgress = (activityId, progressId, data) => {
+  return apiClient.put(
+    `/weekly-activities/${activityId}/progress/${progressId}`,
+    data,
+  );
 };
 
 export const getWeightLogs = () => {

@@ -66,38 +66,64 @@ class NutritionLogRepository {
     sort = 'newest',
   ) {
     const values = [userId];
-    let whereClause = 'WHERE user_id = $1';
+    let whereClause = 'WHERE nl.user_id = $1';
     
     if (filters.startDate) {
       values.push(filters.startDate);
-      whereClause += ` AND created_at >= $${values.length}`;
+      whereClause += ` AND dl.log_date >= $${values.length}`;
     }
     if (filters.endDate) {
       values.push(filters.endDate);
-      whereClause += ` AND created_at <= $${values.length}`;
-    }
-
-    if (filters.search) {
-      values.push(`%${filters.search}%`);
-      whereClause += ` AND EXISTS (
-      SELECT 1 FROM jsonb_array_elements(meals) AS meal
-      WHERE meal->>'food_name' ILIKE $${values.length}
-    )`;
+      whereClause += ` AND dl.log_date <= $${values.length}`;
     }
 
     const orderClause =
       sort === 'oldest'
-        ? 'ORDER BY created_at ASC'
-        : 'ORDER BY created_at DESC';
+        ? 'ORDER BY log_date ASC'
+        : 'ORDER BY log_date DESC';
+
+    let searchClause = '';
+    if (filters.search?.trim()) {
+      values.push(`%${filters.search.trim()}%`);
+      const searchValue = `$${values.length}`;
+      searchClause = `WHERE (
+        meals::text ILIKE ${searchValue}
+        OR total_calories::text ILIKE ${searchValue}
+        OR total_protein_g::text ILIKE ${searchValue}
+        OR total_carbs_g::text ILIKE ${searchValue}
+        OR total_fat_g::text ILIKE ${searchValue}
+      )`;
+    }
+
+    const groupedQuery = `
+      WITH daily_nutrition AS (
+        SELECT
+          dl.log_date,
+          jsonb_agg(nl.meals) AS meals,
+          COALESCE(SUM(nl.total_calories), 0) AS total_calories,
+          COALESCE(SUM(nl.total_protein_g), 0) AS total_protein_g,
+          COALESCE(SUM(nl.total_carbs_g), 0) AS total_carbs_g,
+          COALESCE(SUM(nl.total_fat_g), 0) AS total_fat_g
+        FROM nutrition_logs nl
+        JOIN daily_logs dl ON dl.id = nl.daily_log_id
+        ${whereClause}
+        GROUP BY dl.log_date
+      )
+    `;
 
     const dataValues = [...values, limit, offset];
     const dataQuery = {
-      text: `SELECT * FROM nutrition_logs ${whereClause} ${orderClause} LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}`,
+      text: `${groupedQuery}
+        SELECT * FROM daily_nutrition
+        ${searchClause}
+        ${orderClause}
+        LIMIT $${dataValues.length - 1} OFFSET $${dataValues.length}`,
       values: dataValues,
     };
 
     const countQuery = {
-      text: `SELECT COUNT(*) FROM nutrition_logs ${whereClause}`,
+      text: `${groupedQuery}
+        SELECT COUNT(*) FROM daily_nutrition ${searchClause}`,
       values,
     };
 

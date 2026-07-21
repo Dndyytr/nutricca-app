@@ -13,10 +13,15 @@ export const getAllMasterCardios = async () => {
 };
 
 export const getMasterCardioByLevel = async (level) => {
+  // ponytail: fall back to beginner until each level has its own master catalog.
   const query = `
     SELECT id, name, type, icon_url, description, target_distance, calories_per_unit, duration_days, created_at, level
     FROM master_cardios
     WHERE level = $1
+      OR (
+        level = 'beginner'
+        AND NOT EXISTS (SELECT 1 FROM master_cardios WHERE level = $1)
+      )
     ORDER BY name ASC
   `;
   const result = await pool.query(query, [level]);

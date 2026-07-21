@@ -517,7 +517,7 @@ export const Dashboard = () => {
         </div>
         <button
           className="t-size2 font-semibold"
-          onClick={() => navigate("/habits")}
+          onClick={() => navigate("/habit-tracker")}
           style={{
             width: "100%",
             marginTop: 14,
@@ -657,7 +657,7 @@ export const Dashboard = () => {
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         <button
           className="t-size2 font-semibold"
-          onClick={() => navigate("/habits")}
+          onClick={() => navigate("/habit-tracker")}
           style={{
             flex: "1 1 140px",
             padding: "10px 16px",

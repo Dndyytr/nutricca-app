@@ -9,18 +9,22 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  pgm.createTable('master_activities', {
-    id: { type: 'VARCHAR(50)', primaryKey: true },
-    name: { type: 'VARCHAR(100)', notNull: true, unique: true },
-    input_type: { type: 'VARCHAR(20)', notNull: true },
-    category: { type: 'VARCHAR(50)' }, // Tambahan: 'weekly_run', 'strength', dll
-    calories_per_unit: { type: 'FLOAT', notNull: true },
-    created_at: {
-      type: 'TIMESTAMP',
-      notNull: true,
-      default: pgm.func('current_timestamp'),
+  pgm.createTable(
+    'master_activities',
+    {
+      id: { type: 'VARCHAR(50)', primaryKey: true },
+      name: { type: 'VARCHAR(100)', notNull: true, unique: true },
+      input_type: { type: 'VARCHAR(20)', notNull: true },
+      category: { type: 'VARCHAR(50)' }, // Tambahan: 'weekly_run', 'strength', dll
+      calories_per_unit: { type: 'FLOAT', notNull: true },
+      created_at: {
+        type: 'TIMESTAMP',
+        notNull: true,
+        default: pgm.func('current_timestamp'),
+      },
     },
-  });
+    { ifNotExists: true },
+  );
 };
 
 /**

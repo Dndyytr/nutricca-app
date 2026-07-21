@@ -16,6 +16,14 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
+  // Bersihkan data lama pada activity_logs yang masih menggunakan ID String
+  pgm.sql(`TRUNCATE TABLE activity_logs CASCADE;`);
+
+  // Drop FK lama yang mengarah ke master_activities
+  pgm.dropConstraint('activity_logs', 'activity_logs_activity_id_fkey', {
+    ifExists: true,
+  });
+
   // Ubah tipe kolom activity_id dari VARCHAR(50) -> INTEGER
   pgm.sql(`
     ALTER TABLE activity_logs

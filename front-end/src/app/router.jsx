@@ -15,7 +15,34 @@ const LandingPage = lazy(() =>
   })),
 );
 const Habits = lazy(() =>
-  import("../pages/Habits").then((module) => ({ default: module.Habits })),
+  import("../pages/Habits").then((module) => ({
+    default: module.Habits,
+  })),
+);
+const HabitTracker = lazy(() =>
+  import("../pages/Habits/tracker/HabitTracker").then((module) => ({
+    default: module.HabitTracker,
+  })),
+);
+const WeeklyActivity = lazy(() =>
+  import("../pages/Habits/tracker/WeeklyActivity").then((module) => ({
+    default: module.WeeklyActivity,
+  })),
+);
+const DailyLogHistory = lazy(() =>
+  import("../pages/Habits/history/DailyLogHistory").then((module) => ({
+    default: module.DailyLogHistory,
+  })),
+);
+const NutritionLogHistory = lazy(() =>
+  import("../pages/Habits/history/NutritionLogHistory").then((module) => ({
+    default: module.NutritionLogHistory,
+  })),
+);
+const ActivityLogHistory = lazy(() =>
+  import("../pages/Habits/history/ActivityLogHistory").then((module) => ({
+    default: module.ActivityLogHistory,
+  })),
 );
 const Recommendations = lazy(() =>
   import("../pages/Recommendations").then((module) => ({
@@ -124,7 +151,23 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/habits" element={<Habits />} />
+        <Route
+          path="/history"
+          element={<Navigate to="/daily-log-history" replace />}
+        />
+        <Route element={<Habits />}>
+          <Route path="/habit-tracker" element={<HabitTracker />} />
+          <Route path="/weekly-activity" element={<WeeklyActivity />} />
+          <Route path="/daily-log-history" element={<DailyLogHistory />} />
+          <Route
+            path="/nutrition-log-history"
+            element={<NutritionLogHistory />}
+          />
+          <Route
+            path="/activity-log-history"
+            element={<ActivityLogHistory />}
+          />
+        </Route>
         <Route path="/recommendations" element={<Recommendations />} />
         <Route path="/recommendations/recipe/:id" element={<RecipePage />} />
         <Route path="/recommendation/recipe/:id" element={<RecipePage />} />
