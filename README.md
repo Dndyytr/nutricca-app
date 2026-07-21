@@ -1,6 +1,6 @@
-# 🌿 Health Plan App
+# 🌿 Nutricca App
 
-Health Plan App adalah aplikasi berbasis AI yang dirancang untuk membantu pengguna merencanakan dan mengelola gaya hidup sehat secara personal. Aplikasi ini mengintegrasikan kecerdasan buatan untuk memberikan rekomendasi kesehatan yang disesuaikan dengan kebutuhan, kondisi, dan tujuan masing-masing pengguna.
+Nutricca App adalah aplikasi berbasis AI yang dirancang untuk membantu pengguna merencanakan dan mengelola gaya hidup sehat secara personal. Aplikasi ini mengintegrasikan kecerdasan buatan untuk memberikan rekomendasi kesehatan yang disesuaikan dengan kebutuhan, kondisi, dan tujuan masing-masing pengguna.
 
 ---
 
@@ -17,11 +17,11 @@ health-plan-app/
 
 ## ⚙️ Tech Stack
 
-| Layer      | Teknologi                        |
-|------------|----------------------------------|
-| Frontend   | React, Vite                      |
-| Backend    | Node.js, Express, PostgreSQL     |
-| AI API     | Python, FastAPI                  |
+| Layer      | Teknologi                                |
+|------------|------------------------------------------|
+| Frontend   | React, Vite                              |
+| Backend    | Node.js, Express, PostgreSQL, Docker     |
+| AI API     | Python, FastAPI, Docker                  |
 
 ---
 
@@ -41,8 +41,8 @@ Pastikan kamu sudah menginstal tools berikut sebelum memulai:
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/username/health-plan-app.git
-cd health-plan-app
+git clone https://github.com/Dndyytr/nutricca-app.git
+cd nutricca-app
 ```
 
 ---
@@ -50,7 +50,7 @@ cd health-plan-app
 ### 2. Setup Frontend (React + Vite)
 
 ```bash
-cd frontend
+cd front-end
 ```
 
 Install dependencies:
@@ -68,8 +68,8 @@ cp .env.example .env
 Isi variabel berikut di file `.env`:
 
 ```env
-VITE_API_BASE_URL=
-VITE_AI_API_URL=
+VITE_API_URL=http://localhost:3000/api/v1
+VITE_AI_API_URL=http://ai-api:8000/api
 ```
 
 Jalankan development server:
@@ -103,52 +103,53 @@ cp .env.example .env
 Isi variabel berikut di file `.env`:
 
 ```env
-PORT=
-DATABASE_URL=
-JWT_SECRET=
-AI_API_URL=
+HOST=0.0.0.0
+PORT=3000
+
+PGUSER=dev_adhi
+PGHOST=127.0.0.1
+PGPASSWORD=Jakarta191004
+PGDATABASE=nutrica-db
+PGPORT=5432
+
+NODE_ENV=DEVELOPMENT/PRODUCTION
+
+ACCESS_TOKEN_KEY=YOUR_ACCESS_TOKEN
+REFRESH_TOKEN_KEY=YOUR_REFRESH_TOKEN
+
+ALLOWED_ORIGINS=YOUR_FRONT_END_URL
+
+AI_API_URL=http://localhost:8000
 ```
 
 Setup database PostgreSQL:
 
 ```bash
 # Buat database baru
-psql -U postgres -c "CREATE DATABASE health_plan_db;"
+psql -U postgres -c "CREATE DATABASE nutricca-db;"
 
 # Jalankan migrasi
-npm run migrate
+npm run migrate up
 
 # (Opsional) Jalankan seeder untuk data awal
-npm run seed
+npm run seed:recipes
+npm run seed:master_activities
 ```
 
 Jalankan server:
 
 ```bash
-npm run dev
+npm run start:dev
 ```
 
-Backend akan berjalan di `http://localhost:5000`
+Backend akan berjalan di `http://localhost:3000`
 
 ---
 
 ### 4. Setup AI API (FastAPI)
 
 ```bash
-cd ../ai-api
-```
-
-Buat dan aktifkan virtual environment:
-
-```bash
-# Buat virtual environment
-python -m venv venv
-
-# Aktifkan (Linux/macOS)
-source venv/bin/activate
-
-# Aktifkan (Windows)
-venv\Scripts\activate
+cd nutricca-app
 ```
 
 Install dependencies:
@@ -157,50 +158,14 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Buat file environment:
-
-```bash
-cp .env.example .env
-```
-
-Isi variabel berikut di file `.env`:
-
-```env
-OPENAI_API_KEY=
-DATABASE_URL=
-SECRET_KEY=
-```
-
 Jalankan server:
 
 ```bash
-uvicorn main:app --reload --port 8000
+docker compose build -d
+docker compose up -d ai-api
 ```
 
 AI API akan berjalan di `http://localhost:8000`
-
----
-
-## ✅ Menjalankan Semua Service Sekaligus
-
-Untuk kemudahan development, kamu bisa menjalankan semua service sekaligus menggunakan terminal terpisah atau dengan tool seperti [concurrently](https://www.npmjs.com/package/concurrently).
-
-**Terminal 1 – Frontend:**
-```bash
-cd frontend && npm run dev
-```
-
-**Terminal 2 – Backend:**
-```bash
-cd backend && npm run dev
-```
-
-**Terminal 3 – AI API:**
-```bash
-cd ai-api && source venv/bin/activate && uvicorn main:app --reload --port 8000
-```
-
----
 
 ## 🌐 URL Layanan
 

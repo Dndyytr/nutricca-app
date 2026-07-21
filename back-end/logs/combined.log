@@ -845,3 +845,9 @@
 {"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784598788324 - GET - ::1","timestamp":"2026-07-21 08:53:08"}
 {"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784598795120 - GET - ::1","timestamp":"2026-07-21 08:53:15"}
 {"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784598795121 - GET - ::1","timestamp":"2026-07-21 08:53:15"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784645145655 - GET - ::1","timestamp":"2026-07-21 21:45:45"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784645145655 - GET - ::1","timestamp":"2026-07-21 21:45:45"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-21 21:45:45"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-21 21:45:45"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784645200975 - GET - ::1","timestamp":"2026-07-21 21:46:40"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-21?t=1784645200975 - GET - ::1","timestamp":"2026-07-21 21:46:40"}
