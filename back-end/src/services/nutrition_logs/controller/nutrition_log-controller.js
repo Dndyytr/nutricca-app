@@ -50,12 +50,8 @@ export const getNutritionLogsByDailyLogId = async (req, res, next) => {
   const nutritionLogs =
     await NutritionLogRepository.getNutritionLogsByDailyLogId(dailyLogId);
 
-  if (!nutritionLogs || nutritionLogs.length === 0) {
-    return next(new NotFoundError('Nutrition logs not found.'));
-  }
-
   return response(res, 200, 'Nutrition logs successfully retrieved', {
-    nutritionLogs,
+    nutritionLogs: nutritionLogs || [],
   });
 };
 
@@ -76,16 +72,12 @@ export const getNutritionLogsByUserId = async (req, res, next) => {
       sort,
     );
 
-    if (!result.rows || result.rows.length === 0) {
-      return next(new NotFoundError('Nutrition logs not found.'));
-    }
-
     const totalPages = result.total > 0 ? Math.ceil(result.total / limit) : 0;
     const showingFrom = result.total === 0 ? 0 : offset + 1;
     const showingTo = Math.min(offset + limit, result.total);
 
     return response(res, 200, 'Nutrition logs successfully retrieved', {
-      nutritionLogs: result.rows,
+      nutritionLogs: result.rows || [],
       meta: {
         page,
         limit,

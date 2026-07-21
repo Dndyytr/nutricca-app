@@ -13,10 +13,15 @@ export const getAllMasterExercises = async () => {
 };
 
 export const getMasterExerciseByLevel = async (level) => {
+  // ponytail: fall back to beginner until each level has its own master catalog.
   const query = `
     SELECT id, name, type, icon_url, description, target_reps, calories_per_unit, duration_days, created_at, level
     FROM master_exercises
     WHERE level = $1
+      OR (
+        level = 'beginner'
+        AND NOT EXISTS (SELECT 1 FROM master_exercises WHERE level = $1)
+      )
     ORDER BY name ASC
   `;
   const result = await pool.query(query, [level]);

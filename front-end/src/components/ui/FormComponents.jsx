@@ -9,7 +9,7 @@ import {
 import { useLocale } from "../../i18n/locale-context";
 
 const INPUT_CLASS =
-  "w-full px-4 py-3.5 border-2 border-transparent rounded-xl t-size3 font-medium text-slate-900 bg-slate-100 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200";
+  "w-full px-4 py-3.5 rounded-xl t-size3 font-medium text-slate-900 bg-slate-100 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200";
 
 const LABEL_CLASS =
   "block t-size2 font-bold text-slate-700 mb-2 uppercase tracking-wide";

@@ -168,7 +168,7 @@ export const GoalSetting = () => {
               className="flex-1 px-4 py-3.5 border-2 border-transparent rounded-xl t-size3 text-slate-900 bg-slate-100 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-200 font-medium"
             />
             {weightDiff !== null && (
-              <div className="flex-shrink-0 text-right">
+              <div className="shrink-0 text-right">
                 <p className="t-size2 text-slate-400 mb-0.5 font-medium">
                   {t("onboarding.goals.difference")}
                 </p>

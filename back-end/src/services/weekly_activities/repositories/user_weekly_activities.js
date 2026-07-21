@@ -6,7 +6,7 @@ const pool = new Pool();
 
 const getActivityWithDetails = async (client, activityId) => {
   const activityQuery = `
-    SELECT id, user_id, level, week_start_date, created_at, updated_at
+    SELECT id, user_id, level, exercise_level, cardio_level, week_start_date, created_at, updated_at
     FROM user_weekly_activities
     WHERE id = $1
   `;
@@ -189,7 +189,7 @@ export const getCurrentWeeklyActivityByUserId = async (userId) => {
   const client = await pool.connect();
   try {
     const activityQuery = `
-      SELECT id, user_id, level, week_start_date, created_at, updated_at
+      SELECT id, user_id, level, exercise_level, cardio_level, week_start_date, created_at, updated_at
       FROM user_weekly_activities
       WHERE user_id = $1 AND week_start_date = date_trunc('week', CURRENT_DATE)::date
       ORDER BY created_at DESC
@@ -216,6 +216,75 @@ export const getCurrentWeeklyActivityByUserId = async (userId) => {
     client.release();
   }
 };
+
+const upsertCurrentWeeklySection = async (userId, level, itemIds, section) => {
+  const config =
+    section === 'exercise'
+      ? {
+          levelColumn: 'exercise_level',
+          table: 'user_activity_exercises',
+          itemColumn: 'exercise_id',
+        }
+      : {
+          levelColumn: 'cardio_level',
+          table: 'user_activity_cardios',
+          itemColumn: 'cardio_id',
+        };
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+    const current = await client.query(
+      `SELECT id FROM user_weekly_activities
+       WHERE user_id = $1 AND week_start_date = date_trunc('week', CURRENT_DATE)::date
+       ORDER BY created_at DESC LIMIT 1`,
+      [userId],
+    );
+    let activityId = current.rows[0]?.id;
+
+    if (!activityId) {
+      const created = await client.query(
+        `INSERT INTO user_weekly_activities (user_id, level, ${config.levelColumn}, week_start_date)
+         VALUES ($1, $2, $2, date_trunc('week', CURRENT_DATE)::date)
+         RETURNING id`,
+        [userId, level],
+      );
+      activityId = created.rows[0].id;
+    } else {
+      await client.query(
+        `UPDATE user_weekly_activities
+         SET ${config.levelColumn} = $1, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $2`,
+        [level, activityId],
+      );
+    }
+
+    await client.query(`DELETE FROM ${config.table} WHERE user_activity_id = $1`, [
+      activityId,
+    ]);
+    for (const itemId of itemIds) {
+      await client.query(
+        `INSERT INTO ${config.table} (user_activity_id, ${config.itemColumn}) VALUES ($1, $2)`,
+        [activityId, itemId],
+      );
+    }
+
+    const activity = await getActivityWithDetails(client, activityId);
+    await client.query('COMMIT');
+    return activity;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export const upsertCurrentWeeklyExercises = (userId, level, exerciseIds) =>
+  upsertCurrentWeeklySection(userId, level, exerciseIds, 'exercise');
+
+export const upsertCurrentWeeklyCardios = (userId, level, cardioIds) =>
+  upsertCurrentWeeklySection(userId, level, cardioIds, 'cardio');
 
 export const updateUserWeeklyActivity = async (activityId, updateData) => {
   const client = await pool.connect();

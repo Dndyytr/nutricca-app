@@ -87,7 +87,8 @@ function ProgressRing({
       <svg
         width={size}
         height={size}
-        className="-rotate-90 transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
+        viewBox={`0 0 ${size} ${size}`}
+        className="h-17 w-17 -rotate-90 transition-transform duration-300 group-hover:scale-105 sm:h-22.5 sm:w-22.5 motion-reduce:transition-none"
         aria-label={`${label} ${sublabel}`}
       >
         <circle
@@ -125,11 +126,11 @@ function ProgressRing({
 
 function WaterBar({ filled, total = 8 }) {
   return (
-    <div className="flex gap-1.5 items-center flex-wrap">
+    <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
       {Array.from({ length: total }).map((_, i) => (
         <div
           key={i}
-          className="w-7 h-7 rounded-lg flex items-center justify-center transition-transform hover:scale-110"
+          className="flex h-6 w-6 items-center justify-center rounded-lg transition-transform hover:scale-110 sm:h-7 sm:w-7"
           style={{
             background: i < filled ? "#DCFCE7" : "#F1F5F9",
             transition: `background-color 300ms ease ${i * 80}ms, transform 150ms ease`,
@@ -158,7 +159,7 @@ function DashboardMockup() {
 
   return (
     <div
-      className="relative bg-white rounded-2xl border border-slate-200/80 shadow-2xl p-5 w-full max-w-110 mx-auto"
+      className="relative mx-auto w-full max-w-full rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xl sm:max-w-110 sm:p-5"
       style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
     >
       {/* header */}
@@ -182,7 +183,7 @@ function DashboardMockup() {
       </div>
 
       {/* rings row */}
-      <div className="flex justify-around mb-5 bg-slate-50 rounded-xl p-4">
+      <div className="mb-5 grid grid-cols-3 gap-1 rounded-xl bg-slate-50 p-2 sm:gap-2 sm:p-4">
         <ProgressRing
           pct={82}
           size={90}
@@ -381,7 +382,7 @@ export const LandingPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-slate-50 text-slate-900"
+      className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900"
       style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
     >
       {/* ── NAV ── */}
@@ -392,7 +393,7 @@ export const LandingPage = () => {
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* logo */}
           <a href="#" className="flex items-center gap-2 group">
             {/* Changed Icon to public/favicon.svg */}
@@ -424,13 +425,13 @@ export const LandingPage = () => {
             <LanguageToggle />
             <button
               onClick={() => navigate("/login")}
-              className="t-size3 font-medium text-slate-500 hover:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all"
+              className="t-size3 cursor-pointer font-medium text-slate-500 hover:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all"
             >
               {t("nav.signIn")}
             </button>
             <button
               onClick={() => navigate("/onboarding")}
-              className="t-size3 font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-green-600/20"
+              className="t-size3 cursor-pointer font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-green-600/20"
             >
               {t("nav.getStarted")}
             </button>
@@ -438,16 +439,28 @@ export const LandingPage = () => {
 
           {/* mobile toggle */}
           <button
-            className="md:hidden p-2 rounded-lg text-slate-500 hover:text-slate-900"
+            className="relative flex size-7 bp360:size-7.25 bp400:size-7.5 md:size-7.75 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-all duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
+            aria-controls="landing-mobile-nav"
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            <Menu
+              strokeWidth={2.5}
+              className={`absolute size-6 bp360:size-6.25 bp400:size-6.5 md:size-6.75 transition-all duration-300 ${mobileOpen ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`}
+            />
+            <X
+              strokeWidth={2.5}
+              className={`absolute size-6 bp360:size-6.25 bp400:size-6.5 md:size-6.75 transition-all duration-300 ${mobileOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`}
+            />
           </button>
         </div>
 
         {/* mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-4">
+        <div
+          id="landing-mobile-nav"
+          className={`overflow-hidden bg-white transition-[max-height,opacity] duration-400 ease-out md:hidden motion-reduce:transition-none ${mobileOpen ? "max-h-[22rem] border-t border-slate-100 opacity-100" : "pointer-events-none max-h-0 opacity-0"}`}
+        >
+          <div className="flex flex-col gap-4 px-6 py-4">
             {navLinks.map(({ key, href }) => (
               <a
                 key={key}
@@ -458,30 +471,30 @@ export const LandingPage = () => {
                 {t(`nav.${key}`)}
               </a>
             ))}
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-wrap flex-col gap-3 pt-2">
               <LanguageToggle />
               <button
                 onClick={() => navigate("/login")}
-                className="flex-1 t-size3 font-medium text-slate-500 py-2 rounded-lg border border-slate-200"
+                className="flex-1 cursor-pointer t-size3 font-medium text-slate-500 py-2 rounded-lg border border-slate-200"
               >
                 {t("nav.signIn")}
               </button>
               <button
                 onClick={() => navigate("/onboarding")}
-                className="flex-1 t-size3 font-semibold text-white bg-green-600 py-2 rounded-lg"
+                className="flex-1 cursor-pointer t-size3 font-semibold text-white bg-green-600 py-2 rounded-lg"
               >
                 {t("nav.getStarted")}
               </button>
             </div>
           </div>
-        )}
+        </div>
       </header>
 
       {/* ── HERO ── */}
-      <section className="pt-32 pb-20 px-6 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+      <section className="mx-auto w-full max-w-6xl px-4 pb-12 pt-16 bp360:pt-17 bp400:pt-18 sm:px-6 sm:pb-20 sm:pt-19 md:pt-25">
+        <div className="grid w-full min-w-0 items-center gap-10 md:grid-cols-2 md:gap-16">
           {/* left */}
-          <div className="animate-in fade-in slide-in-from-left-6 duration-700 motion-reduce:animate-none">
+          <div className="min-w-0 animate-in fade-in slide-in-from-left-6 duration-700 motion-reduce:animate-none">
             <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 t-size2 font-semibold px-3 py-1.5 rounded-full mb-6 border border-green-200">
               <span className="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse" />
               {t("landing.hero.eyebrow")}
@@ -496,17 +509,17 @@ export const LandingPage = () => {
             <p className="t-size5 text-slate-500 leading-relaxed mb-8 max-w-md font-medium">
               {t("landing.hero.description")}
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => navigate("/onboarding")}
-                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold t-size3 px-6 py-3 rounded-xl transition-colors shadow-lg shadow-green-600/20"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-3 t-size3 font-semibold text-white shadow-lg shadow-green-600/20 transition-colors hover:bg-green-700 sm:w-auto"
               >
                 {t("landing.hero.startFree")}
                 <ArrowRight size={16} />
               </button>
               <button
                 onClick={() => navigate("/login")}
-                className="inline-flex items-center gap-2 text-slate-900 font-semibold t-size3 px-6 py-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-all"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-3 t-size3 font-semibold text-slate-900 transition-all hover:border-slate-300 sm:w-auto"
               >
                 {t("nav.signIn")}
                 <ChevronRight size={16} className="text-slate-500" />
@@ -543,7 +556,7 @@ export const LandingPage = () => {
           </div>
 
           {/* right — dashboard mockup */}
-          <div className="relative flex justify-center">
+          <div className="relative flex min-w-0 justify-center">
             {/* glow */}
             <div className="absolute inset-0 bg-green-100 rounded-3xl blur-3xl opacity-40 scale-90" />
             <div className="relative animate-in fade-in slide-in-from-right-6 duration-700 delay-200 fill-mode-backwards motion-reduce:animate-none">
@@ -554,7 +567,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ── FEATURES (BENTO) ── */}
-      <section id="features" className="py-20 px-6 bg-white">
+      <section id="features" className="bg-white px-4 py-14 sm:px-6 sm:py-20">
         <div className="max-w-6xl mx-auto">
           <Reveal animation="slide-in-from-bottom-6">
             <div className="text-center mb-14">
@@ -616,7 +629,10 @@ export const LandingPage = () => {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="how-it-works" className="py-20 px-6 bg-slate-50">
+      <section
+        id="how-it-works"
+        className="bg-slate-50 px-4 py-14 sm:px-6 sm:py-20"
+      >
         <div className="max-w-6xl mx-auto">
           <Reveal animation="slide-in-from-left-6">
             <div className="text-center mb-14">
@@ -668,7 +684,10 @@ export const LandingPage = () => {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section id="testimonials" className="py-20 px-6 bg-white">
+      <section
+        id="testimonials"
+        className="bg-white px-4 py-14 sm:px-6 sm:py-20"
+      >
         <div className="max-w-6xl mx-auto">
           <Reveal animation="slide-in-from-right-6">
             <div className="text-center mb-14">
@@ -730,9 +749,9 @@ export const LandingPage = () => {
       </section>
 
       {/* ── FINAL CTA ── */}
-      <section className="py-20 px-6 bg-slate-50">
+      <section className="bg-slate-50 px-4 py-14 sm:px-6 sm:py-20">
         <Reveal className="max-w-6xl mx-auto" animation="slide-in-from-top-6">
-          <div className="relative overflow-hidden bg-green-600 rounded-3xl px-10 py-16 text-center shadow-xl shadow-green-600/20">
+          <div className="relative overflow-hidden rounded-3xl bg-green-600 px-5 py-10 text-center shadow-xl shadow-green-600/20 sm:px-10 sm:py-16">
             {/* background texture */}
             <div
               className="absolute inset-0 opacity-10"
@@ -752,17 +771,17 @@ export const LandingPage = () => {
               <p className="text-green-100 t-size4 max-w-md mx-auto mb-8 font-medium">
                 {t("landing.cta.description")}
               </p>
-              <div className="flex flex-wrap justify-center gap-3 mb-8">
+              <div className="mb-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <button
                   onClick={() => navigate("/onboarding")}
-                  className="inline-flex items-center gap-2 bg-white text-green-700 font-semibold t-size3 px-6 py-3 rounded-xl hover:bg-green-50 transition-colors shadow-md"
+                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 t-size3 font-semibold text-green-700 shadow-md transition-colors hover:bg-green-50 sm:w-auto"
                 >
                   {t("landing.hero.startFree")}
                   <ArrowRight size={16} />
                 </button>
                 <button
                   onClick={() => navigate("/login")}
-                  className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold t-size3 px-6 py-3 rounded-xl hover:bg-white/10 transition-colors"
+                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3 t-size3 font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
                 >
                   {t("nav.signIn")}
                 </button>
@@ -773,7 +792,7 @@ export const LandingPage = () => {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-200 px-6 py-10 bg-white">
+      <footer className="border-t border-slate-200 bg-white px-4 py-10 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             {/* Changed Icon to public/favicon.svg */}

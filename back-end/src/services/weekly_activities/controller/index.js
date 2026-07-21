@@ -121,6 +121,32 @@ export const getCurrentUserWeeklyActivityHandler = async (req, res, next) => {
   }
 };
 
+export const putCurrentWeeklyExercisesHandler = async (req, res, next) => {
+  try {
+    const activity = await UserWeeklyActivitiesRepo.upsertCurrentWeeklyExercises(
+      req.user.id,
+      req.validated.level,
+      req.validated.selected_exercise_ids,
+    );
+    return response(res, 200, 'Weekly exercises saved successfully', { activity });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const putCurrentWeeklyCardiosHandler = async (req, res, next) => {
+  try {
+    const activity = await UserWeeklyActivitiesRepo.upsertCurrentWeeklyCardios(
+      req.user.id,
+      req.validated.level,
+      req.validated.selected_cardio_ids,
+    );
+    return response(res, 200, 'Weekly cardios saved successfully', { activity });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const putUserWeeklyActivityHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -201,20 +227,19 @@ export const putActivityProgressHandler = async (req, res, next) => {
 };
 
 /**
- * History checklist aktivitas (yang sudah completed) milik user, lintas minggu.
- * Support pagination + filter tanggal/tipe/nama, buat halaman "Activity History".
+ * Ringkasan satu weekly activity per baris, termasuk minggu tanpa progress.
  */
 export const getActivityHistoryHandler = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { page, limit, offset } = req.pagination;
-    const { startDate, endDate, search, type, sort = 'newest' } = req.query;
+    const { startDate, endDate, search, sort = 'newest' } = req.query;
 
-    const result = await ActivityProgressRepo.getActivityHistoryByUserId(
+    const result = await ActivityProgressRepo.getWeeklyActivityHistoryByUserId(
       userId,
       limit,
       offset,
-      { startDate, endDate, search, type },
+      { startDate, endDate, search },
       sort,
     );
 

@@ -5,6 +5,8 @@ import { paginationMiddleware } from '../../../middleware/pagination.js';
 import {
   createWeeklyActivityPayloadSchema,
   updateWeeklyActivityPayloadSchema,
+  updateWeeklyExercisesPayloadSchema,
+  updateWeeklyCardiosPayloadSchema,
   activityProgressPayloadSchema,
 } from '../validator/index.js';
 import {
@@ -13,6 +15,8 @@ import {
   postUserWeeklyActivityHandler,
   getUserWeeklyActivityHandler,
   getCurrentUserWeeklyActivityHandler,
+  putCurrentWeeklyExercisesHandler,
+  putCurrentWeeklyCardiosHandler,
   putUserWeeklyActivityHandler,
   getActivityProgressHandler,
   postActivityProgressHandler,
@@ -32,6 +36,18 @@ router.get('/master/exercises/level/:level', getMasterExercisesByLevelHandler);
 
 // --- Route statis, HARUS didaftarkan sebelum '/:id' biar gak ketangkep sebagai param ---
 router.get('/current', authenticateToken, getCurrentUserWeeklyActivityHandler);
+router.put(
+  '/current/exercises',
+  authenticateToken,
+  validate(updateWeeklyExercisesPayloadSchema),
+  putCurrentWeeklyExercisesHandler,
+);
+router.put(
+  '/current/cardios',
+  authenticateToken,
+  validate(updateWeeklyCardiosPayloadSchema),
+  putCurrentWeeklyCardiosHandler,
+);
 router.get(
   '/history',
   authenticateToken,

@@ -87,6 +87,20 @@ class DailyLogRepository {
       values.push(filters.endDate);
       whereClause += ` AND log_date <= $${values.length}`;
     }
+    if (filters.search?.trim()) {
+      values.push(`%${filters.search.trim()}%`);
+      const searchValue = `$${values.length}`;
+      whereClause += ` AND (
+        daily_status ILIKE ${searchValue}
+        OR total_calories_in::text ILIKE ${searchValue}
+        OR total_calories_out::text ILIKE ${searchValue}
+        OR total_water_ml::text ILIKE ${searchValue}
+        OR total_steps::text ILIKE ${searchValue}
+        OR daily_score::text ILIKE ${searchValue}
+        OR COALESCE(TO_CHAR(sleep_start_time, 'HH24:MI'), '') ILIKE ${searchValue}
+        OR COALESCE(TO_CHAR(sleep_end_time, 'HH24:MI'), '') ILIKE ${searchValue}
+      )`;
+    }
 
     const orderClause =
       sort === 'oldest' ? 'ORDER BY log_date ASC' : 'ORDER BY log_date DESC';

@@ -1,0 +1,5 @@
+# Abaikan folder backend dan AI agar Vercel hanya fokus memproses frontend
+back-end/
+ai-api/
+node_modules/
+.git/

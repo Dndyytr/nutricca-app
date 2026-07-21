@@ -100,7 +100,7 @@ export const Toaster = () => {
                 type="button"
                 onClick={() => dismiss(item.id)}
                 aria-label="Dismiss notification"
-                className={`-mr-1 -mt-1 cursor-pointer rounded-full p-1 ${style.close} size-max`}
+                className={`-mr-1 -mt-1 cursor-pointer transition-all duration-300 ease-in-out rounded-full p-1 ${style.close} size-max`}
               >
                 <X className="size-4 bp360:size-4.25 bp400:size-4.5 md:size-4.75 lg:size-5 xl:size-5.25 2xl:size-5.5" />
               </button>
