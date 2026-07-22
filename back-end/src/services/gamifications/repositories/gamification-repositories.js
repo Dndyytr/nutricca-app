@@ -89,6 +89,7 @@ class GamificationRepository {
     const result = await this.pool.query(query);
     return result.rows[0];
   }
+
 }
 
 export default new GamificationRepository();

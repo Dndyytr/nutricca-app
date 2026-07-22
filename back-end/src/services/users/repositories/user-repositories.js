@@ -130,6 +130,16 @@ class UserRepository {
     return result.rows[0];
   }
 
+  async getUserByEmail(email) {
+    const query = {
+      text: 'SELECT id, email FROM users WHERE email = $1',
+      values: [email],
+    };
+
+    const result = await this.pool.query(query);
+    // Mengembalikan data berupa object { id, email, is_onboarding_completed } atau undefined
+    return result.rows[0];}
+
   async checkOnboardingStatus(userId) {
     const query = {
       text: 'SELECT is_onboarding_completed FROM users WHERE id = $1',

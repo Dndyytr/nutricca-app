@@ -1,15 +1,14 @@
 import UserRepository from '../repositories/user-repositories.js';
 import GamificationRepository from '../../gamifications/repositories/gamification-repositories.js';
 import BasicIdentityRepository from '../../basic_identity/repositories/basic_identity-repositories.js';
-
+import OtpRepository from '../../authentications/repositories/otp-repositories.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 
 export const addNewUser = async (req, res, next) => {
-  const { fullname, email, password } = req.validated;
+  const { fullname, email, password, otp } = req.validated;
 
-  // The repository now returns a boolean (true/false)
   const isEmailExist = await UserRepository.verifyEmail(email);
 
   if (isEmailExist) {
@@ -18,7 +17,14 @@ export const addNewUser = async (req, res, next) => {
     );
   }
 
-  // Use camelCase to match the updated repository method
+  const isOtpValid = await OtpRepository.checkValidOtp(email, otp);
+
+  if (!isOtpValid) {
+    return next(
+      new InvariantError('Kode OTP tidak valid atau sudah kadaluarsa.'),
+    );
+  }
+
   const user = await UserRepository.createUser({
     fullname,
     email,
@@ -28,6 +34,8 @@ export const addNewUser = async (req, res, next) => {
   if (!user) {
     return next(new InvariantError('Failed to add user.'));
   }
+
+  await OtpRepository.deleteOtpByEmail(email);
 
   const gamification = await GamificationRepository.createGamificationProfile(
     user.id,
@@ -66,10 +74,15 @@ export const updateUserById = async (req, res, next) => {
     const { fullname } = req.validated || req.body;
     if (!fullname) return next(new InvariantError('Fullname is required.'));
 
-    const updatedUser = await UserRepository.editFullnameByUserId(userId, { fullname });
-    if (!updatedUser) return next(new InvariantError('Failed to update user profile.'));
+    const updatedUser = await UserRepository.editFullnameByUserId(userId, {
+      fullname,
+    });
+    if (!updatedUser)
+      return next(new InvariantError('Failed to update user profile.'));
 
-    return response(res, 200, 'User profile successfully updated', { user: updatedUser });
+    return response(res, 200, 'User profile successfully updated', {
+      user: updatedUser,
+    });
   } catch (error) {
     next(error);
   }
