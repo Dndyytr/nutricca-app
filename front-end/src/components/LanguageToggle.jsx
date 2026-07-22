@@ -12,7 +12,7 @@ export const LanguageToggle = () => {
       <button
         type="button"
         onClick={() => setLocale(nextLocale)}
-        className="relative cursor-pointer h-7 bp360:h-7.25 w-16 bp360:w-16.25 bp400:h-7.5 bp400:w-16.5 md:h-7.75 md:w-16.75 lg:h-8 lg:w-17 xl:h-8.5 xl:w-17.5 2xl:h-9 2xl:w-18 rounded-full border border-slate-200 bg-slate-100 p-0.5 shadow-sm transition-all duration-200 hover:border-green-300 hover:bg-green-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-500/15"
+        className="relative cursor-pointer h-7 bp360:h-7.25 w-16 bp360:w-16.25 bp400:h-7.5 bp400:w-16.5 md:h-7.75 md:w-16.75 lg:h-8 lg:w-17 xl:h-8.5 xl:w-17.5 2xl:h-9 2xl:w-18 rounded-full border border-slate-100 bg-slate-50 p-0.5 shadow-xs transition-all duration-200 hover:border-green-300 hover:bg-green-50 active:border-green-300 active:bg-green-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-500/15"
         aria-label={t("common.switchLanguage", { language: nextLanguage })}
       >
         <span
