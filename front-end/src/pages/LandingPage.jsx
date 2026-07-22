@@ -425,13 +425,13 @@ export const LandingPage = () => {
             <LanguageToggle />
             <button
               onClick={() => navigate("/login")}
-              className="t-size3 cursor-pointer font-medium text-slate-500 hover:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all"
+              className="t-size3 cursor-pointer font-medium text-slate-500 hover:text-slate-900 active:text-slate-900 px-4 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-300 ease-in-out active:border-slate-300 hover:-translate-y-0.5 active:scale-95"
             >
               {t("nav.signIn")}
             </button>
             <button
               onClick={() => navigate("/onboarding")}
-              className="t-size3 cursor-pointer font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors shadow-md shadow-green-600/20"
+              className="t-size3 cursor-pointer font-semibold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-all active:bg-green-700 hover:-translate-y-0.5 active:scale-95 shadow-md shadow-green-600/20 duration-300 ease-in-out"
             >
               {t("nav.getStarted")}
             </button>
@@ -439,7 +439,7 @@ export const LandingPage = () => {
 
           {/* mobile toggle */}
           <button
-            className="relative flex size-7 bp360:size-7.25 bp400:size-7.5 md:size-7.75 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-all duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 md:hidden"
+            className="relative flex size-7 bp360:size-7.25 bp400:size-7.5 md:size-7.75 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-all duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 active:bg-slate-200 active:text-slate-900 md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-controls="landing-mobile-nav"
@@ -458,7 +458,7 @@ export const LandingPage = () => {
         {/* mobile menu */}
         <div
           id="landing-mobile-nav"
-          className={`overflow-hidden bg-white transition-[max-height,opacity] duration-400 ease-out md:hidden motion-reduce:transition-none ${mobileOpen ? "max-h-[22rem] border-t border-slate-100 opacity-100" : "pointer-events-none max-h-0 opacity-0"}`}
+          className={`overflow-hidden bg-white transition-[max-height,opacity] duration-400 ease-out md:hidden motion-reduce:transition-none ${mobileOpen ? "max-h-88 border-t border-slate-100 opacity-100" : "pointer-events-none max-h-0 opacity-0"}`}
         >
           <div className="flex flex-col gap-4 px-6 py-4">
             {navLinks.map(({ key, href }) => (
@@ -475,13 +475,13 @@ export const LandingPage = () => {
               <LanguageToggle />
               <button
                 onClick={() => navigate("/login")}
-                className="flex-1 cursor-pointer t-size3 font-medium text-slate-500 py-2 rounded-lg border border-slate-200"
+                className="flex-1 cursor-pointer t-size3 font-medium text-slate-500 py-2 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-300 ease-in-out active:border-slate-300 hover:-translate-y-0.5 active:scale-95"
               >
                 {t("nav.signIn")}
               </button>
               <button
                 onClick={() => navigate("/onboarding")}
-                className="flex-1 cursor-pointer t-size3 font-semibold text-white bg-green-600 py-2 rounded-lg"
+                className="flex-1 cursor-pointer t-size3 font-semibold text-white bg-green-600 hover:bg-green-700 active:bg-green-700 hover:-translate-y-0.5 active:scale-95 py-2 rounded-lg transition-all duration-300 ease-in-out"
               >
                 {t("nav.getStarted")}
               </button>
@@ -512,14 +512,14 @@ export const LandingPage = () => {
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => navigate("/onboarding")}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-3 t-size3 font-semibold text-white shadow-lg shadow-green-600/20 transition-colors hover:bg-green-700 sm:w-auto"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-3 t-size3 font-semibold text-white shadow-lg shadow-green-600/20 transition-all duartion-300 ease-in-out hover:bg-green-700 active:bg-green-700 hover:-translate-y-0.5 active:scale-95 sm:w-auto"
               >
                 {t("landing.hero.startFree")}
                 <ArrowRight size={16} />
               </button>
               <button
                 onClick={() => navigate("/login")}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-3 t-size3 font-semibold text-slate-900 transition-all hover:border-slate-300 sm:w-auto"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-3 t-size3 font-semibold text-slate-900 transition-all duration-300 ease-in-out hover:border-slate-300 active:border-slate-300 hover:-translate-y-0.5 active:scale-95 sm:w-auto"
               >
                 {t("nav.signIn")}
                 <ChevronRight size={16} className="text-slate-500" />
@@ -774,14 +774,14 @@ export const LandingPage = () => {
               <div className="mb-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <button
                   onClick={() => navigate("/onboarding")}
-                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 t-size3 font-semibold text-green-700 shadow-md transition-colors hover:bg-green-50 sm:w-auto"
+                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 t-size3 font-semibold text-green-700 shadow-md transition-all duration-300 ease-in-out hover:bg-green-50 active:bg-green-50 hover:-translate-y-0.5 active:scale-95 sm:w-auto"
                 >
                   {t("landing.hero.startFree")}
                   <ArrowRight size={16} />
                 </button>
                 <button
                   onClick={() => navigate("/login")}
-                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3 t-size3 font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+                  className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3 t-size3 font-semibold text-white transition-all duration-300 ease-in-out hover:bg-white/10 active:bg-white/10 hover:-translate-y-0.5 active:scale-95 sm:w-auto"
                 >
                   {t("nav.signIn")}
                 </button>

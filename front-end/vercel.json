@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/api/v1/:path*",
+      "destination": "http://202.10.48.189:3000/api/v1/:path*"
+    },
+    {
+      "source": "/ai-api/:path*",
+      "destination": "http://202.10.48.189:3002/ai-api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

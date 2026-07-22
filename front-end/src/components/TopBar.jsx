@@ -46,7 +46,7 @@ export const TopBar = ({ onMenuClick }) => {
   );
 
   return (
-    <header className="sticky top-0 z-50 h-14 bg-white border-b border-slate-100 px-4 md:px-7 flex items-center justify-between flex-shrink-0">
+    <header className="sticky top-0 z-50 h-14 bg-white border-b border-slate-100 px-4 md:px-7 flex items-center justify-between shrink-0">
       {/* Left */}
       <div className="flex items-center gap-3">
         {/* Logo — mobile only */}
@@ -54,7 +54,7 @@ export const TopBar = ({ onMenuClick }) => {
           type="button"
           aria-label={t("common.openNavigation")}
           onClick={onMenuClick}
-          className="flex items-center cursor-pointer justify-center p-1.5 rounded-lg text-slate-500 transition-all bg-slate-100 duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 lg:hidden"
+          className="flex items-center cursor-pointer justify-center p-1.5 rounded-lg text-slate-500 transition-all bg-slate-100 duration-300 ease-in-out hover:bg-slate-200 hover:text-slate-900 active:bg-slate-200 active:text-slate-900 lg:hidden"
         >
           <Menu className="size-6 bp360:size-6.25 bp400:size-6.5 md:size-6.75" />
         </button>
