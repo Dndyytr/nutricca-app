@@ -1,47 +1,344 @@
+// seeder/masterExercisesAndCardiosSeeder.js
 import { Pool } from 'pg';
 import 'dotenv/config';
 
 const pool = new Pool();
 
 const masterExercises = [
-  ['beginner', 'Knee Push up', 'push_up_knee', 'Beginner friendly push up on knees', 10, 0.3],
-  ['beginner', 'Assisted Pull up', 'pull_up_assisted', 'Pull up using a resistance band or machine', 5, 0.4],
-  ['beginner', 'Knee Plank', 'plank_knee', 'Core strengthening on knees for beginners', 3, 3],
-  ['beginner', 'Half Squats', 'squats_half', 'Shallow squats to build basic leg strength', 15, 0.2],
-  ['beginner', 'Bench Dips', 'dips_bench', 'Triceps exercise using a bench or chair', 10, 0.3],
-  ['intermediate', 'Standard Push up', 'push_up', 'Classic push up exercise for chest and arms', 15, 0.5],
-  ['intermediate', 'Standard Pull up', 'pull_up', 'Classic pull up exercise for back', 8, 0.8],
-  ['intermediate', 'Standard Plank', 'plank', 'Core strengthening exercise', 3, 5],
-  ['intermediate', 'Standard Squats', 'squats', 'Lower body strengthening exercise', 20, 0.3],
-  ['intermediate', 'Parallel Bar Dips', 'dips', 'Upper body exercise for triceps and chest', 10, 0.6],
-  ['advanced', 'Diamond Push up', 'push_up_diamond', 'Advanced push up targeting triceps and inner chest', 15, 0.8],
-  ['advanced', 'Muscle Up', 'muscle_up', 'Advanced combination of pull up and dip', 5, 1.5],
-  ['advanced', 'One-Arm Plank', 'plank_one_arm', 'Advanced core stability exercise', 3, 8],
-  ['advanced', 'Pistol Squats', 'squats_pistol', 'Single leg squat for advanced strength and balance', 10, 1.2],
-  ['advanced', 'Ring Dips', 'dips_ring', 'Gymnastic ring dips requiring stabilization', 10, 1],
-].map(([level, name, type, description, target_reps, calories_per_unit]) => ({
-  level, name, type, description, target_reps, calories_per_unit, duration_days: 5, icon_url: null,
-}));
+  {
+    level: 'beginner',
+    name: 'Knee Push up',
+    type: 'push_up_knee',
+    description: 'Beginner friendly push up on knees',
+    target_reps: 10,
+    calories_per_unit: 0.3,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776887/Knee_Push_Up_ieeayq.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Assisted Pull up',
+    type: 'pull_up_assisted',
+    description: 'Pull up using a resistance band or machine',
+    target_reps: 5,
+    calories_per_unit: 0.4,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776886/Assisted_Pull_Up_nstok0.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Knee Plank',
+    type: 'plank_knee',
+    description: 'Core strengthening on knees for beginners',
+    target_reps: 3,
+    calories_per_unit: 3,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776888/Knee_Plank_z7lhro.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Half Squats',
+    type: 'squats_half',
+    description: 'Shallow squats to build basic leg strength',
+    target_reps: 15,
+    calories_per_unit: 0.2,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776889/Standard_Squats_knzdzh.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Bench Dips',
+    type: 'dips_bench',
+    description: 'Triceps exercise using a bench or chair',
+    target_reps: 10,
+    calories_per_unit: 0.3,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776886/Bench_Dips_cexleb.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Standard Push up',
+    type: 'push_up',
+    description: 'Classic push up exercise for chest and arms',
+    target_reps: 15,
+    calories_per_unit: 0.5,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776889/Standard_Push_Up_tct9ku.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Standard Pull up',
+    type: 'pull_up',
+    description: 'Classic pull up exercise for back',
+    target_reps: 8,
+    calories_per_unit: 0.8,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776889/Standard_Pull_Up_h46mmy.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Standard Plank',
+    type: 'plank',
+    description: 'Core strengthening exercise',
+    target_reps: 3,
+    calories_per_unit: 5,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776888/Standard_Plank_woabbf.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Standard Squats',
+    type: 'squats',
+    description: 'Lower body strengthening exercise',
+    target_reps: 20,
+    calories_per_unit: 0.3,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776889/Standard_Squats_knzdzh.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Parallel Bar Dips',
+    type: 'dips',
+    description: 'Upper body exercise for triceps and chest',
+    target_reps: 10,
+    calories_per_unit: 0.6,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776886/Parallel_Bar_Dips_pluetr.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Diamond Push up',
+    type: 'push_up_diamond',
+    description: 'Advanced push up targeting triceps and inner chest',
+    target_reps: 15,
+    calories_per_unit: 0.8,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776886/Diamond_Push_Up_f8lyiw.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Muscle Up',
+    type: 'muscle_up',
+    description: 'Advanced combination of pull up and dip',
+    target_reps: 5,
+    calories_per_unit: 1.5,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776888/Muscle_Up_dmfcmf.png',
+  },
+  {
+    level: 'advanced',
+    name: 'One-Arm Plank',
+    type: 'plank_one_arm',
+    description: 'Advanced core stability exercise',
+    target_reps: 3,
+    calories_per_unit: 8,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776889/One_Arm_Plank_szg4lm.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Pistol Squats',
+    type: 'squats_pistol',
+    description: 'Single leg squat for advanced strength and balance',
+    target_reps: 10,
+    calories_per_unit: 1.2,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776886/Pistol_Squats_yit16i.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Ring Dips',
+    type: 'dips_ring',
+    description: 'Gymnastic ring dips requiring stabilization',
+    target_reps: 10,
+    calories_per_unit: 1,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784776887/Ring_Dips_ip4y7p.png',
+  },
+];
 
 const masterCardios = [
-  ['beginner', 'Light Walking', 'walking_light', 'Relaxed walking pace', 3, 50, 5],
-  ['beginner', 'Light Jogging', 'jogging_light', 'Slow pace jogging for beginners', 3, 65, 5],
-  ['beginner', 'Stationary Cycling', 'cycling_stationary', 'Indoor easy cycling', 5, 40, 5],
-  ['beginner', 'Slow Swimming', 'swimming_slow', 'Leisurely swimming pool sessions', 0.5, 200, 3],
-  ['beginner', 'Nature Hiking', 'hiking_easy', 'Light hiking on flat trails', 4, 70, 5],
-  ['intermediate', 'Brisk Walking', 'walking_brisk', 'Fast paced walking for fat burn', 8, 60, 5],
-  ['intermediate', '10K Running', 'running_10k', 'Standard 10 kilometer run', 10, 80, 5],
-  ['intermediate', 'Road Cycling', 'cycling_road', 'Moderate pace road cycling', 15, 50, 5],
-  ['intermediate', 'Freestyle Swimming', 'swimming_freestyle', 'Continuous freestyle swimming laps', 2, 350, 3],
-  ['intermediate', 'Mountain Climbing', 'mountain_climbing', 'Standard mountain trekking', 10, 90, 5],
-  ['advanced', 'Race Walking', 'walking_race', 'Olympic style race walking', 15, 75, 5],
-  ['advanced', 'Half Marathon', 'running_marathon', 'High endurance 21K run', 21, 90, 5],
-  ['advanced', 'Uphill Cycling', 'cycling_uphill', 'Intense hill climb cycling', 25, 75, 5],
-  ['advanced', 'Butterfly Swimming', 'swimming_butterfly', 'High intensity butterfly stroke', 3, 450, 3],
-  ['advanced', 'Alpine Climbing', 'climbing_alpine', 'Steep terrain mountaineering', 15, 120, 5],
-].map(([level, name, type, description, target_distance, calories_per_unit, duration_days]) => ({
-  level, name, type, description, target_distance, calories_per_unit, duration_days, icon_url: null,
-}));
+  {
+    level: 'beginner',
+    name: 'Light Walking',
+    type: 'walking_light',
+    description: 'Relaxed walking pace',
+    target_distance: 3,
+    calories_per_unit: 50,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783732/Light_Walking_nqptse.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Light Jogging',
+    type: 'jogging_light',
+    description: 'Slow pace jogging for beginners',
+    target_distance: 3,
+    calories_per_unit: 65,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783732/Light_Jogging_gew5zd.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Stationary Cycling',
+    type: 'cycling_stationary',
+    description: 'Indoor easy cycling',
+    target_distance: 5,
+    calories_per_unit: 40,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783735/Stationary_Cycling_pvrdou.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Slow Swimming',
+    type: 'swimming_slow',
+    description: 'Leisurely swimming pool sessions',
+    target_distance: 0.5,
+    calories_per_unit: 200,
+    duration_days: 3,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783735/Slow_Swimming_dg2tm6.png',
+  },
+  {
+    level: 'beginner',
+    name: 'Nature Hiking',
+    type: 'hiking_easy',
+    description: 'Light hiking on flat trails',
+    target_distance: 4,
+    calories_per_unit: 70,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783734/Nature_Hiking_g6jgww.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Brisk Walking',
+    type: 'walking_brisk',
+    description: 'Fast paced walking for fat burn',
+    target_distance: 8,
+    calories_per_unit: 60,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783730/Brisk_Walking_qwhygw.png',
+  },
+  {
+    level: 'intermediate',
+    name: '10K Running',
+    type: 'running_10k',
+    description: 'Standard 10 kilometer run',
+    target_distance: 10,
+    calories_per_unit: 80,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783730/10K_Running_cfwwcz.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Road Cycling',
+    type: 'cycling_road',
+    description: 'Moderate pace road cycling',
+    target_distance: 15,
+    calories_per_unit: 50,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783735/Road_Cycling_hxnjsg.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Freestyle Swimming',
+    type: 'swimming_freestyle',
+    description: 'Continuous freestyle swimming laps',
+    target_distance: 2,
+    calories_per_unit: 350,
+    duration_days: 3,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783730/Freestyle_Swimming_hddwav.png',
+  },
+  {
+    level: 'intermediate',
+    name: 'Mountain Climbing',
+    type: 'mountain_climbing',
+    description: 'Standard mountain trekking',
+    target_distance: 10,
+    calories_per_unit: 90,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783734/Mountain_Climbing_dqitq4.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Race Walking',
+    type: 'walking_race',
+    description: 'Olympic style race walking',
+    target_distance: 15,
+    calories_per_unit: 75,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783733/Race_Walking_wpqqh2.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Half Marathon',
+    type: 'running_marathon',
+    description: 'High endurance 21K run',
+    target_distance: 21,
+    calories_per_unit: 90,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783731/Half_Marathon_te0jlv.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Uphill Cycling',
+    type: 'cycling_uphill',
+    description: 'Intense hill climb cycling',
+    target_distance: 25,
+    calories_per_unit: 75,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783736/Uphill_Cycling_suspbg.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Butterfly Swimming',
+    type: 'swimming_butterfly',
+    description: 'High intensity butterfly stroke',
+    target_distance: 3,
+    calories_per_unit: 450,
+    duration_days: 3,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783730/Butterfly_Swimming_hpewt7.png',
+  },
+  {
+    level: 'advanced',
+    name: 'Alpine Climbing',
+    type: 'climbing_alpine',
+    description: 'Steep terrain mountaineering',
+    target_distance: 15,
+    calories_per_unit: 120,
+    duration_days: 5,
+    icon_url:
+      'https://res.cloudinary.com/dvhh2li6s/image/upload/v1784783730/Alpine_Climbing_ulsixu.png',
+  },
+];
 
 const seed = async (table, columns, items) => {
   const values = columns.map((_, index) => `$${index + 1}`).join(', ');
@@ -60,9 +357,43 @@ const seed = async (table, columns, items) => {
 };
 
 try {
-  await seed('master_exercises', ['name', 'type', 'description', 'target_reps', 'calories_per_unit', 'duration_days', 'icon_url', 'level'], masterExercises);
-  await seed('master_cardios', ['name', 'type', 'description', 'target_distance', 'calories_per_unit', 'duration_days', 'icon_url', 'level'], masterCardios);
-  console.log('Master exercise and cardio levels seeded.');
+  console.log('🌱 Mulai seed master exercises dan cardios...');
+
+  await seed(
+    'master_exercises',
+    [
+      'name',
+      'type',
+      'description',
+      'target_reps',
+      'calories_per_unit',
+      'duration_days',
+      'icon_url',
+      'level',
+    ],
+    masterExercises,
+  );
+  console.log('✅ Master exercises seeded dengan icon Cloudinary!');
+
+  await seed(
+    'master_cardios',
+    [
+      'name',
+      'type',
+      'description',
+      'target_distance',
+      'calories_per_unit',
+      'duration_days',
+      'icon_url',
+      'level',
+    ],
+    masterCardios,
+  );
+  console.log('✅ Master cardios seeded!');
+
+  console.log('🎉 Seeding selesai!');
+} catch (error) {
+  console.error('❌ Error saat seeding:', error.message);
 } finally {
   await pool.end();
 }

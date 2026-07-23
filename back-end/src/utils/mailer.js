@@ -6,12 +6,12 @@ dns.setDefaultResultOrder('ipv4first');
 
 // Membuat konfigurasi pengirim (transporter)
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_SECURE === 'true',
+  host: 'sandbox.smtp.mailtrap.io',
+  port:  2525,
+  secure: false,
   auth: {
-    user: process.env.GOOGLE_MAIL_SERVER,
-    pass: process.env.GOOGLE_APP_PASSWORD,
+    user: process.env.MAILTRAP_USERNAME,
+    pass: process.env.MAILTRAP_PASSWORD,
   },
 });
 
