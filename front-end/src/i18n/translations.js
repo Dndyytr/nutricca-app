@@ -376,6 +376,7 @@ export const translations = {
       status: {
         normal: "Normal",
         good: "Good",
+        poor: "Poor",
         needs_attention: "Needs attention",
         incomplete: "Incomplete",
       },
@@ -1258,6 +1259,7 @@ export const translations = {
       status: {
         normal: "Normal",
         good: "Baik",
+        poor: "Kurang baik",
         needs_attention: "Perlu perhatian",
         incomplete: "Belum lengkap",
       },

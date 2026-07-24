@@ -24,6 +24,7 @@ import { getDailyLogHistory } from "../../../services/api";
 const STATUS_STYLES = {
   normal: "bg-green-100 text-green-700",
   good: "bg-green-100 text-green-700",
+  poor: "bg-red-100 text-red-700",
   needs_attention: "bg-amber-100 text-amber-700",
   incomplete: "bg-red-100 text-red-700",
 };
