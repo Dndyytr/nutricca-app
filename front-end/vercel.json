@@ -6,7 +6,7 @@
     },
     {
       "source": "/ai-api/:path*",
-      "destination": "http://202.10.48.189:3002/ai-api/:path*"
+      "destination": "http://202.10.48.189:8000/ai-api/:path*" 
     },
     {
       "source": "/(.*)",
