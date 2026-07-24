@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   getUserProfile,
   loginApi,
   logoutApi,
   registerApi,
   loginWithGoogleApi,
-} from '../../../services/api';
-import { AuthContext } from './auth-context';
+} from "../../../services/api";
+import { AuthContext } from "./auth-context";
 
 const ONBOARDING_STEPS = [
-  'basic-identity',
-  'lifestyle',
-  'health-security',
-  'goal-setting',
+  "basic-identity",
+  "lifestyle",
+  "health-security",
+  "goal-setting",
 ];
 
 const readSession = () => {
-  const savedUser = localStorage.getItem('healthplan_user');
-  const accessToken = localStorage.getItem('healthplan_auth');
+  const savedUser = localStorage.getItem("healthplan_user");
+  const accessToken = localStorage.getItem("healthplan_auth");
 
   if (!savedUser || !accessToken) {
     return null;
@@ -31,14 +31,14 @@ const readSession = () => {
 };
 
 const getUserFromAccessToken = (accessToken) => {
-  const payload = JSON.parse(atob(accessToken.split('.')[1]));
+  const payload = JSON.parse(atob(accessToken.split(".")[1]));
   return { id: payload.id };
 };
 
 const persistSession = ({ user, accessToken, refreshToken }) => {
-  localStorage.setItem('healthplan_user', JSON.stringify(user));
-  localStorage.setItem('healthplan_auth', accessToken);
-  localStorage.setItem('healthplan_refresh', refreshToken);
+  localStorage.setItem("healthplan_user", JSON.stringify(user));
+  localStorage.setItem("healthplan_auth", accessToken);
+  localStorage.setItem("healthplan_refresh", refreshToken);
 };
 
 export const AuthProvider = ({ children }) => {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   const syncOnboardingStatus = useCallback(async () => {
     const profileRes = await getUserProfile();
     const isCompleted = profileRes?.data?.user?.is_onboarding_completed;
-    setOnboardingStep(isCompleted ? 'complete' : 'basic-identity');
+    setOnboardingStep(isCompleted ? "complete" : "basic-identity");
   }, []);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       try {
         await syncOnboardingStatus();
       } catch {
-        setOnboardingStep('basic-identity');
+        setOnboardingStep("basic-identity");
       } finally {
         setLoading(false);
       }
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       try {
         await syncOnboardingStatus();
       } catch {
-        setOnboardingStep('basic-identity');
+        setOnboardingStep("basic-identity");
       }
     },
     [syncOnboardingStatus],
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       } catch (error) {
         throw new Error(
-          error.response?.data?.message || 'Terjadi kesalahan saat registrasi.',
+          error.response?.data?.message || "Terjadi kesalahan saat registrasi.",
           { cause: error },
         );
       }
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       } catch (error) {
         throw new Error(
-          error.response?.data?.message || 'Terjadi kesalahan saat login.',
+          error.response?.data?.message || "Terjadi kesalahan saat login.",
           { cause: error },
         );
       }
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       } catch (error) {
         throw new Error(
-          error.response?.data?.message || 'Terjadi kesalahan saat login.',
+          error.response?.data?.message || "Terjadi kesalahan saat login.",
           { cause: error },
         );
       }
@@ -143,17 +143,17 @@ export const AuthProvider = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
-    const refreshToken = localStorage.getItem('healthplan_refresh');
+    const refreshToken = localStorage.getItem("healthplan_refresh");
 
     try {
       if (refreshToken) {
         await logoutApi(refreshToken);
       }
     } finally {
-      localStorage.removeItem('healthplan_user');
-      localStorage.removeItem('healthplan_auth');
-      localStorage.removeItem('healthplan_refresh');
-      localStorage.removeItem('healthplan_profile');
+      localStorage.removeItem("healthplan_user");
+      localStorage.removeItem("healthplan_auth");
+      localStorage.removeItem("healthplan_refresh");
+      localStorage.removeItem("healthplan_profile");
       setUser(null);
       setIsAuthenticated(false);
       setOnboardingStep(null);
@@ -166,7 +166,7 @@ export const AuthProvider = ({ children }) => {
 
       return currentIndex < ONBOARDING_STEPS.length - 1
         ? ONBOARDING_STEPS[currentIndex + 1]
-        : 'complete';
+        : "complete";
     });
   }, []);
 

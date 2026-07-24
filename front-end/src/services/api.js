@@ -1,4 +1,4 @@
-import { apiClient } from '../shared/api/client';
+import { apiClient } from "../shared/api/client";
 
 /* =========================================
    Authentication APIs
@@ -18,7 +18,7 @@ export const logoutApi = (refreshToken) => {
 };
 
 export const requestOtp = (email) => {
-  return apiClient.post('/auth/request-otp', { email });
+  return apiClient.post("/auth/request-otp", { email });
 };
 
 export const loginWithGoogleApi = (token) => {
@@ -79,7 +79,7 @@ export const updateBasicIdentity = (data) => {
 };
 
 export const updateGoalSetting = (data) => {
-  return apiClient.put('/goal-setting', data);
+  return apiClient.put("/goal-setting", data);
 };
 
 /* =========================================
@@ -108,7 +108,7 @@ export const getDailyLogHistory = (params) => {
 };
 
 export const addNutritionLog = (data) => {
-  return apiClient.post('/nutrition-logs', data);
+  return apiClient.post("/nutrition-logs", data);
 };
 
 export const getNutritionLogsByDailyLogId = (dailyLogId) => {
@@ -116,7 +116,7 @@ export const getNutritionLogsByDailyLogId = (dailyLogId) => {
 };
 
 export const getNutritionLogHistory = (params) => {
-  return apiClient.get('/nutrition-logs/user', { params });
+  return apiClient.get("/nutrition-logs/user", { params });
 };
 
 export const deleteNutritionLog = (nutritionLogId) => {
@@ -166,11 +166,11 @@ export const putWeeklyActivityProgress = (activityId, progressId, data) => {
 };
 
 export const getWeightLogs = () => {
-  return apiClient.get('/weight-logs');
+  return apiClient.get("/weight-logs");
 };
 
 export const postWeightLog = (data) => {
-  return apiClient.post('/weight-logs', data);
+  return apiClient.post("/weight-logs", data);
 };
 /* =========================================
    Activity Log APIs
@@ -233,7 +233,7 @@ export const putRecommendationAi = (targetDate, data) => {
 /* =========================================
    Progress & Notification APIs
 ========================================= */
-export const getProgressData = (period = '7') => {
+export const getProgressData = (period = "7") => {
   return apiClient.get(`/progress`, { params: { period } });
 };
 
