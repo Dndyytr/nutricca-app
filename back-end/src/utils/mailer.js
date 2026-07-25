@@ -79,7 +79,7 @@ export const sendOtpEmail = async (toEmail, otpCode) => {
                 Jika kamu tidak mendaftar di Nutricca, abaikan email ini.
               </p>
               <p style="color: #cbd5e1; font-size: 11px; margin: 0;">
-                &copy; ${new Date().getFullYear()} Nutricca (nutricca.my.id). All rights reserved.
+                &copy; ${new Date().getFullYear()} Nutricca (nutricca.web.id). All rights reserved.
               </p>
             </td>
           </tr>
