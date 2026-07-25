@@ -9,7 +9,9 @@
     "test": "node --test test/*.test.js",
     "lint": "eslint ./src",
     "seed:recipes": "node seeder/recipeSeeder.js",
-    "seed:master_activities": "node seeder/masterExercisesAndCardiosSeeder.js"
+    "seed:master_activities": "node seeder/masterExercisesAndCardiosSeeder.js",
+    "mail:test":"node test/MailTest.js"
+    
   },
   "keywords": [],
   "type": "module",

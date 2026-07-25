@@ -40,49 +40,78 @@ export const sendOtpEmail = async (toEmail, otpCode) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verifikasi Akun Nutricca</title>
+  <title>Verifikasi Akun Nutricca - Kode OTP</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
-  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f1f5f9; padding: 20px 0;">
+<body style="margin: 0; padding: 0; background-color: #f4f7f6; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f7f6; padding: 40px 0;">
     <tr>
       <td align="center">
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 560px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-          <!-- Header -->
+        <!-- Container Utama -->
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-radius: 8px;">
+          
+          <!-- Header (Logo Section) -->
           <tr>
-            <td align="center" style="padding: 30px 20px 10px 20px;">
-              <h2 style="color: #16a34a; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">Nutricca</h2>
-              <p style="color: #64748b; margin: 4px 0 0 0; font-size: 14px; font-weight: 500;">Healthy Lifestyle & Nutrition Platform</p>
+            <td align="center" style="background-color: #ffffff; padding: 30px 20px 20px 20px;">
+              <img src="https://res.cloudinary.com/dvhh2li6s/image/upload/v1784986031/favicon_kqytm4.svg" alt="Nutricca" width="100" style="display: block; border: 0; max-width: 100%; height: auto;" />
             </td>
           </tr>
           
           <!-- Content Body -->
           <tr>
-            <td style="padding: 20px 30px 30px 30px;">
-              <div style="background-color: #f8fafc; padding: 24px; border-radius: 10px; text-align: center; border: 1px solid #f1f5f9;">
-                <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 18px; font-weight: 700;">Kode Verifikasi (OTP)</h3>
-                <p style="color: #475569; font-size: 15px; margin: 0 0 20px 0; line-height: 1.5;">Gunakan kode di bawah ini untuk mengonfirmasi pendaftaran akun Nutricca kamu:</p>
-                
-                <div style="background-color: #ffffff; border: 2px dashed #16a34a; padding: 16px; margin: 20px 0; border-radius: 10px; display: inline-block; width: 85%;">
-                  <span style="font-size: 34px; font-weight: 800; color: #16a34a; letter-spacing: 10px; display: block; font-family: monospace;">${otpCode}</span>
-                </div>
-                
-                <p style="color: #dc2626; font-size: 13px; margin: 15px 0 0 0; font-weight: 600;">⚠️ Kode ini rahasia dan hanya berlaku selama 5 menit.</p>
+            <td style="background-color: #ffffff; padding: 20px 40px 40px 40px;">
+              <p style="color: #333333; font-size: 15px; margin: 0 0 20px 0; line-height: 1.6;">
+                Halo Pengguna,
+              </p>
+              
+              <p style="color: #333333; font-size: 15px; margin: 0 0 20px 0; line-height: 1.6;">
+                Berikut adalah kode verifikasi Anda untuk pendaftaran akun Nutricca:
+              </p>
+              
+              <!-- OTP Code -->
+              <div style="margin: 30px 0;">
+                <span style="font-size: 42px; font-weight: 700; color: #16a34a; letter-spacing: 4px; display: block;">${otpCode}</span>
               </div>
+              
+              <p style="color: #333333; font-size: 15px; margin: 0 0 20px 0; line-height: 1.6;">
+                Kode ini valid selama 5 menit dan hanya bisa digunakan sekali.
+              </p>
+              
+              <p style="color: #333333; font-size: 15px; margin: 0 0 40px 0; line-height: 1.6;">
+                Jika Anda tidak merasa melakukan pendaftaran di Nutricca, mohon abaikan email ini.
+              </p>
+              
+              <p style="color: #333333; font-size: 15px; margin: 0; line-height: 1.6;">
+                Best Regards,<br>
+                Nutricca Team
+              </p>
             </td>
           </tr>
           
-          <!-- Footer -->
+          <!-- Footer Information Section -->
           <tr>
-            <td style="padding: 0 30px 25px 30px; text-align: center; border-top: 1px solid #f1f5f9;">
-              <p style="color: #94a3b8; font-size: 12px; margin: 20px 0 5px 0; line-height: 1.4;">
-                Email ini dikirim secara otomatis oleh sistem Nutricca.<br>
-                Jika kamu tidak mendaftar di Nutricca, abaikan email ini.
-              </p>
-              <p style="color: #cbd5e1; font-size: 11px; margin: 0;">
-                &copy; ${new Date().getFullYear()} Nutricca (nutricca.web.id). All rights reserved.
+            <td style="background-color: #2b2b2b; padding: 30px 40px;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="color: #a0a0a0; font-size: 13px; line-height: 1.8;">
+                    <a href="https://www.nutricca.web.id" style="color: #16a34a; text-decoration: none;">www.nutricca.web.id</a>
+                    <br><br>
+                    Jika ada kendala hubungi developer melalui email:<br>
+                    <a href="mailto:nutriccaofficial@gmail.com" style="color: #ffffff; text-decoration: none;">nutriccaofficial@gmail.com</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Copyright Footer -->
+          <tr>
+            <td style="background-color: #222222; padding: 15px 40px; text-align: center;">
+              <p style="color: #777777; font-size: 12px; margin: 0;">
+                Copyright &copy; ${new Date().getFullYear()} Nutricca. All rights reserved.
               </p>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>
@@ -107,10 +136,17 @@ export const sendOtpEmail = async (toEmail, otpCode) => {
         throw error;
       }
 
-      console.log('✅ Email OTP terkirim via Resend ke:', toEmail, '| ID:', data?.id);
+      console.log(
+        '✅ Email OTP terkirim via Resend ke:',
+        toEmail,
+        '| ID:',
+        data?.id,
+      );
       return data;
     } catch (error) {
-      console.warn('⚠️ Gagal mengirim via Resend API, mencoba fallback SMTP...');
+      console.warn(
+        '⚠️ Gagal mengirim via Resend API, mencoba fallback SMTP...',
+      );
     }
   }
 
@@ -125,6 +161,11 @@ export const sendOtpEmail = async (toEmail, otpCode) => {
   };
 
   const info = await smtpTransporter.sendMail(mailOptions);
-  console.log('✅ Email OTP terkirim via SMTP ke:', toEmail, '| MessageId:', info.messageId);
+  console.log(
+    '✅ Email OTP terkirim via SMTP ke:',
+    toEmail,
+    '| MessageId:',
+    info.messageId,
+  );
   return info;
 };
