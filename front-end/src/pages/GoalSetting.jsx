@@ -39,7 +39,7 @@ export const GoalSetting = () => {
   const navigate = useNavigate();
   const { t } = useLocale();
   const { completeOnboardingStep } = useAuth();
-  const { userProfile } = useApp();
+  const { userProfile, fetchUserProfile } = useApp();
 
   const [formData, setFormData] = useState({
     primaryGoal: "Weight Loss",
@@ -91,7 +91,6 @@ export const GoalSetting = () => {
       };
       await healthGoalsApi(payload);
       await updateOnboardingStatus();
-      await completeOnboardingStep(payload);
 
       showLoading(
         t("onboarding.goals.generating"),
@@ -103,11 +102,15 @@ export const GoalSetting = () => {
         console.warn("AI generation failed silently:", err),
       );
 
+      // ponytail: one final refetch keeps every onboarding field in one cache update.
+      await fetchUserProfile();
+
       closeFeedback();
-      await showSuccess(
+      showSuccess(
         t("onboarding.goals.done"),
         t("onboarding.goals.doneDescription"),
       );
+      completeOnboardingStep();
       navigate("/");
     } catch (err) {
       closeFeedback();
@@ -196,7 +199,7 @@ export const GoalSetting = () => {
               }
               className="flex-1 accent-green-600 h-2"
             />
-            <div className="flex-shrink-0 text-center w-14">
+            <div className="shrink-0 text-center w-14">
               <span className="t-size8 font-extrabold text-green-600">
                 {formData.commitmentDays}
               </span>
