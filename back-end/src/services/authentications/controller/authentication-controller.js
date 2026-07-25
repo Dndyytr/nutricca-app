@@ -3,6 +3,7 @@ import TokenManager from '../../../security/token-manager.js';
 import AuthenticationRepository from '../repositories/authentication-repositories.js';
 import AuthenticationError from '../../../exceptions/authentication-error.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
+import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 import { OAuth2Client } from 'google-auth-library';
 import { sendOtpEmail } from '../../../utils/mailer.js';
@@ -145,3 +146,54 @@ export const requestOtp = async (req, res, next) => {
     return next(new Error('Gagal mengirim email OTP, silakan coba lagi.'));
   }
 };
+
+export const forgotPassword = async (req, res, next) => {
+  const { email } = req.validated;
+  const isEmailExist = await UserRepository.verifyEmail(email);
+
+  if (!isEmailExist) {
+    return next(
+      new NotFoundError('Email tidak ditemukan. Silakan periksa kembali.'),
+    );
+  }
+
+  const otp = crypto.randomInt(100000, 999999).toString();
+  const expiredAt = new Date(Date.now() + 5 * 60 * 1000);
+
+  await OtpRepository.deleteOtpByEmail(email);
+  await OtpRepository.addOtp({ email, otp, expiredAt });
+
+  try {
+    await sendOtpEmail(email, otp);
+
+    return response(
+      res,
+      200,
+      'Kode OTP reset password berhasil dikirim! Silakan cek email kamu.',
+    );
+  } catch (error) {
+    console.error('Gagal mengirim email reset password:', error);
+    return next(new Error('Gagal mengirim email OTP, silakan coba lagi.'));
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  const { email, otp, newPassword } = req.validated;
+
+  const isValidOtp = await OtpRepository.checkValidOtp(email, otp);
+  if (!isValidOtp) {
+    return next(
+      new InvariantError('Kode OTP tidak valid atau sudah kedaluwarsa.'),
+    );
+  }
+
+  await UserRepository.editPasswordByEmail(email, newPassword);
+  await OtpRepository.deleteOtpByEmail(email);
+
+  return response(
+    res,
+    200,
+    'Password berhasil diperbarui. Silakan login kembali dengan password baru.',
+  );
+};
+

@@ -94,6 +94,17 @@ class UserRepository {
     return id;
   }
 
+  async getUserCredentialById(id) {
+    const query = {
+      text: 'SELECT id, password FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows[0];
+  }
+
+
   async editFullnameByUserId(userId, { fullname }) {
     const query = {
       text: `
@@ -129,6 +140,26 @@ class UserRepository {
     const result = await this.pool.query(query);
     return result.rows[0];
   }
+
+  async editPasswordByEmail(email, newPassword) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const query = {
+      text: `
+        UPDATE users
+        SET
+          password = $1,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE email = $2
+        RETURNING id
+      `,
+      values: [hashedPassword, email],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows[0];
+  }
+
 
   async getUserByEmail(email) {
     const query = {

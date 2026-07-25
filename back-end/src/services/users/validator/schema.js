@@ -20,3 +20,9 @@ export const updateUserPayloadSchema = Joi.object({
   fullname: Joi.string().min(3).max(50).required(),
   // Tambahkan kolom lain di sini jika nanti user bisa update email/password
 });
+
+export const changePasswordPayloadSchema = Joi.object({
+  oldPassword: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
+});
+

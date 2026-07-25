@@ -66,10 +66,13 @@ export const FeedbackProvider = ({ children }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel variant="outline">
+            <AlertDialogCancel variant="outline" onClick={() => settle(false)}>
               {request?.cancelLabel}
             </AlertDialogCancel>
-            <AlertDialogAction variant="destructive">
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => settle(true)}
+            >
               {request?.confirmLabel}
             </AlertDialogAction>
           </AlertDialogFooter>

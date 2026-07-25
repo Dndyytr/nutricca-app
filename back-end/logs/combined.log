@@ -922,3 +922,9 @@
 {"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-25 20:01:18"}
 {"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-25 20:01:18"}
 {"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-25 20:01:18"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-25 21:08:56"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-25 21:08:56"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-25 21:08:56"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-25 21:08:56"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-25 21:09:29"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-25 21:19:51"}

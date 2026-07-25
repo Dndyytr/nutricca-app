@@ -9,7 +9,10 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("healthplan_auth");
+  // Mendukung token baik di localStorage maupun sessionStorage
+  const token =
+    localStorage.getItem("healthplan_auth") ||
+    sessionStorage.getItem("healthplan_auth");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -20,5 +23,20 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => response.data,
-  (error) => Promise.reject(error),
+  (error) => {
+    // Jika token kadaluarsa / 401 Unauthorized pada API biasa, bersihkan token yang kadaluarsa
+    if (error.response && error.response.status === 401) {
+      const isAuthRoute = error.config?.url?.includes("/auth");
+      if (!isAuthRoute) {
+        localStorage.removeItem("healthplan_user");
+        localStorage.removeItem("healthplan_auth");
+        localStorage.removeItem("healthplan_refresh");
+
+        sessionStorage.removeItem("healthplan_user");
+        sessionStorage.removeItem("healthplan_auth");
+        sessionStorage.removeItem("healthplan_refresh");
+      }
+    }
+    return Promise.reject(error);
+  },
 );

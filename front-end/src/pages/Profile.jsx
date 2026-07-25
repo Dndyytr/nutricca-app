@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import {
   updateUserProfile,
   updateBasicIdentity as updateBasicIdentityApi,
+  changePasswordApi,
 } from "../services/api.js";
 import {
   showLoading,
@@ -59,6 +60,87 @@ export const Profile = () => {
   const [activeTab, setActiveTab] = useState("general");
   const formData = draft ?? userProfile;
 
+  const [passwordData, setPasswordData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordError, setPasswordError] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
+  const handlePasswordChangeInput = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
+    setPasswordError("");
+  };
+
+  const handleChangePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setPasswordError("");
+
+    if (
+      !passwordData.oldPassword ||
+      !passwordData.newPassword ||
+      !passwordData.confirmPassword
+    ) {
+      setPasswordError(
+        t("profile.allPasswordFieldsRequired") ||
+          "Semua bidang password wajib diisi.",
+      );
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setPasswordError(
+        t("register.validation.passwordLength") ||
+          "Password baru minimal 6 karakter.",
+      );
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordError(
+        t("profile.passwordMatchError") ||
+          "Konfirmasi password baru tidak cocok.",
+      );
+      return;
+    }
+
+    setChangingPassword(true);
+    showLoading(
+      t("auth.login.updatingPassword") || "Memperbarui Password...",
+      t("profile.updating"),
+    );
+
+    try {
+      await changePasswordApi({
+        oldPassword: passwordData.oldPassword,
+        newPassword: passwordData.newPassword,
+      });
+      closeFeedback();
+      showSuccess(
+        t("profile.changePasswordSuccessTitle") || "Password Diperbarui",
+        t("profile.changePasswordSuccessDesc") ||
+          "Kata sandi Anda telah berhasil diubah.",
+      );
+      setPasswordData({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      closeFeedback();
+      const msg =
+        err?.response?.data?.message ||
+        err.message ||
+        "Gagal mengubah password.";
+      setPasswordError(msg);
+      showError(t("profile.saveFailed"), msg);
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDraft((prev) => ({ ...(prev ?? userProfile), [name]: value }));
@@ -105,8 +187,14 @@ export const Profile = () => {
       destructive: true,
     });
     if (!confirmed) return;
-    logout();
-    navigate("/login");
+
+    try {
+      await logout();
+    } catch (err) {
+      console.warn("Logout error:", err);
+    } finally {
+      navigate("/login");
+    }
   };
 
   const initials = userProfile?.fullName
@@ -455,7 +543,7 @@ export const Profile = () => {
 
           {/* Settings */}
           {activeTab === "settings" && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               <div>
                 <div className="t-size3 font-bold text-slate-900 mb-3.5">
                   {t("profile.account")}
@@ -475,6 +563,83 @@ export const Profile = () => {
                   }
                 />
               </div>
+
+              {/* Password Section */}
+              <div className="border-t border-slate-100 pt-6">
+                <div className="t-size3 font-bold text-slate-900 mb-4">
+                  {t("profile.securityTitle") || "Keamanan & Kata Sandi"}
+                </div>
+                <form
+                  onSubmit={handleChangePasswordSubmit}
+                  className="space-y-4 max-w-md"
+                >
+                  <Field
+                    label={t("profile.currentPassword") || "Password Saat Ini"}
+                  >
+                    <input
+                      type="password"
+                      name="oldPassword"
+                      value={passwordData.oldPassword}
+                      onChange={handlePasswordChangeInput}
+                      placeholder="••••••••"
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 t-size3 font-medium focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all outline-none"
+                    />
+                  </Field>
+
+                  <Field
+                    label={t("profile.newPasswordLabel") || "Password Baru"}
+                  >
+                    <input
+                      type="password"
+                      name="newPassword"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChangeInput}
+                      placeholder={
+                        t("auth.login.minCharacters") || "Minimal 6 karakter"
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 t-size3 font-medium focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all outline-none"
+                    />
+                  </Field>
+
+                  <Field
+                    label={
+                      t("profile.confirmNewPassword") ||
+                      "Konfirmasi Password Baru"
+                    }
+                  >
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={passwordData.confirmPassword}
+                      onChange={handlePasswordChangeInput}
+                      placeholder={
+                        t("profile.repeatNewPasswordPlaceholder") ||
+                        "Ulangi password baru"
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 t-size3 font-medium focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all outline-none"
+                    />
+                  </Field>
+
+                  {passwordError && (
+                    <div className="p-3 rounded-lg bg-red-50 border border-red-100">
+                      <p className="t-size2 font-medium text-red-600">
+                        {passwordError}
+                      </p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={changingPassword}
+                    className="px-5 py-2.5 rounded-lg bg-green-600 text-white t-size3 font-bold hover:bg-green-700 transition-colors shadow-md shadow-green-600/20 active:scale-95 disabled:bg-green-400 cursor-pointer"
+                  >
+                    {changingPassword
+                      ? t("profile.changingPassword") || "Memperbarui..."
+                      : t("profile.changePasswordBtn") || "Ubah Password"}
+                  </button>
+                </form>
+              </div>
+
               <div className="border-t border-slate-100 pt-4">
                 <div className="t-size3 font-bold text-red-600 mb-3">
                   {t("profile.dangerZone")}

@@ -5,6 +5,7 @@ import OtpRepository from '../../authentications/repositories/otp-repositories.j
 import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
+import bcrypt from 'bcrypt';
 
 export const addNewUser = async (req, res, next) => {
   const { fullname, email, password, otp } = req.validated;
@@ -143,4 +144,23 @@ export const updateOnboardingStatus = async (req, res, next) => {
   return response(res, 200, 'Onboarding status successfully updated', {
     user: updatedUser,
   });
+};
+
+export const changePassword = async (req, res, next) => {
+  const userId = req.user?.id;
+  if (!userId) return next(new InvariantError('User ID not found in token.'));
+
+  const { oldPassword, newPassword } = req.validated;
+
+  const user = await UserRepository.getUserCredentialById(userId);
+  if (!user) return next(new NotFoundError('User not found.'));
+
+  const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isPasswordMatch) {
+    return next(new InvariantError('Password lama tidak sesuai.'));
+  }
+
+  await UserRepository.editPasswordByUserId(userId, newPassword);
+
+  return response(res, 200, 'Password berhasil diperbarui');
 };

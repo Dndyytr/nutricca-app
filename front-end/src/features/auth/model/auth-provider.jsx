@@ -16,8 +16,11 @@ const ONBOARDING_STEPS = [
 ];
 
 const readSession = () => {
-  const savedUser = localStorage.getItem("healthplan_user");
-  const accessToken = localStorage.getItem("healthplan_auth");
+  const storage = localStorage.getItem("healthplan_auth")
+    ? localStorage
+    : sessionStorage;
+  const savedUser = storage.getItem("healthplan_user");
+  const accessToken = storage.getItem("healthplan_auth");
 
   if (!savedUser || !accessToken) {
     return null;
@@ -35,10 +38,22 @@ const getUserFromAccessToken = (accessToken) => {
   return { id: payload.id };
 };
 
-const persistSession = ({ user, accessToken, refreshToken }) => {
-  localStorage.setItem("healthplan_user", JSON.stringify(user));
-  localStorage.setItem("healthplan_auth", accessToken);
-  localStorage.setItem("healthplan_refresh", refreshToken);
+const persistSession = ({
+  user,
+  accessToken,
+  refreshToken,
+  rememberMe = true,
+}) => {
+  const targetStorage = rememberMe ? localStorage : sessionStorage;
+  const otherStorage = rememberMe ? sessionStorage : localStorage;
+
+  otherStorage.removeItem("healthplan_user");
+  otherStorage.removeItem("healthplan_auth");
+  otherStorage.removeItem("healthplan_refresh");
+
+  targetStorage.setItem("healthplan_user", JSON.stringify(user));
+  targetStorage.setItem("healthplan_auth", accessToken);
+  targetStorage.setItem("healthplan_refresh", refreshToken);
 };
 
 export const AuthProvider = ({ children }) => {
@@ -78,12 +93,12 @@ export const AuthProvider = ({ children }) => {
   }, [syncOnboardingStatus]);
 
   const startSession = useCallback(
-    async (loginResponse) => {
+    async (loginResponse, rememberMe = true) => {
       const accessToken = loginResponse.data.accessToken;
       const refreshToken = loginResponse.data.refreshToken;
       const nextUser = getUserFromAccessToken(accessToken);
 
-      persistSession({ user: nextUser, accessToken, refreshToken });
+      persistSession({ user: nextUser, accessToken, refreshToken, rememberMe });
       setUser(nextUser);
       setIsAuthenticated(true);
 
@@ -100,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     async (fullName, email, password, otp) => {
       try {
         await registerApi({ fullname: fullName, email, password, otp });
-        await startSession(await loginApi({ email, password }));
+        await startSession(await loginApi({ email, password }), true);
         return true;
       } catch (error) {
         throw new Error(
@@ -113,9 +128,9 @@ export const AuthProvider = ({ children }) => {
   );
 
   const login = useCallback(
-    async (email, password) => {
+    async (email, password, rememberMe = true) => {
       try {
-        await startSession(await loginApi({ email, password }));
+        await startSession(await loginApi({ email, password }), rememberMe);
         return true;
       } catch (error) {
         throw new Error(
@@ -130,7 +145,7 @@ export const AuthProvider = ({ children }) => {
   const loginWithGoogle = useCallback(
     async (token) => {
       try {
-        await startSession(await loginWithGoogleApi(token));
+        await startSession(await loginWithGoogleApi(token), true);
         return true;
       } catch (error) {
         throw new Error(
@@ -143,17 +158,27 @@ export const AuthProvider = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
-    const refreshToken = localStorage.getItem("healthplan_refresh");
+    const refreshToken =
+      localStorage.getItem("healthplan_refresh") ||
+      sessionStorage.getItem("healthplan_refresh");
 
     try {
       if (refreshToken) {
         await logoutApi(refreshToken);
       }
+    } catch (err) {
+      console.warn("Logout API call error ignored:", err);
     } finally {
       localStorage.removeItem("healthplan_user");
       localStorage.removeItem("healthplan_auth");
       localStorage.removeItem("healthplan_refresh");
       localStorage.removeItem("healthplan_profile");
+
+      sessionStorage.removeItem("healthplan_user");
+      sessionStorage.removeItem("healthplan_auth");
+      sessionStorage.removeItem("healthplan_refresh");
+      sessionStorage.removeItem("healthplan_profile");
+
       setUser(null);
       setIsAuthenticated(false);
       setOnboardingStep(null);

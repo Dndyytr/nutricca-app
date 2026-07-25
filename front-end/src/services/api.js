@@ -24,6 +24,18 @@ export const requestOtp = (email) => {
 export const loginWithGoogleApi = (token) => {
   return apiClient.post(`/auth/google`, { token });
 };
+
+export const forgotPasswordApi = (email) => {
+  return apiClient.post("/auth/forgot-password", { email });
+};
+
+export const resetPasswordApi = (data) => {
+  return apiClient.post("/auth/reset-password", data);
+};
+
+export const changePasswordApi = (data) => {
+  return apiClient.put("/users/password", data);
+};
 /* =========================================
    Onboarding APIs
 ========================================= */
