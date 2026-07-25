@@ -428,7 +428,7 @@ export const WeeklyActivity = () => {
                   setExerciseLevel(event.target.value);
                   setExerciseIds([]);
                 }}
-                className="w-34 bg-white px-2 py-1"
+                className="max-w-max bg-white px-2 py-1"
               >
                 {["beginner", "intermediate", "advanced"].map((item) => (
                   <option key={item} value={item}>
@@ -499,7 +499,7 @@ export const WeeklyActivity = () => {
                   setCardioLevel(event.target.value);
                   setCardioIds([]);
                 }}
-                className="w-34 bg-white px-2 py-1"
+                className="max-w-max bg-white px-2 py-1"
               >
                 {["beginner", "intermediate", "advanced"].map((item) => (
                   <option key={item} value={item}>
