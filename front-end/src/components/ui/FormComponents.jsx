@@ -50,7 +50,9 @@ export const Select = ({
       }
       {...props}
     >
-      <SelectTrigger className={`${INPUT_CLASS} h-auto! ${className}`}>
+      <SelectTrigger
+        className={`${INPUT_CLASS} h-auto! min-w-0 overflow-hidden ${className}`}
+      >
         <SelectValue placeholder={placeholder?.props.children} />
       </SelectTrigger>
       <SelectContent position="popper">

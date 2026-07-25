@@ -242,7 +242,7 @@ export const HabitTracker = () => {
             {MEAL_SLOTS.map(({ key, placeholder }, i) => (
               <div key={key} className="flex items-start gap-2.5">
                 <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <div className="t-size3 text-slate-400 mb-1 font-medium">
                     {t(`habits.tracker.mealSlots.${key}`)}
                   </div>
@@ -253,7 +253,7 @@ export const HabitTracker = () => {
                       u[i] = e.target.value;
                       updateDailyHealth({ meals: u });
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-(--color-primary) focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
+                    className="w-full max-w-full bg-slate-50 rounded-lg t-size3 text-slate-900 focus:outline-none focus:bg-white focus:border-(--color-primary) focus:ring-4 focus:ring-green-500/10 transition-all duration-200 cursor-pointer font-medium"
                     disabled={loadingPlan}
                   >
                     <option value="" disabled hidden>

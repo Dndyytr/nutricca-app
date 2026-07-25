@@ -914,3 +914,6 @@
 {"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-23 12:14:12"}
 {"level":"warn","message":"ClientError (404): Gamification profile not found. - /api/v1/gamification - GET - ::1","timestamp":"2026-07-23 12:14:21"}
 {"level":"warn","message":"ClientError (404): Gamification profile not found. - /api/v1/gamification - GET - ::1","timestamp":"2026-07-23 12:14:21"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-25 11:20:39"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-25?t=1784953260683 - GET - ::1","timestamp":"2026-07-25 11:21:00"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-25?t=1784953260681 - GET - ::1","timestamp":"2026-07-25 11:21:00"}
