@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getGamificationApi,
   getUserBasicIdentity,
@@ -7,16 +7,16 @@ import {
   getUserHealthSecurity,
   getUserLifestyleAssessment,
   getUserProfile,
-} from "../services/api";
-import { useAuth } from "../features/auth/model/use-auth";
-import { AppContext } from "./app-context";
+} from '../services/api';
+import { useAuth } from '../features/auth/model/use-auth';
+import { AppContext } from './app-context';
 
 const initialDailyHealth = {
-  date: new Date().toLocaleDateString("id-ID", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  date: new Date().toLocaleDateString('id-ID', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   }),
   weight: 0,
   calorieIntake: 0,
@@ -28,7 +28,7 @@ const initialDailyHealth = {
 };
 
 const resultData = (result, key) =>
-  result.status === "fulfilled" ? result.value?.data?.[key] : null;
+  result.status === 'fulfilled' ? result.value?.data?.[key] : null;
 
 const buildUserProfile = ({
   user,
@@ -38,7 +38,7 @@ const buildUserProfile = ({
   goal,
   gamification,
 }) => {
-  const [systolic, diastolic] = health?.blood_pressure?.split("/") || [];
+  const [systolic, diastolic] = health?.blood_pressure?.split('/') || [];
   const bloodPressure = {
     systolic: Number.parseInt(systolic, 10) || null,
     diastolic: Number.parseInt(diastolic, 10) || null,
@@ -48,14 +48,14 @@ const buildUserProfile = ({
     ? basic.weight / (heightInMeters * heightInMeters)
     : null;
   const bmiCategory = !bmi
-    ? "-"
+    ? '-'
     : bmi < 18.5
-      ? "Underweight"
+      ? 'Underweight'
       : bmi < 25
-        ? "Normal"
+        ? 'Normal'
         : bmi < 30
-          ? "Overweight"
-          : "Obese";
+          ? 'Overweight'
+          : 'Obese';
 
   return {
     id: user?.id || null,
@@ -63,6 +63,7 @@ const buildUserProfile = ({
     email: user?.email || null,
     registeredAt: user?.created_at || null,
     isOnboardingCompleted: user?.is_onboarding_completed || false,
+    currentOnboardingStep: user?.current_onboarding_step || 1,
     age: basic?.age || null,
     gender: basic?.gender || null,
     weight: basic?.weight || null,
@@ -75,19 +76,19 @@ const buildUserProfile = ({
       ? Number.parseFloat(lifestyle.avg_sleep_hours)
       : null,
     medicalHistory:
-      health?.medical_history === "none"
+      health?.medical_history === 'none'
         ? []
         : [health?.medical_history].filter(Boolean),
     physicalInjuries:
-      health?.physical_injuries === "none"
-        ? ""
-        : health?.physical_injuries || "",
+      health?.physical_injuries === 'none'
+        ? ''
+        : health?.physical_injuries || '',
     currentMedication:
-      health?.current_medication === "none"
-        ? ""
-        : health?.current_medication || "",
+      health?.current_medication === 'none'
+        ? ''
+        : health?.current_medication || '',
     allergies:
-      health?.allergy === "none" ? [] : [health?.allergy].filter(Boolean),
+      health?.allergy === 'none' ? [] : [health?.allergy].filter(Boolean),
     bloodPressure,
     heartRate: health?.heart_rate || null,
     primaryGoal: goal?.primary_goal || null,
@@ -113,12 +114,12 @@ const fetchUserProfile = async () => {
   ]);
 
   return buildUserProfile({
-    user: resultData(results[0], "user"),
-    basic: resultData(results[1], "userBasicIdentity"),
-    lifestyle: resultData(results[2], "lifestyleAssessment"),
-    health: resultData(results[3], "healthSecurity"),
-    goal: resultData(results[4], "goalSetting"),
-    gamification: resultData(results[5], "gamification"),
+    user: resultData(results[0], 'user'),
+    basic: resultData(results[1], 'userBasicIdentity'),
+    lifestyle: resultData(results[2], 'lifestyleAssessment'),
+    health: resultData(results[3], 'healthSecurity'),
+    goal: resultData(results[4], 'goalSetting'),
+    gamification: resultData(results[5], 'gamification'),
   });
 };
 
@@ -129,7 +130,7 @@ export const AppProvider = ({ children }) => {
   const [habits, setHabits] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const profileQuery = useQuery({
-    queryKey: ["user-profile"],
+    queryKey: ['user-profile'],
     queryFn: fetchUserProfile,
     enabled: isAuthenticated,
   });
@@ -137,9 +138,9 @@ export const AppProvider = ({ children }) => {
 
   const updateCachedProfile = useCallback(
     (updates) => {
-      queryClient.setQueryData(["user-profile"], (currentProfile) => ({
+      queryClient.setQueryData(['user-profile'], (currentProfile) => ({
         ...currentProfile,
-        ...(typeof updates === "function" ? updates(currentProfile) : updates),
+        ...(typeof updates === 'function' ? updates(currentProfile) : updates),
       }));
     },
     [queryClient],
@@ -195,6 +196,11 @@ export const AppProvider = ({ children }) => {
         targetWeight: data.targetWeight,
         commitmentDays: data.commitmentDays,
         preferredActivities: data.preferredActivities,
+      }),
+
+    updateOnboardingStepCache: (stepNumber) =>
+      updateCachedProfile({
+        currentOnboardingStep: stepNumber,
       }),
     dailyHealth,
     updateDailyHealth: (update) =>

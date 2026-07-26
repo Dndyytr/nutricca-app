@@ -146,6 +146,37 @@ export const updateOnboardingStatus = async (req, res, next) => {
   });
 };
 
+export const updateOnboardingStep = async (req, res, next) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(new InvariantError('User ID not found in token.'));
+    }
+
+    const { current_onboarding_step: stepNumber } = req.validated;
+    if (!stepNumber) {
+      return next(new InvariantError('Valid step number is required.'));
+    }
+
+    const updatedUser = await UserRepository.updateOnboardingStep(
+      userId,
+      stepNumber,
+    );
+
+    if (!updatedUser) {
+      return next(new InvariantError('Failed to update onboarding step.'));
+    }
+
+    return response(res, 200, 'Onboarding step successfully updated', {
+      id: updatedUser.id,
+      current_onboarding_step: stepNumber,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const changePassword = async (req, res, next) => {
   const userId = req.user?.id;
   if (!userId) return next(new InvariantError('User ID not found in token.'));

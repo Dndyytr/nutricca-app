@@ -4,6 +4,7 @@ import {
   UserPayloadSchema,
   updateUserPayloadSchema,
   changePasswordPayloadSchema,
+  updateOnboardingStepSchema,
 } from '../validator/schema.js'; // Import schema update
 import authenticateToken from '../../../middleware/auth.js';
 import {
@@ -12,6 +13,7 @@ import {
   updateUserById,
   updateOnboardingStatus,
   changePassword,
+  updateOnboardingStep,
 } from '../controller/user-controller.js'; // Import controller update
 
 const router = Router();
@@ -20,6 +22,12 @@ const router = Router();
 router.post('/', validate(UserPayloadSchema), addNewUser);
 router.get('/', authenticateToken, getUserById);
 
+router.put(
+  '/onboarding-step',
+  authenticateToken,
+  validate(updateOnboardingStepSchema),
+  updateOnboardingStep,
+);
 router.put('/onboarding-status', authenticateToken, updateOnboardingStatus);
 router.put(
   '/password',

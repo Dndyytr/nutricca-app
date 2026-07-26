@@ -928,3 +928,91 @@
 {"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-25 21:08:56"}
 {"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-25 21:09:29"}
 {"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-25 21:19:51"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): Gamification profile not found. - /api/v1/gamification - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:45:19"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 11:45:20"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 11:45:20"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 11:46:44"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 11:46:44"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:46:44"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:46:44"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 11:46:57"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:46:57"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:46:57"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 11:47:04"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:47:04"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:47:04"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 11:48:05"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:48:05"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:48:05"}
+{"level":"warn","message":"ClientError (400): Failed to add lifestyle assessment. User already has a lifestyle assessment. - /api/v1/lifestyle-assessment - POST - ::1","timestamp":"2026-07-26 11:48:24"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:50:44"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:50:44"}
+{"level":"warn","message":"ClientError (400): Failed to add lifestyle assessment. User already has a lifestyle assessment. - /api/v1/lifestyle-assessment - POST - ::1","timestamp":"2026-07-26 11:50:47"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:51:15"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:51:15"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:52:23"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:52:23"}
+{"level":"warn","message":"ClientError (401): Invalid credentials provided. - /api/v1/auth - POST - ::1","timestamp":"2026-07-26 11:53:31"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 11:53:36"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 11:53:36"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:22:04"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:22:04"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:39:00"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:39:00"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): Gamification profile not found. - /api/v1/gamification - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:39:50"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 12:41:13"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 12:41:13"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:41:13"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:41:13"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 12:46:17"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 12:46:17"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:46:17"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:46:17"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): Gamification profile not found. - /api/v1/gamification - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (404): User not found. - /api/v1/users - GET - ::1","timestamp":"2026-07-26 12:53:25"}
+{"level":"warn","message":"ClientError (400): Failed to update onboarding step. - /api/v1/users/onboarding-step - PUT - ::1","timestamp":"2026-07-26 12:53:28"}
+{"level":"warn","message":"ClientError (404): Basic identity not found. - /api/v1/basic-identity - GET - ::1","timestamp":"2026-07-26 12:54:26"}
+{"level":"warn","message":"ClientError (404): Health security data not found. - /api/v1/health-security - GET - ::1","timestamp":"2026-07-26 12:54:26"}
+{"level":"warn","message":"ClientError (404): Lifestyle assessment not found. - /api/v1/lifestyle-assessment - GET - ::1","timestamp":"2026-07-26 12:54:26"}
+{"level":"warn","message":"ClientError (404): Goal setting not found. - /api/v1/goal-setting - GET - ::1","timestamp":"2026-07-26 12:54:26"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 12:56:33"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045396184 - GET - ::1","timestamp":"2026-07-26 12:56:36"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045396184 - GET - ::1","timestamp":"2026-07-26 12:56:36"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 12:56:36"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 12:56:36"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045442160 - GET - ::1","timestamp":"2026-07-26 12:57:22"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045442162 - GET - ::1","timestamp":"2026-07-26 12:57:22"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 12:57:22"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 12:57:22"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045617849 - GET - ::1","timestamp":"2026-07-26 13:00:17"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045617850 - GET - ::1","timestamp":"2026-07-26 13:00:17"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:00:17"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:00:17"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045661417 - GET - ::1","timestamp":"2026-07-26 13:01:01"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045661419 - GET - ::1","timestamp":"2026-07-26 13:01:01"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:01:01"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:01:01"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045685823 - GET - ::1","timestamp":"2026-07-26 13:01:25"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045685821 - GET - ::1","timestamp":"2026-07-26 13:01:25"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:01:25"}
+{"level":"warn","message":"ClientError (400): Gagal mendapatkan rekomendasi dari AI Engine. - /api/v1/ai-recommendations/predict - POST - ::1","timestamp":"2026-07-26 13:01:25"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045699779 - GET - ::1","timestamp":"2026-07-26 13:01:39"}
+{"level":"warn","message":"ClientError (404): Recommendation for the specified date not found. - /api/v1/ai-recommendations/date/2026-07-26?t=1785045699780 - GET - ::1","timestamp":"2026-07-26 13:01:39"}

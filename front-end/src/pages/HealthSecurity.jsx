@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useApp } from "../hooks/useApp";
-import { useAuth } from "../hooks/useAuth";
-import { healthSecurityApi } from "../services/api.js";
-import { OnboardingLayout } from "../components/ui/OnboardingLayout";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApp } from '../hooks/useApp';
+import { useAuth } from '../hooks/useAuth';
+import { updateOnboardingStep } from '../services/api.js';
+import { OnboardingLayout } from '../components/ui/OnboardingLayout';
 import {
   FormField,
   Input,
@@ -11,49 +11,52 @@ import {
   ToggleChip,
   ErrorAlert,
   FormActions,
-} from "../components/ui/FormComponents";
+} from '../components/ui/FormComponents';
 import {
   showLoading,
   showSuccess,
   showError,
   closeFeedback,
-} from "../shared/ui/feedback";
-import { useLocale } from "../i18n/locale-context";
+} from '../shared/ui/feedback';
+import { useLocale } from '../i18n/locale-context';
 
 const MEDICAL_OPTIONS = [
-  "Hypertension",
-  "Diabetes",
-  "Asthma",
-  "Cholesterol",
-  "Heart Disease",
-  "Other",
+  'Hypertension',
+  'Diabetes',
+  'Asthma',
+  'Cholesterol',
+  'Heart Disease',
+  'Other',
 ];
 const ALLERGY_OPTIONS = [
-  "Peanuts",
-  "Gluten",
-  "Dairy",
-  "Eggs",
-  "Shellfish",
-  "Tree Nuts",
-  "Fish",
-  "Soy",
+  'Peanuts',
+  'Gluten',
+  'Dairy',
+  'Eggs',
+  'Shellfish',
+  'Tree Nuts',
+  'Fish',
+  'Soy',
 ];
 
 export const HealthSecurity = () => {
   const navigate = useNavigate();
   const { t } = useLocale();
   const { updateHealthSecurity } = useApp();
-  const { completeOnboardingStep } = useAuth();
+  const { completeOnboardingStep, skipToStep } = useAuth();
+
+  const savedDraft =
+    JSON.parse(sessionStorage.getItem('draft_health_security')) || {};
 
   const [formData, setFormData] = useState({
-    medicalHistory: [],
-    physicalInjuries: "",
-    currentMedication: "",
-    bloodPressure: { systolic: "", diastolic: "" },
-    heartRate: "",
-    allergies: [],
+    medicalHistory: savedDraft.medicalHistory || [],
+    physicalInjuries: savedDraft.physicalInjuries || '',
+    currentMedication: savedDraft.currentMedication || '',
+    bloodPressure: savedDraft.bloodPressure || { systolic: '', diastolic: '' },
+    heartRate: savedDraft.heartRate || '',
+    allergies: savedDraft.allergies || [],
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const toggleList = (key, value) =>
@@ -66,7 +69,7 @@ export const HealthSecurity = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "systolic" || name === "diastolic") {
+    if (name === 'systolic' || name === 'diastolic') {
       setFormData((prev) => ({
         ...prev,
         bloodPressure: { ...prev.bloodPressure, [name]: value },
@@ -74,34 +77,34 @@ export const HealthSecurity = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
-    setError("");
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     if (formData.bloodPressure.systolic && formData.bloodPressure.diastolic) {
       const s = Number(formData.bloodPressure.systolic);
       const d = Number(formData.bloodPressure.diastolic);
       if (s < 60 || s > 200 || d < 40 || d > 150) {
-        setError(t("onboarding.medical.validation.bloodPressure"));
+        setError(t('onboarding.medical.validation.bloodPressure'));
         return;
       }
     }
     const hr = Number(formData.heartRate);
     if (formData.heartRate && (hr < 30 || hr > 200)) {
-      setError(t("onboarding.medical.validation.heartRate"));
+      setError(t('onboarding.medical.validation.heartRate'));
       return;
     }
 
     setLoading(true);
     showLoading(
-      t("onboarding.medical.saving"),
-      t("onboarding.medical.savingDescription"),
+      t('onboarding.medical.saving'),
+      t('onboarding.medical.savingDescription'),
     );
     try {
       const payload = {
-        medical_history: formData.medicalHistory.join(", "),
+        medical_history: formData.medicalHistory.join(', '),
         physical_injuries: formData.physicalInjuries || null,
         current_medication: formData.currentMedication || null,
         blood_pressure:
@@ -109,25 +112,28 @@ export const HealthSecurity = () => {
             ? `${formData.bloodPressure.systolic}/${formData.bloodPressure.diastolic}`
             : null,
         heart_rate: formData.heartRate ? Number(formData.heartRate) : null,
-        allergy: formData.allergies.join(", ") || null,
+        allergy: formData.allergies.join(', ') || null,
       };
-      await healthSecurityApi(payload);
+
+      sessionStorage.setItem('draft_health_security', JSON.stringify(payload));
       updateHealthSecurity(payload);
-      completeOnboardingStep(payload);
+      await updateOnboardingStep(4);
+
+      skipToStep('goal-setting');
       closeFeedback();
       await showSuccess(
-        t("onboarding.medical.saved"),
-        t("onboarding.medical.savedDescription"),
+        t('onboarding.medical.saved'),
+        t('onboarding.medical.savedDescription'),
       );
-      navigate("/onboarding/goal-setting");
+      navigate('/onboarding/goal-setting');
     } catch (err) {
       closeFeedback();
       const msg =
         err?.response?.data?.message ||
         err?.message ||
-        t("onboarding.medical.saveFailed");
+        t('onboarding.medical.saveFailed');
       setError(msg);
-      showError(t("onboarding.medical.saveFailedTitle"), msg);
+      showError(t('onboarding.medical.saveFailedTitle'), msg);
     } finally {
       setLoading(false);
     }
@@ -137,54 +143,54 @@ export const HealthSecurity = () => {
     <OnboardingLayout currentStep={3}>
       <div className="mb-8 md:mb-10">
         <h1 className="t-size9 font-extrabold tracking-tight text-slate-900 mb-3">
-          {t("onboarding.medical.heading")}
+          {t('onboarding.medical.heading')}
         </h1>
         <p className="t-size4 text-slate-500 font-medium">
-          {t("onboarding.medical.introduction")}
+          {t('onboarding.medical.introduction')}
         </p>
       </div>
       <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3 mb-6">
         <span className="text-amber-500 mt-0.5 flex-shrink-0">⚠️</span>
         <p className="t-size3 text-amber-700 font-medium">
-          {t("onboarding.medical.warning")}
+          {t('onboarding.medical.warning')}
         </p>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <FormField label={t("onboarding.medical.fields.medicalHistory")}>
+        <FormField label={t('onboarding.medical.fields.medicalHistory')}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {MEDICAL_OPTIONS.map((c) => (
               <ToggleChip
                 key={c}
                 label={t(`onboarding.medical.conditions.${c}`)}
                 selected={formData.medicalHistory.includes(c)}
-                onClick={() => toggleList("medicalHistory", c)}
+                onClick={() => toggleList('medicalHistory', c)}
                 withCheckbox
               />
             ))}
           </div>
         </FormField>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label={t("onboarding.medical.fields.injuries")}>
+          <FormField label={t('onboarding.medical.fields.injuries')}>
             <Textarea
               name="physicalInjuries"
               value={formData.physicalInjuries}
               onChange={handleInputChange}
-              placeholder={t("onboarding.medical.placeholders.injuries")}
+              placeholder={t('onboarding.medical.placeholders.injuries')}
               rows="3"
             />
           </FormField>
-          <FormField label={t("onboarding.medical.fields.medication")}>
+          <FormField label={t('onboarding.medical.fields.medication')}>
             <Textarea
               name="currentMedication"
               value={formData.currentMedication}
               onChange={handleInputChange}
-              placeholder={t("onboarding.medical.placeholders.medication")}
+              placeholder={t('onboarding.medical.placeholders.medication')}
               rows="3"
             />
           </FormField>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <FormField label={t("onboarding.medical.fields.systolic")}>
+          <FormField label={t('onboarding.medical.fields.systolic')}>
             <Input
               type="number"
               name="systolic"
@@ -195,7 +201,7 @@ export const HealthSecurity = () => {
               placeholder="120"
             />
           </FormField>
-          <FormField label={t("onboarding.medical.fields.diastolic")}>
+          <FormField label={t('onboarding.medical.fields.diastolic')}>
             <Input
               type="number"
               name="diastolic"
@@ -206,7 +212,7 @@ export const HealthSecurity = () => {
               placeholder="80"
             />
           </FormField>
-          <FormField label={t("onboarding.medical.fields.heartRate")}>
+          <FormField label={t('onboarding.medical.fields.heartRate')}>
             <Input
               type="number"
               name="heartRate"
@@ -218,14 +224,14 @@ export const HealthSecurity = () => {
             />
           </FormField>
         </div>
-        <FormField label={t("onboarding.medical.fields.allergies")}>
+        <FormField label={t('onboarding.medical.fields.allergies')}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {ALLERGY_OPTIONS.map((a) => (
               <ToggleChip
                 key={a}
                 label={t(`onboarding.medical.allergies.${a}`)}
                 selected={formData.allergies.includes(a)}
-                onClick={() => toggleList("allergies", a)}
+                onClick={() => toggleList('allergies', a)}
                 withCheckbox
               />
             ))}
@@ -233,8 +239,8 @@ export const HealthSecurity = () => {
         </FormField>
         <ErrorAlert message={error} />
         <FormActions
-          onBack={() => navigate("/onboarding/lifestyle")}
-          submitLabel={t("onboarding.medical.continue")}
+          onBack={() => navigate('/onboarding/lifestyle')}
+          submitLabel={t('onboarding.medical.continue')}
           loading={loading}
         />
       </form>

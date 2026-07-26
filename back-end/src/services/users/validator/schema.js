@@ -21,8 +21,11 @@ export const updateUserPayloadSchema = Joi.object({
   // Tambahkan kolom lain di sini jika nanti user bisa update email/password
 });
 
+export const updateOnboardingStepSchema = Joi.object({
+  current_onboarding_step: Joi.number().required(),
+});
+
 export const changePasswordPayloadSchema = Joi.object({
   oldPassword: Joi.string().required(),
   newPassword: Joi.string().min(6).required(),
 });
-

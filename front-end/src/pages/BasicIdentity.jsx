@@ -1,59 +1,61 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { basicIdentityApi } from "../services/api.js";
-import { OnboardingLayout } from "../components/ui/OnboardingLayout";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { updateOnboardingStep } from '../services/api.js';
+import { OnboardingLayout } from '../components/ui/OnboardingLayout';
 import {
   FormField,
   Input,
   Select,
   ErrorAlert,
   FormActions,
-} from "../components/ui/FormComponents";
+} from '../components/ui/FormComponents';
 import {
   showLoading,
   showSuccess,
   showError,
   closeFeedback,
-} from "../shared/ui/feedback";
-import { useLocale } from "../i18n/locale-context";
+} from '../shared/ui/feedback';
+import { useLocale } from '../i18n/locale-context';
 
 export const BasicIdentity = () => {
   const navigate = useNavigate();
-  const { completeOnboardingStep } = useAuth();
+  const { completeOnboardingStep, skipToStep } = useAuth();
   const { t } = useLocale();
+  const savedDraft =
+    JSON.parse(sessionStorage.getItem('draft_basic_identity')) || {};
 
   const [formData, setFormData] = useState({
-    age: "",
-    gender: "Male",
-    weight: "",
-    height: "",
-    activityLevel: "Lightly Active",
+    age: savedDraft.age || '',
+    gender: savedDraft.gender || 'Male',
+    weight: savedDraft.weight || '',
+    height: savedDraft.height || '',
+    activityLevel: savedDraft.activity_level || 'Lightly Active',
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError("");
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     if (!formData.age || !formData.weight || !formData.height) {
-      setError(t("onboarding.basicIdentity.validation.required"));
+      setError(t('onboarding.basicIdentity.validation.required'));
       return;
     }
     if (formData.age < 18 || formData.age > 120) {
-      setError(t("onboarding.basicIdentity.validation.age"));
+      setError(t('onboarding.basicIdentity.validation.age'));
       return;
     }
     setLoading(true);
     showLoading(
-      t("onboarding.basicIdentity.saving"),
-      t("onboarding.basicIdentity.savingDescription"),
+      t('onboarding.basicIdentity.saving'),
+      t('onboarding.basicIdentity.savingDescription'),
     );
     try {
       const payload = {
@@ -63,48 +65,50 @@ export const BasicIdentity = () => {
         height: Number(formData.height),
         activity_level: formData.activityLevel,
       };
-      await basicIdentityApi(payload);
-      completeOnboardingStep(payload);
+      sessionStorage.setItem('draft_basic_identity', JSON.stringify(payload));
+      await updateOnboardingStep(2);
+      
+      skipToStep('lifestyle');
       closeFeedback();
       await showSuccess(
-        t("onboarding.basicIdentity.saved"),
-        t("onboarding.basicIdentity.savedDescription"),
+        t('onboarding.basicIdentity.saved'),
+        t('onboarding.basicIdentity.savedDescription'),
       );
-      navigate("/onboarding/lifestyle");
+      navigate('/onboarding/lifestyle');
     } catch (err) {
       closeFeedback();
       const msg =
         err?.response?.data?.message ||
         err.message ||
-        t("onboarding.basicIdentity.saveFailed");
+        t('onboarding.basicIdentity.saveFailed');
       setError(msg);
-      showError(t("onboarding.basicIdentity.saveFailedTitle"), msg);
+      showError(t('onboarding.basicIdentity.saveFailedTitle'), msg);
     } finally {
       setLoading(false);
     }
   };
 
   const activityLevels = [
-    "Sedentary",
-    "Lightly Active",
-    "Moderately Active",
-    "Very Active",
-    "Extra Active",
+    'Sedentary',
+    'Lightly Active',
+    'Moderately Active',
+    'Very Active',
+    'Extra Active',
   ];
 
   return (
     <OnboardingLayout currentStep={1}>
       <div className="mb-8 md:mb-10">
         <h1 className="t-size9 font-extrabold tracking-tight text-slate-900 mb-3">
-          {t("onboarding.basicIdentity.heading")}
+          {t('onboarding.basicIdentity.heading')}
         </h1>
         <p className="t-size4 text-slate-500 font-medium">
-          {t("onboarding.basicIdentity.introduction")}
+          {t('onboarding.basicIdentity.introduction')}
         </p>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField label={t("onboarding.basicIdentity.fields.age")} required>
+          <FormField label={t('onboarding.basicIdentity.fields.age')} required>
             <Input
               type="number"
               name="age"
@@ -112,11 +116,11 @@ export const BasicIdentity = () => {
               max="120"
               value={formData.age}
               onChange={handleChange}
-              placeholder={t("onboarding.basicIdentity.placeholders.age")}
+              placeholder={t('onboarding.basicIdentity.placeholders.age')}
             />
           </FormField>
           <FormField
-            label={t("onboarding.basicIdentity.fields.gender")}
+            label={t('onboarding.basicIdentity.fields.gender')}
             required
           >
             <Select
@@ -124,16 +128,16 @@ export const BasicIdentity = () => {
               value={formData.gender}
               onChange={handleChange}
             >
-              <option value="Male">{t("onboarding.basicIdentity.male")}</option>
+              <option value="Male">{t('onboarding.basicIdentity.male')}</option>
               <option value="Female">
-                {t("onboarding.basicIdentity.female")}
+                {t('onboarding.basicIdentity.female')}
               </option>
             </Select>
           </FormField>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <FormField
-            label={t("onboarding.basicIdentity.fields.weight")}
+            label={t('onboarding.basicIdentity.fields.weight')}
             required
           >
             <Input
@@ -144,11 +148,11 @@ export const BasicIdentity = () => {
               max="300"
               value={formData.weight}
               onChange={handleChange}
-              placeholder={t("onboarding.basicIdentity.placeholders.weight")}
+              placeholder={t('onboarding.basicIdentity.placeholders.weight')}
             />
           </FormField>
           <FormField
-            label={t("onboarding.basicIdentity.fields.height")}
+            label={t('onboarding.basicIdentity.fields.height')}
             required
           >
             <Input
@@ -158,12 +162,12 @@ export const BasicIdentity = () => {
               max="250"
               value={formData.height}
               onChange={handleChange}
-              placeholder={t("onboarding.basicIdentity.placeholders.height")}
+              placeholder={t('onboarding.basicIdentity.placeholders.height')}
             />
           </FormField>
         </div>
         <FormField
-          label={t("onboarding.basicIdentity.fields.activityLevel")}
+          label={t('onboarding.basicIdentity.fields.activityLevel')}
           required
         >
           <Select
@@ -180,8 +184,8 @@ export const BasicIdentity = () => {
         </FormField>
         <ErrorAlert message={error} />
         <FormActions
-          onBack={() => navigate("/onboarding")}
-          submitLabel={t("onboarding.basicIdentity.continue")}
+          onBack={() => navigate('/onboarding')}
+          submitLabel={t('onboarding.basicIdentity.continue')}
           loading={loading}
         />
       </form>

@@ -59,6 +59,7 @@ class UserRepository {
           fullname,
           email,
           is_onboarding_completed,
+          current_onboarding_step,
           created_at,
           updated_at
         FROM users
@@ -103,7 +104,6 @@ class UserRepository {
     const result = await this.pool.query(query);
     return result.rows[0];
   }
-
 
   async editFullnameByUserId(userId, { fullname }) {
     const query = {
@@ -160,7 +160,6 @@ class UserRepository {
     return result.rows[0];
   }
 
-
   async getUserByEmail(email) {
     const query = {
       text: 'SELECT id, email FROM users WHERE email = $1',
@@ -169,7 +168,8 @@ class UserRepository {
 
     const result = await this.pool.query(query);
     // Mengembalikan data berupa object { id, email, is_onboarding_completed } atau undefined
-    return result.rows[0];}
+    return result.rows[0];
+  }
 
   async checkOnboardingStatus(userId) {
     const query = {
@@ -179,6 +179,16 @@ class UserRepository {
 
     const result = await this.pool.query(query);
     return result.rows[0]?.is_onboarding_completed || false;
+  }
+
+  async checkCurrentOnboardingStep(userId) {
+    const query = {
+      text: 'SELECT current_onboarding_step FROM users WHERE id = $1',
+      values: [userId],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows[0]?.current_onboarding_step;
   }
 
   async getFullUserProfile(userId) {
@@ -210,6 +220,22 @@ class UserRepository {
         RETURNING id
       `,
       values: [userId],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows[0];
+  }
+
+  async updateOnboardingStep(userId, stepNumber) {
+    const query = {
+      text: `
+        UPDATE users
+        SET current_onboarding_step = $1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        RETURNING id
+      `,
+      values: [stepNumber, userId],
     };
 
     const result = await this.pool.query(query);
